@@ -52,10 +52,25 @@ namespace Application.Services.Column
                 .Include(c => c.Board)
                 .FirstOrDefaultAsync(x => x.Id == columnId && x.Board.UserId == userId);
 
+            if (column == null)
+            {
+                throw new Exception("Access denied or column not found");
+            }
+
             _context.Column.Remove(column);
             await _context.SaveChangesAsync();
 
+            var reorderedColumns = await _context.Column
+                .Where(c => c.BoardId == column.BoardId)
+                .OrderBy(c => c.Position)
+                .ToListAsync();
 
+            for (int i = 0; i < reorderedColumns.Count(); i++)
+            {
+                reorderedColumns[i].Position = i;
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<ColumnDto>> GetColumnsAsync(Guid boardId, Guid userId)
@@ -71,7 +86,8 @@ namespace Application.Services.Column
                 {
                     Id = b.Id,
                     Title = b.Title,
-                    BoardId = b.BoardId
+                    BoardId = b.BoardId,
+                    Position = b.Position
                 })
                 .ToListAsync();
         }
