@@ -15,6 +15,7 @@ namespace Application.Services.Column
         Task DeleteColumnAsync(Guid columnId, Guid userId);
         Task MoveColumnAsync(Guid columnId, Guid newBoardId, Guid userId);
         Task UpdateColumnAsync(Guid columnId, UpdateColumnDto dto, Guid userId);
+        Task ReorderColumnAsync(Guid columnId, int newPosition, Guid userId);     
         
     }
 }

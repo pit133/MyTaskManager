@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Infrasructure;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace Application.Services.Column
@@ -44,6 +45,7 @@ namespace Application.Services.Column
                 Id = column.Id,
                 Title = column.Title,
                 BoardId = column.BoardId,
+                Position = column.Position
             };
         }
 
@@ -119,7 +121,30 @@ namespace Application.Services.Column
         
         public async Task ReorderColumnAsync(Guid columnId, int newPosition, Guid userId)
         {
+            var reorderedColumn = await GetColumnFromDbAsync(columnId, userId);
+            var reorderedcolumnId = columnId;
+            var oldPostion = reorderedColumn.Position;
+
+            if (oldPostion == newPosition)
+            {
+                return;
+            }
+
+            var columnsInBoard = await _context.Column                
+                .Where(c => c.BoardId == reorderedColumn.BoardId)
+                .OrderBy(c => c.Position)
+                .ToListAsync();
             
+            columnsInBoard.RemoveAll(c => c.Id == reorderedColumn.Id);
+            newPosition = Math.Clamp(newPosition, 0, columnsInBoard.Count);
+            columnsInBoard.Insert(newPosition, reorderedColumn);
+
+            for (int i = 0; i < columnsInBoard.Count; i++)
+            {
+                columnsInBoard[i].Position = i;
+            }
+            
+            await _context.SaveChangesAsync();
         }   
         
         private async Task<Domain.Entities.Column> GetColumnFromDbAsync(Guid columnId, Guid userId)

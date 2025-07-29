@@ -55,5 +55,13 @@ namespace API.Controllers
             await _service.UpdateColumnAsync(columnId, dto, userId);
             return NoContent();
         }
+
+        [HttpPut("{columnId}/reorder{newPosition}")]
+        public async Task<IActionResult> ReorderColumn(Guid columnId, int newPosition)
+        {
+            var userId = ClaimsHelper.GetUserId(User);
+            await _service.ReorderColumnAsync(columnId, newPosition, userId);
+            return NoContent();
+        }
     }
 }
