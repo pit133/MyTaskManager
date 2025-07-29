@@ -113,7 +113,13 @@ namespace Application.Services.TaskItem
             }
 
              taskItem.ColumnId = newColumnId;
-             await _context.SaveChangesAsync();
+
+             taskItem.Position = await _context.TaskItem
+                .Include(t => t.Column)
+                .Where(t => t.ColumnId == newColumnId)
+                .MaxAsync(t => (int?)t.Position) ?? 0;
+
+            await _context.SaveChangesAsync();
 
             var tasksInColumn = await _context.TaskItem
                 .Where(t => t.ColumnId == columnId)
@@ -136,11 +142,6 @@ namespace Application.Services.TaskItem
             }
 
             await _context.SaveChangesAsync();
-        }
-
-        public async Task MoveTaskItemToOtherBoardAsync()
-        {
-
         }
 
         public async Task UpdateTaskItemAsync(Guid taskId, UpdateTaskItemDto dto, Guid userId)
