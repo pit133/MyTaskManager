@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Column;
+using Domain.Entities;
 using Infrasructure;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -48,9 +49,7 @@ namespace Application.Services.Column
 
         public async Task DeleteColumnAsync(Guid columnId, Guid userId)
         {
-            var column = await _context.Column
-                .Include(c => c.Board)
-                .FirstOrDefaultAsync(x => x.Id == columnId && x.Board.UserId == userId);
+            var column = await GetColumnFromDbAsync(columnId, userId);
 
             if (column == null)
             {
@@ -94,9 +93,7 @@ namespace Application.Services.Column
 
         public async Task MoveColumnAsync(Guid columnId, Guid newBoardId, Guid userId)
         {
-            var column = await _context.Column
-                .Include(c => c.Board)
-                .FirstOrDefaultAsync(c => c.Id == columnId && c.Board.UserId == userId);
+            var column = await GetColumnFromDbAsync(columnId, userId);
 
             var board = await _context.Board
                 .FirstOrDefaultAsync(b => b.Id == newBoardId && b.UserId == userId);
@@ -112,9 +109,7 @@ namespace Application.Services.Column
 
         public async Task UpdateColumnAsync(Guid columnId, UpdateColumnDto dto, Guid userId)
         {
-            var column = await _context.Column
-                .Include(c => c.Board)
-                .FirstOrDefaultAsync(c => c.Id == columnId && c.Board.UserId == userId);
+            var column = await GetColumnFromDbAsync(columnId, userId);
 
             if (column == null) { throw new Exception("Access denied"); }
 
@@ -122,5 +117,20 @@ namespace Application.Services.Column
             await _context.SaveChangesAsync();
         }
         
+        public async Task ReorderColumnAsync(Guid columnId, int newPosition, Guid userId)
+        {
+            
+        }   
+        
+        private async Task<Domain.Entities.Column> GetColumnFromDbAsync(Guid columnId, Guid userId)
+        {
+            var column = await _context.Column
+                .Include(c => c.Board)
+                .FirstOrDefaultAsync(c => c.Id == columnId && c.Board.UserId == userId);
+
+            if (column == null) { throw new Exception("Access denied or column not found"); }
+
+            return column;
+        }
     }
 }
