@@ -23,6 +23,9 @@ namespace Infrasructure.Configurations
                    .WithOne(c => c.Board)
                    .HasForeignKey(c => c.BoardId);
 
+            builder.Property(a => a.isArchived)
+                   .HasDefaultValue(false);
+
         }
     }
 }

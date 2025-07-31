@@ -14,5 +14,6 @@ namespace Domain.Entities
         public Guid ColumnId { get; set; }
         public Column Column { get; set; }
         public int Position { get; set; }
+        public bool isArchived { get; set; }
     }
 }

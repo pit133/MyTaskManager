@@ -19,6 +19,9 @@ namespace Infrasructure.Configurations
 
             builder.Property(x => x.Position)
                 .IsRequired();
+
+            builder.Property(a => a.isArchived)
+                   .HasDefaultValue(false);
         }
     }
 }

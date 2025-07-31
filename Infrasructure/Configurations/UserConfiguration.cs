@@ -19,7 +19,7 @@ namespace Infrasructure.Configurations
 
             builder.HasMany(u => u.Boards)
                    .WithOne(b => b.User)
-                   .HasForeignKey(b => b.UserId);
+                   .HasForeignKey(b => b.UserId);            
         }
     }
 }

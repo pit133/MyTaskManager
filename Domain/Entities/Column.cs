@@ -13,6 +13,7 @@ namespace Domain.Entities
         public Guid BoardId { get; set; }
         public Board Board { get; set; }
         public ICollection<TaskItem> TaskItems { get; set;}
-        public int Position { get; set; }     
+        public int Position { get; set; }
+        public bool isArchived { get; set; }
     }
 }
