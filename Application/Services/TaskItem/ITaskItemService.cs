@@ -16,5 +16,6 @@ namespace Application.Services.TaskItem
         Task DeleteTaskItemAsync(Guid taskId, Guid userId);
         Task ReorderTaskItemAsync(Guid taskItemId, int newPosition, Guid userId);
         Task ArchiveTaskItem(Guid taskItemId, Guid userId);
+        Task UnarchiveTaskItem(Guid taskItemId, Guid userId);
     }
 }

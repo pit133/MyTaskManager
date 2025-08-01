@@ -93,7 +93,7 @@ namespace Application.Services.TaskItem
                     Title = t.Title,
                     Description = t.Description,
                     ColumnId = columnId,
-                    Position = t.Position
+                    Position = t.Position,                    
                 })
                 .ToListAsync();
         }
@@ -191,6 +191,13 @@ namespace Application.Services.TaskItem
             await _context.SaveChangesAsync();
         }
 
+        public async Task UnarchiveTaskItem(Guid taskItemId, Guid userId)
+        {
+            var task = await GetTaskItemAsync(taskItemId, userId);
+            task.isArchived = false;
+            await _context.SaveChangesAsync();
+        }
+
         private async Task<Domain.Entities.TaskItem> GetTaskItemAsync(Guid taskItemId, Guid userId)
         {
             var task = await _context.TaskItem
@@ -201,6 +208,6 @@ namespace Application.Services.TaskItem
             if (task == null) { throw new Exception("Access denied"); }
 
             return task;
-        }        
+        }      
     }
 }

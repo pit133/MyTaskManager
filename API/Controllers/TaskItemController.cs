@@ -55,6 +55,22 @@ namespace API.Controllers
             return NoContent();
         }
 
+        [HttpPut("{taskItemId}/archive")]
+        public async Task <IActionResult> Archive(Guid taskItemId)
+        {
+            var userId = ClaimsHelper.GetUserId(User);
+            await _service.ArchiveTaskItem(taskItemId, userId);
+            return NoContent();
+        }
+
+        [HttpPut("{taskItemId}/unarchive")]
+        public async Task <IActionResult> Unarchive(Guid taskItemId)
+        {
+            var userId = ClaimsHelper.GetUserId(User);
+            await _service.UnarchiveTaskItem(taskItemId, userId);
+            return NoContent();
+        }
+
         [HttpDelete("{taskItemId}")]
         public async Task<IActionResult> Delete(Guid taskItemId)
         {
