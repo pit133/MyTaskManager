@@ -184,6 +184,13 @@ namespace Application.Services.TaskItem
 
         }
 
+        public async Task ArchiveTaskItem(Guid taskItemId, Guid userId)
+        {
+            var task = await GetTaskItemAsync(taskItemId, userId);
+            task.isArchived = true;
+            await _context.SaveChangesAsync();
+        }
+
         private async Task<Domain.Entities.TaskItem> GetTaskItemAsync(Guid taskItemId, Guid userId)
         {
             var task = await _context.TaskItem
@@ -194,8 +201,6 @@ namespace Application.Services.TaskItem
             if (task == null) { throw new Exception("Access denied"); }
 
             return task;
-        }
-
-
+        }        
     }
 }

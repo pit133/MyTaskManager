@@ -12,5 +12,6 @@ namespace Application.Services.Board
         Task<List<BoardDto>> GetBoardAsync(Guid userId);
         Task<BoardDto> CreateBoardAsync(Guid userId, CreateBoardDto dto);
         Task DeleteBoardAsync(Guid boardId, Guid userId);
+        
     }
 }

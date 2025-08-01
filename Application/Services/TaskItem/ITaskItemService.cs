@@ -14,6 +14,7 @@ namespace Application.Services.TaskItem
         Task UpdateTaskItemAsync(Guid taskId, UpdateTaskItemDto dto, Guid userId);
         Task MoveTaskItemAsync(Guid taskId, Guid newColumnId, Guid userId);
         Task DeleteTaskItemAsync(Guid taskId, Guid userId);
-        Task ReorderTaskItemAsync(Guid taskItemId, int newPosition, Guid userId);       
+        Task ReorderTaskItemAsync(Guid taskItemId, int newPosition, Guid userId);
+        Task ArchiveTaskItem(Guid taskItemId, Guid userId);
     }
 }
