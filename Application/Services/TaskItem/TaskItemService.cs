@@ -184,14 +184,14 @@ namespace Application.Services.TaskItem
 
         }
 
-        public async Task ArchiveTaskItem(Guid taskItemId, Guid userId)
+        public async Task ArchiveTaskItemAsync(Guid taskItemId, Guid userId)
         {
             var task = await GetTaskItemAsync(taskItemId, userId);
             task.isArchived = true;
             await _context.SaveChangesAsync();
         }
 
-        public async Task UnarchiveTaskItem(Guid taskItemId, Guid userId)
+        public async Task UnarchiveTaskItemAsync(Guid taskItemId, Guid userId)
         {
             var task = await GetTaskItemAsync(taskItemId, userId);
             task.isArchived = false;

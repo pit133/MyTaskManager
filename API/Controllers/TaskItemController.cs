@@ -59,7 +59,7 @@ namespace API.Controllers
         public async Task <IActionResult> Archive(Guid taskItemId)
         {
             var userId = ClaimsHelper.GetUserId(User);
-            await _service.ArchiveTaskItem(taskItemId, userId);
+            await _service.ArchiveTaskItemAsync(taskItemId, userId);
             return NoContent();
         }
 
@@ -67,7 +67,7 @@ namespace API.Controllers
         public async Task <IActionResult> Unarchive(Guid taskItemId)
         {
             var userId = ClaimsHelper.GetUserId(User);
-            await _service.UnarchiveTaskItem(taskItemId, userId);
+            await _service.UnarchiveTaskItemAsync(taskItemId, userId);
             return NoContent();
         }
 

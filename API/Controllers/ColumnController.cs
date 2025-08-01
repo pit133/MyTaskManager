@@ -63,5 +63,21 @@ namespace API.Controllers
             await _service.ReorderColumnAsync(columnId, newPosition, userId);
             return NoContent();
         }
+
+        [HttpPut("{columnId}/archive")]
+        public async Task<IActionResult> ArchiveColumn(Guid columnId)
+        {
+            var userId = ClaimsHelper.GetUserId(User);
+            await _service.ArchiveColumnAsync(columnId, userId);
+            return NoContent();
+        }
+
+        [HttpPut("{columnId}/unarchive")]
+        public async Task<IActionResult> UnarchiveColumn(Guid columnId)
+        {
+            var userId = ClaimsHelper.GetUserId(User);
+            await _service.UnarchiveColumnAsync(columnId, userId);
+            return NoContent();
+        }
     }
 }

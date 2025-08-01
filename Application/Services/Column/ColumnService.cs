@@ -145,8 +145,45 @@ namespace Application.Services.Column
             }
             
             await _context.SaveChangesAsync();
-        }   
+        }
         
+        public async Task ArchiveColumnAsync(Guid columnId, Guid userId)
+        {
+            var column = await GetColumnFromDbAsync(columnId, userId);
+            column.isArchived = true;
+
+            var taskItemnsInColumnList = await _context.TaskItem
+                .Include(c => c.Column)
+                .Where(c => c.ColumnId == column.Id)
+                .ToListAsync();
+
+            foreach (var taskItem in taskItemnsInColumnList)
+            {
+                taskItem.isArchived = true;
+            }
+
+            await _context.SaveChangesAsync();            
+        }
+
+        public async Task UnarchiveColumnAsync(Guid columnId, Guid userId)
+        {
+            var column = await GetColumnFromDbAsync (columnId, userId);
+            column.isArchived = false;
+
+            var taskItemnsInColumnList = await _context.TaskItem
+                .Include(c => c.Column)
+                .Where(c => c.ColumnId == column.Id)
+                .ToListAsync();
+
+            foreach (var taskItem in taskItemnsInColumnList)
+            {
+                taskItem.isArchived = false;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+
         private async Task<Domain.Entities.Column> GetColumnFromDbAsync(Guid columnId, Guid userId)
         {
             var column = await _context.Column

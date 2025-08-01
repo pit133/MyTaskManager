@@ -15,7 +15,7 @@ namespace Application.Services.TaskItem
         Task MoveTaskItemAsync(Guid taskId, Guid newColumnId, Guid userId);
         Task DeleteTaskItemAsync(Guid taskId, Guid userId);
         Task ReorderTaskItemAsync(Guid taskItemId, int newPosition, Guid userId);
-        Task ArchiveTaskItem(Guid taskItemId, Guid userId);
-        Task UnarchiveTaskItem(Guid taskItemId, Guid userId);
+        Task ArchiveTaskItemAsync(Guid taskItemId, Guid userId);
+        Task UnarchiveTaskItemAsync(Guid taskItemId, Guid userId);
     }
 }
