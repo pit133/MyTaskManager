@@ -42,6 +42,14 @@ namespace API.Controllers
             return NoContent();
         }
 
+        [HttpPut("{boardId}/unarchive")]
+        public async Task<IActionResult> UnarchiveBoard(Guid boardId)
+        {
+            var userId = ClaimsHelper.GetUserId(User);
+            await _service.UnarchiveBoardAsync(boardId, userId);
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBoard(Guid boardId)
         {

@@ -68,9 +68,31 @@ namespace Application.Services.Board
             await _context.SaveChangesAsync();
         }
 
-        public Task UnarchiveBoardAsync(Guid boardId, Guid userId)
+        public async Task UnarchiveBoardAsync(Guid boardId, Guid userId)
         {
-            throw new NotImplementedException();
+            var board = await _context.Board.FirstOrDefaultAsync(x => x.Id == boardId && x.UserId == userId);
+            if (board == null) { throw new Exception("Not found"); }
+            board.isArchived = false;
+
+            var columnsInBoardList = await _context.Column
+                .Where(c => c.BoardId == board.Id)
+                .ToListAsync();
+
+            foreach (var column in columnsInBoardList)
+            {
+                column.isArchived = false;
+
+                var tasksItemsInColumnList = await _context.TaskItem
+                    .Where(t => t.ColumnId == column.Id)
+                    .ToListAsync();
+
+                foreach (var taskItem in tasksItemsInColumnList)
+                {
+                    taskItem.isArchived = false;
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<BoardDto>> GetBoardAsync(Guid userId)
