@@ -85,7 +85,7 @@ namespace Application.Services.TaskItem
             }
 
             return await _context.TaskItem
-                .Where(t => t.ColumnId == columnId)
+                .Where(t => t.ColumnId == columnId && !t.isArchived)
                 .OrderBy(t=> t.Position)
                 .Select(t => new TaskItemDto
                 {

@@ -98,7 +98,7 @@ namespace Application.Services.Board
         public async Task<List<BoardDto>> GetBoardAsync(Guid userId)
         {
             return await _context.Board
-                .Where(b => b.UserId == userId)
+                .Where(b => b.UserId == userId && !b.isArchived)
                 .Select(b => new BoardDto { Id = b.Id, Name = b.Name })
                 .ToListAsync();
         }        

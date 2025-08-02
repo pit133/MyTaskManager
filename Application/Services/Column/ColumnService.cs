@@ -81,7 +81,7 @@ namespace Application.Services.Column
             if (board == null) { throw new Exception("Access denied or board not found"); }
 
             return await _context.Column
-                .Where(b => b.BoardId == boardId)
+                .Where(b => b.BoardId == boardId && !b.isArchived)
                 .OrderBy(b => b.Position)
                 .Select(b => new ColumnDto
                 {
