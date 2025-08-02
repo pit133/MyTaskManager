@@ -15,7 +15,8 @@ namespace Application.Services.Board
 
         public BoardService(AppDbContext context) {
             _context = context;
-        }
+        }        
+
         public async Task<BoardDto> CreateBoardAsync(Guid userId, CreateBoardDto dto)
         {
             var board = new Domain.Entities.Board
@@ -40,12 +41,44 @@ namespace Application.Services.Board
 
         }
 
+        public async Task ArchiveBoardAsync(Guid boardId, Guid userId)
+        {
+            var board = await _context.Board.FirstOrDefaultAsync(x => x.Id == boardId && x.UserId == userId);
+            if (board == null) { throw new Exception("Not found"); }
+            board.isArchived = true;
+
+            var columnsInBoardList = await _context.Column
+                .Where(c => c.BoardId == board.Id)
+                .ToListAsync();
+
+            foreach (var column in columnsInBoardList)
+            {
+                column.isArchived = true;                
+
+                var tasksItemsInColumnList = await _context.TaskItem
+                    .Where(t => t.ColumnId == column.Id)
+                    .ToListAsync();
+
+                foreach (var taskItem in tasksItemsInColumnList)
+                {
+                    taskItem.isArchived = true;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public Task UnarchiveBoardAsync(Guid boardId, Guid userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<BoardDto>> GetBoardAsync(Guid userId)
         {
             return await _context.Board
                 .Where(b => b.UserId == userId)
                 .Select(b => new BoardDto { Id = b.Id, Name = b.Name })
                 .ToListAsync();
-        }
+        }        
     }
 }

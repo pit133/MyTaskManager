@@ -34,6 +34,14 @@ namespace API.Controllers
             return Ok(board);
         }
 
+        [HttpPut("{boardId}/archive")]
+        public async Task<IActionResult> ArchiveBoard(Guid boardId)
+        {
+            var userId = ClaimsHelper.GetUserId(User);
+            await _service.ArchiveBoardAsync(boardId, userId);
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBoard(Guid boardId)
         {
