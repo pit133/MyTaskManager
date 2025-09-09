@@ -25,6 +25,7 @@ namespace Application.Services.Auth
 
         public async Task<string> LoginAsync(LoginDto dto)
         {
+            Console.WriteLine($"Login attempt: {dto.Name}");
             var user = _context.User.FirstOrDefault(x => x.Name == dto.Name);
 
             if (user == null) { throw new Exception("User not found"); }

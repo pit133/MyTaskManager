@@ -18,6 +18,16 @@ namespace API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()   // Разрешить все источники
+                          .AllowAnyMethod()   // Разрешить все HTTP-методы
+                          .AllowAnyHeader();  // Разрешить все заголовки
+                });
+            });
+
             // Add services to the container.
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -95,6 +105,7 @@ namespace API
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("AllowAll");
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
