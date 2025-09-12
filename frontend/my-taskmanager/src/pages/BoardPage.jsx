@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addColumn, getColumns, getTasks, getToken } from "../api";
 import AddTaskForm from "./pageElements/AddTaskForm";
+import Task from "./pageElements/Task";
 
 export default function BoardPage() {
   const { id } = useParams();
@@ -9,8 +10,6 @@ export default function BoardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [newColumnName, setNewColumnName] = useState("");
-  //const [newTaskName, setNewTaskName] = useState("");
-  //const [taskDescription, setTaskDescription] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,12 +22,12 @@ export default function BoardPage() {
     const loadBoardData = async () => {
       try {
         setLoading(true);
-        const columnsData = await getColumns(id);      
+        const columnsData = await getColumns(id);
 
         const columnsWithTasks = await Promise.all(
           columnsData.map(async (column) => {
-            try {              
-              const tasksData = await getTasks(column.id);              
+            try {
+              const tasksData = await getTasks(column.id);
               return { ...column, tasks: tasksData };
             } catch (err) {
               console.error(
@@ -57,6 +56,12 @@ export default function BoardPage() {
 
   async function handleSubmitColumn(e) {
     e.preventDefault();
+
+    if (!newColumnName.trim()) {
+      setError("Column name can not be empty");
+      return;
+    }
+    
     try {
       const result = await addColumn(id, newColumnName);
       setColumns([...columns, result]);
@@ -98,6 +103,8 @@ export default function BoardPage() {
             <h2>{column.title}</h2>
 
             {column.tasks?.map((task) => (
+              <Task key = {task.id} task = {task}/>
+              /*
               <div
                 key={task.id}
                 style={{
@@ -109,6 +116,7 @@ export default function BoardPage() {
                 <strong>{task.title}</strong>
                 <p>{task.description}</p>
               </div>
+              */
             ))}
 
             <AddTaskForm
