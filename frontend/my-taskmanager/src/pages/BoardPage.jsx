@@ -23,7 +23,6 @@ export default function BoardPage() {
       try {
         setLoading(true);
         const columnsData = await getColumns(id);
-
         const columnsWithTasks = await Promise.all(
           columnsData.map(async (column) => {
             try {
@@ -55,6 +54,19 @@ export default function BoardPage() {
     setColumns((prevColumns) => [...prevColumns, newColumn]);
   };
 
+  const handleDeleteTask = (taskId, columnId) => {
+    setColumns((columns) =>
+      columns.map((column) =>
+        column.id === columnId
+          ? {
+              ...column,
+              tasks: column.tasks.filter((task) => task.id !== taskId),
+            }
+          : column
+      )
+    );
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
@@ -76,7 +88,11 @@ export default function BoardPage() {
             <h2>{column.title}</h2>
 
             {column.tasks?.map((task) => (
-              <Task key={task.id} task={task} />
+              <Task
+                key={task.id}
+                task={task}
+                onTaskDeleted={(taskId) => handleDeleteTask(taskId, column.id)}
+              />
             ))}
 
             <AddTaskForm

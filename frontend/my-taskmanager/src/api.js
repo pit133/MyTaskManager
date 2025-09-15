@@ -106,3 +106,19 @@ export async function addTask(columnId, title, description) {
 
   return await response.json();
 }
+
+export async function deleteTask(TaskItemId) {
+  const token = getToken()
+  const response = await fetch(`${API_URL}/TaskItem/${TaskItemId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,      
+    }
+  })
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+
+  //return await response.json();
+}
