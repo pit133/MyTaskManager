@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getColumns, getTasks, getToken } from "../api";
-import AddTaskForm from "./pageElements/AddTaskForm";
+import AddTaskForm from "./pageElements/TaskButtons/AddTaskForm";
 import Task from "./pageElements/Task";
 import AddColumnForm from "./pageElements/AddColumnForm";
 
@@ -67,12 +67,27 @@ export default function BoardPage() {
     );
   };
 
+  const handleUpdatedTask = (updatedTask, taskId, columnId) => {
+    setColumns((columns) =>
+      columns.map((column) =>
+        column.id === columnId
+          ? {
+              ...column,
+              tasks: column.tasks.map((task) =>
+                task.id === taskId ? updatedTask : task
+              ),
+            }
+          : column
+      )
+    );
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
     <div style={{ padding: "20px" }}>
-      <AddColumnForm boadId={id} onColumnAdded={handleColumnAdded} />
+      <AddColumnForm boardId={id} onColumnAdded={handleColumnAdded} />
 
       <div style={{ display: "flex", gap: "20px" }}>
         {columns.map((column) => (
@@ -92,6 +107,8 @@ export default function BoardPage() {
                 key={task.id}
                 task={task}
                 onTaskDeleted={(taskId) => handleDeleteTask(taskId, column.id)}
+                onTaskUpdated={handleUpdatedTask}
+                columnId={column.id}
               />
             ))}
 

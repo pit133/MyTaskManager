@@ -1,17 +1,28 @@
-import { deleteTask } from "../../api";
+import { useState } from "react";
+import DeleteTaskButton from "./TaskButtons/DeleteTaskButton"
+import EditTaskButton from "./TaskButtons/EditTaskButton";
+import EditTaskForm from "./TaskForms/EditTaskForm";
 
-export default function Task({ task, onTaskDeleted }) {
-  async function handleDeleteTask() {
-    if (window.confirm("Are you sure you want to delete this task ?")) {
-      try {
-        await deleteTask(task.id);
-        onTaskDeleted(task.id);
-      } catch (error) {
-        console.log("Failed to delete task");
-        alert("Failed to delete task");
-      }
-    }
+export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId }) {
+
+  const[isEditFormOpen, setIsEditFormOpen] = useState(false)
+
+  function handleEditClick(){
+    setIsEditFormOpen(true)
   }
+
+  function handleTaskUpdated(updatedTask, taskId, columnId) {
+    onTaskUpdated(updatedTask, taskId, columnId)
+    setIsEditFormOpen(false)
+
+  }
+
+  function handleCloseForm(){
+    setIsEditFormOpen(false)
+  }
+
+
+
   return (
     <div
       style={{
@@ -23,9 +34,15 @@ export default function Task({ task, onTaskDeleted }) {
       <strong>{task.title}</strong>
       <p>{task.description}</p>
 
-      <div style={{ border: "1px dashed gray", padding: "10px" }}>
-        <button onClick={handleDeleteTask}>Delete task</button>
-      </div>
+      <DeleteTaskButton taskId={task.id} onTaskDeleted={onTaskDeleted} />
+      <EditTaskButton task ={task} onClick={handleEditClick} />
+
+      <EditTaskForm  
+      task ={task}
+      onTaskUpdated ={handleTaskUpdated}
+      isOpen ={isEditFormOpen}
+      onClose ={handleCloseForm}
+      columnId={columnId}/>
     </div>
   );
 }

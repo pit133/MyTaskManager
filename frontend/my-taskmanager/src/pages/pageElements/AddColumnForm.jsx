@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { addColumn } from "../../api";
 
-export default function AddColumnForm({ boadId, onColumnAdded }) {
+export default function AddColumnForm({ boardId, onColumnAdded }) {
   const [newColumnName, setNewColumnName] = useState("");
   const [error, setError] = useState("");
 
@@ -14,7 +14,7 @@ export default function AddColumnForm({ boadId, onColumnAdded }) {
     }
 
     try {
-      const result = await addColumn(boadId, newColumnName);
+      const result = await addColumn(boardId, newColumnName);
       onColumnAdded(result);
       setNewColumnName("");
       setError("");

@@ -93,7 +93,7 @@ export async function addTask(columnId, title, description) {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({      
+    body: JSON.stringify({
       title: title,
       description: description,
       columnId: columnId,
@@ -107,18 +107,35 @@ export async function addTask(columnId, title, description) {
   return await response.json();
 }
 
-export async function deleteTask(TaskItemId) {
-  const token = getToken()
-  const response = await fetch(`${API_URL}/TaskItem/${TaskItemId}`, {
+export async function deleteTask(taskItemId) {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/TaskItem/${taskItemId}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${token}`,      
-    }
-  })
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!response.ok) {
     throw new Error("Error");
   }
+}
 
-  //return await response.json();
+export async function updateTask(taskItemId, title, description) {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/TaskItem/${taskItemId}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      description: description,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
 }
