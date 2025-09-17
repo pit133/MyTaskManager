@@ -1,27 +1,38 @@
 import { useState } from "react";
-import DeleteTaskButton from "./TaskButtons/DeleteTaskButton"
+import DeleteButton from "./TaskButtons/DeleteButton.jsx";
 import EditTaskButton from "./TaskButtons/EditTaskButton";
 import EditTaskForm from "./TaskForms/EditTaskForm";
+import {deleteTask} from "../../api.js";
+
 
 export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId }) {
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
 
-  const[isEditFormOpen, setIsEditFormOpen] = useState(false)
-
-  function handleEditClick(){
-    setIsEditFormOpen(true)
+  function handleEditClick() {
+    setIsEditFormOpen(true);
   }
 
   function handleTaskUpdated(updatedTask, taskId, columnId) {
-    onTaskUpdated(updatedTask, taskId, columnId)
-    setIsEditFormOpen(false)
-
+    onTaskUpdated(updatedTask, taskId, columnId);
+    setIsEditFormOpen(false);
   }
 
-  function handleCloseForm(){
-    setIsEditFormOpen(false)
+  function handleCloseForm() {
+    setIsEditFormOpen(false);
   }
 
-
+ async function handleDeleteTask(){
+    if (window.confirm("Are you sure you want to delete this task ?")) {
+      try {
+        await deleteTask(task.id);
+        onTaskDeleted(task.id);
+      } catch (error) {
+        console.log("Failed to delete task");
+        alert("Failed to delete task");
+      }
+    }
+    onTaskDeleted(task.id, columnId)
+  }
 
   return (
     <div
@@ -34,15 +45,16 @@ export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId }) {
       <strong>{task.title}</strong>
       <p>{task.description}</p>
 
-      <DeleteTaskButton taskId={task.id} onTaskDeleted={onTaskDeleted} />
-      <EditTaskButton task ={task} onClick={handleEditClick} />
+      <DeleteButton onClick={handleDeleteTask} />
+      <EditTaskButton onClick={handleEditClick} />
 
-      <EditTaskForm  
-      task ={task}
-      onTaskUpdated ={handleTaskUpdated}
-      isOpen ={isEditFormOpen}
-      onClose ={handleCloseForm}
-      columnId={columnId}/>
+      <EditTaskForm
+        task={task}
+        onTaskUpdated={handleTaskUpdated}
+        isOpen={isEditFormOpen}
+        onClose={handleCloseForm}
+        columnId={columnId}
+      />
     </div>
   );
 }

@@ -9,28 +9,26 @@ export default function BoardsPage() {
   const navigate = useNavigate();
 
   async function loadBoards() {
-      try {
-        setLoading(true);    
-        const data = await getBoardsNames();        
-        setBoards(data);
-      } 
-      catch (err) {
-        setError("Failed to load boards");
-        console.error(err);
-      }
-      finally {
-        setLoading(false);
-      }
-    };
+    try {
+      setLoading(true);
+      const data = await getBoardsNames();
+      setBoards(data);
+    } catch (err) {
+      setError("Failed to load boards");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     const token = getToken();
     if (!token) {
       navigate("/login");
       return;
-    }  
+    }
     loadBoards();
-  }, [navigate]); 
+  }, [navigate]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;

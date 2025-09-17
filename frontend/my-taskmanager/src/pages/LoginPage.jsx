@@ -18,7 +18,7 @@ function LoginPage() {
     } catch (err) {
       setError("Login failed");
     }
-  };
+  }
 
   return (
     <div style={{ maxWidth: "400px", margin: "100px auto" }}>
@@ -28,21 +28,21 @@ function LoginPage() {
           type="text"
           placeholder="Name"
           value={name}
-          onChange={e => setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
         />
         <br />
         <input
           type="text"
           placeholder="Password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <br />
         <button type="submit">Login</button>
-        {error && <p style={{color:"red"}}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
     </div>
   );
 }
 
-export default LoginPage
+export default LoginPage;

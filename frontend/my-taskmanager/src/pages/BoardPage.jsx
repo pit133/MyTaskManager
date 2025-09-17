@@ -106,7 +106,7 @@ export default function BoardPage() {
               <Task
                 key={task.id}
                 task={task}
-                onTaskDeleted={(taskId) => handleDeleteTask(taskId, column.id)}
+                onTaskDeleted={handleDeleteTask}
                 onTaskUpdated={handleUpdatedTask}
                 columnId={column.id}
               />
