@@ -85,6 +85,20 @@ export async function addColumn(boardId, newColumnName) {
   return await response.json();
 }
 
+export async function deleteColumn(columnId) {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/Column/${columnId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+}
+
 export async function addTask(columnId, title, description) {
   const token = getToken();
   const response = await fetch(`${API_URL}/TaskItem`, {

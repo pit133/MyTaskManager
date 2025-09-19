@@ -1,6 +1,6 @@
 import { useState } from "react";
-import DeleteButton from "./TaskButtons/DeleteButton.jsx";
-import EditTaskButton from "./TaskButtons/EditTaskButton";
+import DeleteButton from "./Buttons/DeleteButton.jsx";
+import EditButton from "./Buttons/EditButton.jsx";
 import EditTaskForm from "./TaskForms/EditTaskForm";
 import {deleteTask} from "../../api.js";
 
@@ -46,7 +46,7 @@ export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId }) {
       <p>{task.description}</p>
 
       <DeleteButton onClick={handleDeleteTask} />
-      <EditTaskButton onClick={handleEditClick} />
+      <EditButton onClick={handleEditClick} />
 
       <EditTaskForm
         task={task}

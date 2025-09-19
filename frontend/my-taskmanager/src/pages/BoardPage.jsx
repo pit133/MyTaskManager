@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getColumns, getTasks, getToken } from "../api";
-import AddTaskForm from "./pageElements/TaskButtons/AddTaskForm";
+import AddTaskForm from "./pageElements/TaskForms/AddTaskForm";
 import Task from "./pageElements/Task";
 import AddColumnForm from "./pageElements/AddColumnForm";
+import DeleteButton from "./pageElements/Buttons/DeleteButton";
+import Column from "./pageElements/Column";
 
 export default function BoardPage() {
   const { id } = useParams();
@@ -90,18 +92,9 @@ export default function BoardPage() {
       <AddColumnForm boardId={id} onColumnAdded={handleColumnAdded} />
 
       <div style={{ display: "flex", gap: "20px" }}>
-        {columns.map((column) => (
-          <div
-            key={column.id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "10px",
-              width: "250px",
-              background: "#f9f9f9",
-            }}
-          >
-            <h2>{column.title}</h2>
+        {columns.map((column) => (          
 
+          <Column column={column}>
             {column.tasks?.map((task) => (
               <Task
                 key={task.id}
@@ -124,7 +117,7 @@ export default function BoardPage() {
                 );
               }}
             />
-          </div>
+          </Column>
         ))}
       </div>
     </div>

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { updateTask } from "../../../api";
+import SaveButton from "../Buttons/SaveButton";
+import CancelButton from "../Buttons/CancelButton";
 
 export default function EditTaskForm({
   task,
@@ -24,11 +26,10 @@ export default function EditTaskForm({
       setError("Title is required");
       return;
     }
-    setLoading(true);
 
     try {
       await updateTask(task.id, title.trim(), description.trim());
-
+      setLoading(true);
       const updatedTask = {
         ...task,
         title: title.trim(),
@@ -36,6 +37,7 @@ export default function EditTaskForm({
       };
 
       onTaskUpdated(updatedTask, task.id, columnId);
+      setLoading(false);
       onClose();
     } catch (err) {
       setError("Failed to update task");
@@ -64,12 +66,8 @@ export default function EditTaskForm({
           disabled={loading}
         />
 
-        <button type="submit" disabled={loading}>
-          Save
-        </button>
-        <button type="button" onClick={onClose}>
-          Cancel
-        </button>
+        <SaveButton loading={loading} />
+        <CancelButton onClick={onClose} />        
       </form>
     </div>
   );
