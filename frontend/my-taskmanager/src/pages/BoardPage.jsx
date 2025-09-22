@@ -69,6 +69,10 @@ export default function BoardPage() {
     );
   };
 
+  const handleDeletedColumn = (columnId) => {
+    setColumns((prevColumns) => prevColumns.filter(column => column.id !== columnId))
+  }
+
   const handleUpdatedTask = (updatedTask, taskId, columnId) => {
     setColumns((columns) =>
       columns.map((column) =>
@@ -94,7 +98,7 @@ export default function BoardPage() {
       <div style={{ display: "flex", gap: "20px" }}>
         {columns.map((column) => (          
 
-          <Column column={column}>
+          <Column key={column.id} column={column} onColumnDeleted={handleDeletedColumn}>
             {column.tasks?.map((task) => (
               <Task
                 key={task.id}

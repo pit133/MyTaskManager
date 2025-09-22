@@ -25,13 +25,12 @@ export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId }) {
     if (window.confirm("Are you sure you want to delete this task ?")) {
       try {
         await deleteTask(task.id);
-        onTaskDeleted(task.id);
+        onTaskDeleted(task.id, columnId)        
       } catch (error) {
         console.log("Failed to delete task");
         alert("Failed to delete task");
       }
     }
-    onTaskDeleted(task.id, columnId)
   }
 
   return (
