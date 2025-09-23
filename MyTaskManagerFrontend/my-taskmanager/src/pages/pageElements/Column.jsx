@@ -1,7 +1,17 @@
+import { useState } from "react";
 import { deleteColumn } from "../../api";
 import DeleteButton from "./Buttons/DeleteButton";
+import EditButton from "./Buttons/EditButton";
+import EditColumnForm from "./ColumnForms/EditColumnForm";
 
-export default function Column({ column, children, onColumnDeleted }) {
+export default function Column({
+  column,
+  children,
+  onColumnUpdated,
+  onColumnDeleted,
+}) {
+  const [isEditFormOpened, setIsEditFormOpened] = useState(false);
+
   async function handleDeleteColumn() {
     if (window.confirm("Are you sure you want to delete this column ?")) {
       try {
@@ -13,6 +23,19 @@ export default function Column({ column, children, onColumnDeleted }) {
       }
     }
     //onTaskDeleted(task.id, columnId);
+  }
+
+  async function handleUpdateColumn(updatedColumn) {
+    onColumnUpdated(updatedColumn)
+    setIsEditFormOpened(false)
+  }
+
+  function handleEditClick() {
+    setIsEditFormOpened(true);
+  }
+
+  function handleCloseForm(){
+    setIsEditFormOpened(false)
   }
 
   return (
@@ -27,6 +50,13 @@ export default function Column({ column, children, onColumnDeleted }) {
     >
       <h2>{column.title}</h2>
       {children}
+      <EditButton onClick={handleEditClick} />
+      <EditColumnForm
+        column={column}
+        onColumnUpdated={handleUpdateColumn}
+        isOpen={isEditFormOpened}
+        onClose={handleCloseForm}
+      />
       <DeleteButton onClick={handleDeleteColumn} />
     </div>
   );

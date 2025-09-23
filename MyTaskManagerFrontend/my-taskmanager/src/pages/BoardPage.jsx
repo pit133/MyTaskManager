@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getColumns, getTasks, getToken } from "../api";
+import { getColumns, getTasks, getToken, updateColumn } from "../api";
 import AddTaskForm from "./pageElements/TaskForms/AddTaskForm";
 import Task from "./pageElements/Task";
 import AddColumnForm from "./pageElements/AddColumnForm";
@@ -23,7 +23,7 @@ export default function BoardPage() {
 
     const loadBoardData = async () => {
       try {
-        setLoading(true);
+        setLoading(true)
         const columnsData = await getColumns(id);
         const columnsWithTasks = await Promise.all(
           columnsData.map(async (column) => {
@@ -70,8 +70,23 @@ export default function BoardPage() {
   };
 
   const handleDeletedColumn = (columnId) => {
-    setColumns((prevColumns) => prevColumns.filter(column => column.id !== columnId))
-  }
+    setColumns((prevColumns) =>
+      prevColumns.filter((column) => column.id !== columnId)
+    );
+  };
+
+  const handleUpdatedColumn = (updatedColumn) => {
+    setColumns((columns) =>
+      columns.map((column) =>
+        column.id === updatedColumn.id
+          ? {
+              ...column,
+              title: updatedColumn.title,
+            }
+          : column
+      )
+    );
+  };
 
   const handleUpdatedTask = (updatedTask, taskId, columnId) => {
     setColumns((columns) =>
@@ -96,9 +111,13 @@ export default function BoardPage() {
       <AddColumnForm boardId={id} onColumnAdded={handleColumnAdded} />
 
       <div style={{ display: "flex", gap: "20px" }}>
-        {columns.map((column) => (          
-
-          <Column key={column.id} column={column} onColumnDeleted={handleDeletedColumn}>
+        {columns.map((column) => (
+          <Column
+            key={column.id}
+            column={column}
+            onColumnDeleted={handleDeletedColumn}
+            onColumnUpdated={handleUpdatedColumn}
+          >
             {column.tasks?.map((task) => (
               <Task
                 key={task.id}

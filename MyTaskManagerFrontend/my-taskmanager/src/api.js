@@ -99,6 +99,24 @@ export async function deleteColumn(columnId) {
   }
 }
 
+export async function updateColumn(columnId, columnTitle) {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/Column/${columnId}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: columnTitle
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+}
+
 export async function addTask(columnId, title, description) {
   const token = getToken();
   const response = await fetch(`${API_URL}/TaskItem`, {
