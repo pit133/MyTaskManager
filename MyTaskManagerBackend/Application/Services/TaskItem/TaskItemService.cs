@@ -1,9 +1,6 @@
 ﻿using Application.DTOs.TaskItem;
-using Domain.Entities;
 using Infrasructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Threading.Tasks;
 
 namespace Application.Services.TaskItem
 {

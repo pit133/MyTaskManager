@@ -1,0 +1,291 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\application\\services\\taskitem\\taskitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|solutionrelative:application\\services\\taskitem\\taskitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\application\\dtos\\taskitem\\updatetaskitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|solutionrelative:application\\dtos\\taskitem\\updatetaskitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\application\\dtos\\taskitem\\taskitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|solutionrelative:application\\dtos\\taskitem\\taskitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\application\\dtos\\column\\columndto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|solutionrelative:application\\dtos\\column\\columndto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\application\\dtos\\column\\createcolumndto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|solutionrelative:application\\dtos\\column\\createcolumndto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\application\\services\\column\\columnservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|solutionrelative:application\\services\\column\\columnservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\application\\dtos\\taskitem\\createtaskitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|solutionrelative:application\\dtos\\taskitem\\createtaskitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2ABB059B-EFBC-40CC-BBA3-D17DF6848967}|API\\API.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\api\\controllers\\taskitemcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2ABB059B-EFBC-40CC-BBA3-D17DF6848967}|API\\API.csproj|solutionrelative:api\\controllers\\taskitemcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2ABB059B-EFBC-40CC-BBA3-D17DF6848967}|API\\API.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\api\\controllers\\columncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2ABB059B-EFBC-40CC-BBA3-D17DF6848967}|API\\API.csproj|solutionrelative:api\\controllers\\columncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2ABB059B-EFBC-40CC-BBA3-D17DF6848967}|API\\API.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\api\\controllers\\boardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2ABB059B-EFBC-40CC-BBA3-D17DF6848967}|API\\API.csproj|solutionrelative:api\\controllers\\boardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\application\\dtos\\auth\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|solutionrelative:application\\dtos\\auth\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2ABB059B-EFBC-40CC-BBA3-D17DF6848967}|API\\API.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2ABB059B-EFBC-40CC-BBA3-D17DF6848967}|API\\API.csproj|solutionrelative:api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2ABB059B-EFBC-40CC-BBA3-D17DF6848967}|API\\API.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2ABB059B-EFBC-40CC-BBA3-D17DF6848967}|API\\API.csproj|solutionrelative:api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\application\\dtos\\board\\boarddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|solutionrelative:application\\dtos\\board\\boarddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\application\\services\\auth\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|solutionrelative:application\\services\\auth\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|c:\\users\\savritskaya\\source\\repos\\mytaskmanager\\application\\services\\board\\iboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0AD09ED-92AD-4D07-87FC-6E0A77B5878D}|Application\\Application.csproj|solutionrelative:application\\services\\board\\iboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 260,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:714040067:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 226,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UpdateTaskItemDto.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\TaskItem\\UpdateTaskItemDto.cs",
+              "RelativeDocumentMoniker": "Application\\DTOs\\TaskItem\\UpdateTaskItemDto.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\TaskItem\\UpdateTaskItemDto.cs",
+              "RelativeToolTip": "Application\\DTOs\\TaskItem\\UpdateTaskItemDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-16T08:38:25.089Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ColumnDto.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\Column\\ColumnDto.cs",
+              "RelativeDocumentMoniker": "Application\\DTOs\\Column\\ColumnDto.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\Column\\ColumnDto.cs",
+              "RelativeToolTip": "Application\\DTOs\\Column\\ColumnDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-22T04:02:52.118Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ColumnService.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\Services\\Column\\ColumnService.cs",
+              "RelativeDocumentMoniker": "Application\\Services\\Column\\ColumnService.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\Services\\Column\\ColumnService.cs",
+              "RelativeToolTip": "Application\\Services\\Column\\ColumnService.cs",
+              "ViewState": "AQIAAEQAAAAAAAAAAAAwwFAAAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-22T03:55:18.209Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\Services\\Auth\\AuthService.cs",
+              "RelativeDocumentMoniker": "Application\\Services\\Auth\\AuthService.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\Services\\Auth\\AuthService.cs",
+              "RelativeToolTip": "Application\\Services\\Auth\\AuthService.cs",
+              "ViewState": "AQIAABUAAAAAAAAAAAAawBsAAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-21T07:38:41.041Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\API\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\API\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "API\\Controllers\\AuthController.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAB0AAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T11:35:40.028Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ColumnController.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\API\\Controllers\\ColumnController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\ColumnController.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\API\\Controllers\\ColumnController.cs",
+              "RelativeToolTip": "API\\Controllers\\ColumnController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T09:59:10.161Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BoardController.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\API\\Controllers\\BoardController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\BoardController.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\API\\Controllers\\BoardController.cs",
+              "RelativeToolTip": "API\\Controllers\\BoardController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAA2AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:16:04.147Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TaskItemDto.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\TaskItem\\TaskItemDto.cs",
+              "RelativeDocumentMoniker": "Application\\DTOs\\TaskItem\\TaskItemDto.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\TaskItem\\TaskItemDto.cs",
+              "RelativeToolTip": "Application\\DTOs\\TaskItem\\TaskItemDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T09:16:18.979Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TaskItemService.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\Services\\TaskItem\\TaskItemService.cs",
+              "RelativeDocumentMoniker": "Application\\Services\\TaskItem\\TaskItemService.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\Services\\TaskItem\\TaskItemService.cs",
+              "RelativeToolTip": "Application\\Services\\TaskItem\\TaskItemService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T07:40:52.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TaskItemController.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\API\\Controllers\\TaskItemController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\TaskItemController.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\API\\Controllers\\TaskItemController.cs",
+              "RelativeToolTip": "API\\Controllers\\TaskItemController.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAAAQwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T09:28:21.967Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CreateColumnDto.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\Column\\CreateColumnDto.cs",
+              "RelativeDocumentMoniker": "Application\\DTOs\\Column\\CreateColumnDto.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\Column\\CreateColumnDto.cs",
+              "RelativeToolTip": "Application\\DTOs\\Column\\CreateColumnDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-05T04:14:55.56Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\API\\Program.cs",
+              "RelativeDocumentMoniker": "API\\Program.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\API\\Program.cs",
+              "RelativeToolTip": "API\\Program.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAGsAAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-21T08:40:41.586Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CreateTaskItemDto.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\TaskItem\\CreateTaskItemDto.cs",
+              "RelativeDocumentMoniker": "Application\\DTOs\\TaskItem\\CreateTaskItemDto.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\TaskItem\\CreateTaskItemDto.cs",
+              "RelativeToolTip": "Application\\DTOs\\TaskItem\\CreateTaskItemDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T10:33:15.341Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "BoardDto.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\Board\\BoardDto.cs",
+              "RelativeDocumentMoniker": "Application\\DTOs\\Board\\BoardDto.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\Board\\BoardDto.cs",
+              "RelativeToolTip": "Application\\DTOs\\Board\\BoardDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-22T07:53:26.009Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\Auth\\LoginDto.cs",
+              "RelativeDocumentMoniker": "Application\\DTOs\\Auth\\LoginDto.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\DTOs\\Auth\\LoginDto.cs",
+              "RelativeToolTip": "Application\\DTOs\\Auth\\LoginDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T09:30:13.149Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "IBoardService.cs",
+              "DocumentMoniker": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\Services\\Board\\IBoardService.cs",
+              "RelativeDocumentMoniker": "Application\\Services\\Board\\IBoardService.cs",
+              "ToolTip": "C:\\Users\\savritskaya\\source\\repos\\MyTaskManager\\Application\\Services\\Board\\IBoardService.cs",
+              "RelativeToolTip": "Application\\Services\\Board\\IBoardService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T08:20:08.14Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
