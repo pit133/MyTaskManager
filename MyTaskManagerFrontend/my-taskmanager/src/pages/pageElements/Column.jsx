@@ -46,6 +46,27 @@ export default function Column({
     setIsDragOver(true)
   }
 
+  function handleDragLeave(e){
+    if(e.currentTarget.contains(e.relatedTarget)){
+      setIsDragOver(false)
+    }
+  }
+
+  function handleDrop(e){
+    e.preventDefault()
+    setIsDragOver(false)
+
+    try{
+      const dragData = JSON.parse(e.dataTransfer.getData('application/json'))
+
+      if(dragData.sourceColumnId !== column.id){
+        onTaskMove(dragData.taskId, column.id)
+      }
+    } catch (error){
+      console.error("Error parsing drag data:", error)
+    }
+  }
+
   return (
     <div
       key={column.id}
@@ -55,6 +76,9 @@ export default function Column({
         width: "250px",
         background: "#f9f9f9",
       }}
+      onDragOver={handleDragOver}
+      onDragLeave = {handleDragLeave}
+      onDrop={handleDrop}
     >
       <h2>{column.title}</h2>
       {children}
