@@ -9,8 +9,10 @@ export default function Column({
   children,
   onColumnUpdated,
   onColumnDeleted,
+  onTaskMove
 }) {
   const [isEditFormOpened, setIsEditFormOpened] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false)
 
   async function handleDeleteColumn() {
     if (window.confirm("Are you sure you want to delete this column ?")) {
@@ -36,6 +38,12 @@ export default function Column({
 
   function handleCloseForm(){
     setIsEditFormOpened(false)
+  }
+
+  function handleDragOver(e){
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setIsDragOver(true)
   }
 
   return (

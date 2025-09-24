@@ -5,8 +5,10 @@ import EditTaskForm from "./TaskForms/EditTaskForm";
 import {deleteTask} from "../../api.js";
 
 
-export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId }) {
+export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId, onTaskMove }) {
+
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+  const [isDragging, setIsDragging] = useState(false)
 
   function handleEditClick() {
     setIsEditFormOpen(true);
@@ -33,6 +35,31 @@ export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId }) {
     }
   }
 
+  function handleDragStart(e) {
+    console.log("Drag started: ", task.title)
+
+    const dragData = {
+      taskId: task.id,
+      sourceColumnId: columnId      
+    }
+
+    e.dataTransfer.setData('application/json', JSON.stringify(dragData))
+    e.dataTransfer.effectAllowed = 'move'
+    setIsDragging(true)
+    e.currentTarget.style.opacity = '0.6'
+  }
+
+  function handleDragEnd(e) {
+    setIsDragging(false)
+    e.currentTarget.style.opacity = '1'
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+  }
+
+
+
   return (
     <div
       style={{
@@ -40,6 +67,10 @@ export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId }) {
         margin: "5px 0",
         padding: "5px",
       }}
+      draggable = {true}
+      onDragStart={handleDragStart}
+      onDragEnd = {handleDragEnd}
+      onDragOver={handleDragOver}
     >
       <strong>{task.title}</strong>
       <p>{task.description}</p>

@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getColumns, getTasks, getToken, updateColumn } from "../api";
+import { getColumns, getTasks, getToken } from "../api";
 import AddTaskForm from "./pageElements/TaskForms/AddTaskForm";
 import Task from "./pageElements/Task";
 import AddColumnForm from "./pageElements/AddColumnForm";
-import DeleteButton from "./pageElements/Buttons/DeleteButton";
 import Column from "./pageElements/Column";
 
 export default function BoardPage() {

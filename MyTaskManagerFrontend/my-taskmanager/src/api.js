@@ -171,3 +171,19 @@ export async function updateTask(taskItemId, title, description) {
     throw new Error("Error");
   }
 }
+
+export async function moveTask(taskId, newColumnId) {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/TaskItem/${taskId}/move/${newColumnId}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({taskId, newColumnId})
+  });
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+}
