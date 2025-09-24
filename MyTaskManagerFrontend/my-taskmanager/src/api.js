@@ -178,9 +178,9 @@ export async function moveTask(taskId, newColumnId) {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      //"Content-Type": "application/json",
     },
-    body: JSON.stringify({taskId, newColumnId})
+    //body: JSON.stringify({taskId, newColumnId})
   });
 
   if (!response.ok) {

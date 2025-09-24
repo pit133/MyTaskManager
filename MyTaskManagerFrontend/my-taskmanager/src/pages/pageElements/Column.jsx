@@ -47,7 +47,7 @@ export default function Column({
   }
 
   function handleDragLeave(e){
-    if(e.currentTarget.contains(e.relatedTarget)){
+    if(!e.currentTarget.contains(e.relatedTarget)){
       setIsDragOver(false)
     }
   }
@@ -60,7 +60,7 @@ export default function Column({
       const dragData = JSON.parse(e.dataTransfer.getData('application/json'))
 
       if(dragData.sourceColumnId !== column.id){
-        onTaskMove(dragData.taskId, column.id)
+        onTaskMove(dragData.taskId, dragData.sourceColumnId, column.id)
       }
     } catch (error){
       console.error("Error parsing drag data:", error)
