@@ -1,14 +1,23 @@
+import React from "react";
 import { useState } from "react";
 import DeleteButton from "./Buttons/DeleteButton.jsx";
 import EditButton from "./Buttons/EditButton.jsx";
 import EditTaskForm from "./TaskForms/EditTaskForm";
-import {deleteTask} from "../../api.js";
+import { deleteTask } from "../../api.js";
 
-
-export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId, onTaskMove }) {
+function Task(props, ref) {
+  const {
+    task,
+    isDragging,
+    style,
+    onTaskDeleted,
+    onTaskUpdated,
+    columnId,
+    ...restProps
+  } = props;
 
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
-  const [isDragging, setIsDragging] = useState(false)
+  //const [isDragging, setIsDragging] = useState(false)
 
   function handleEditClick() {
     setIsEditFormOpen(true);
@@ -23,11 +32,11 @@ export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId, onT
     setIsEditFormOpen(false);
   }
 
- async function handleDeleteTask(){
+  async function handleDeleteTask() {
     if (window.confirm("Are you sure you want to delete this task ?")) {
       try {
         await deleteTask(task.id);
-        onTaskDeleted(task.id, columnId)        
+        onTaskDeleted(task.id, columnId);
       } catch (error) {
         console.log("Failed to delete task");
         alert("Failed to delete task");
@@ -35,42 +44,48 @@ export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId, onT
     }
   }
 
-  function handleDragStart(e) {
-    console.log("Drag started: ", task.title)
+  // function handleDragStart(e) {
+  //   console.log("Drag started: ", task.title)
 
-    const dragData = {
-      taskId: task.id,
-      sourceColumnId: columnId      
-    }
+  //   const dragData = {
+  //     taskId: task.id,
+  //     sourceColumnId: columnId
+  //   }
 
-    e.dataTransfer.setData('application/json', JSON.stringify(dragData))
-    e.dataTransfer.effectAllowed = 'move'
-    setIsDragging(true)
-    e.currentTarget.style.opacity = '0.6'
-  }
+  //   e.dataTransfer.setData('application/json', JSON.stringify(dragData))
+  //   e.dataTransfer.effectAllowed = 'move'
+  //   setIsDragging(true)
+  //   e.currentTarget.style.opacity = '0.6'
+  // }
 
-  function handleDragEnd(e) {
-    setIsDragging(false)
-    e.currentTarget.style.opacity = '1'
-  }
+  // function handleDragEnd(e) {
+  //   setIsDragging(false)
+  //   e.currentTarget.style.opacity = '1'
+  // }
 
-  function handleDragOver(e) {
-    e.preventDefault();
-  }
-
-
+  // function handleDragOver(e) {
+  //   e.preventDefault();
+  // }
 
   return (
     <div
+      ref={ref}
+      {...restProps}
       style={{
-        border: "1px solid gray",
-        margin: "5px 0",
-        padding: "5px",
+        border: "1px solid #ddd",
+        margin: "8px 0",
+        padding: "12px",
+        background: isDragging ? "#e3f2fd" : "white",
+        borderRadius: "4px",
+        cursor: isDragging ? "grabbing" : "grab",
+        boxShadow: isDragging ? "0 4px 8px rgba(0,0,0,0.2)" : "none",
+        transform: isDragging ? "rotate(3deg)" : "none",
+        transition: "all 0.2s ease",
+        ...style,
       }}
-      draggable = {true}
-      onDragStart={handleDragStart}
-      onDragEnd = {handleDragEnd}
-      onDragOver={handleDragOver}
+      // onDragStart={handleDragStart}
+      // onDragEnd = {handleDragEnd}
+      // onDragOver={handleDragOver}
     >
       <strong>{task.title}</strong>
       <p>{task.description}</p>
@@ -88,3 +103,5 @@ export default function Task({ task, onTaskDeleted, onTaskUpdated, columnId, onT
     </div>
   );
 }
+
+export default React.forwardRef(Task);
