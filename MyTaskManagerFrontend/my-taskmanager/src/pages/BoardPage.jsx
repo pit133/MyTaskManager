@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getColumns, getTasks, getToken, moveTask } from "../api";
+import { getColumns, getTasks, getToken, moveTask, reorderTask } from "../api";
 import AddTaskForm from "./pageElements/TaskForms/AddTaskForm";
 import Task from "./pageElements/Task";
 import AddColumnForm from "./pageElements/AddColumnForm";
@@ -133,11 +133,11 @@ export default function BoardPage() {
 
   const onDragEnd = async (result) => {
     const { destination, source, draggableId } = result;
-    
+
     if (!destination) {
       return;
     }
-    
+
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -148,46 +148,66 @@ export default function BoardPage() {
     const taskId = draggableId;
     const fromColumnId = source.droppableId;
     const toColumnId = destination.droppableId;
+    const newTaskPosition = destination.index;
 
-    console.log(`Moving task ${taskId} from ${fromColumnId} to ${toColumnId}`);
+    setColumns((prevColumns) => {
+      const newColumns = [...prevColumns];
 
-    try {      
-      setColumns((prevColumns) => {
-        const newColumns = [...prevColumns];
-                
-        const sourceColumn = newColumns.find(col => col.id === fromColumnId);        
-        const destColumn = newColumns.find(col => col.id === toColumnId);
-        
-        if (!sourceColumn || !destColumn) {
-          return prevColumns;
+      const sourceColumn = newColumns.find((col) => col.id === fromColumnId);
+      const destColumn = newColumns.find((col) => col.id === toColumnId);
+
+      if (!sourceColumn || !destColumn) {
+        return prevColumns;
+      }
+
+      const taskToMove = sourceColumn.tasks.find((task) => task.id === taskId);
+
+      if (!taskToMove) {
+        return prevColumns;
+      }
+
+      if (fromColumnId === toColumnId) {
+        const tasks = [...sourceColumn.tasks];
+
+        tasks.splice(source.index, 1);
+        tasks.splice(destination.index, 0, taskToMove);
+
+        return newColumns.map((column) =>
+          column.id === fromColumnId ? { ...column, tasks } : column
+        );
+      }
+
+      const updatedSourceTasks = sourceColumn.tasks.filter(
+        (task) => task.id !== taskId
+      );
+
+      const updatedDestTasks = [...destColumn.tasks];
+      updatedDestTasks.splice(destination.index, 0, taskToMove);
+
+      return newColumns.map((column) => {
+        if (column.id === fromColumnId) {
+          return { ...column, tasks: updatedSourceTasks };
         }
-        
-        const taskToMove = sourceColumn.tasks.find(task => task.id === taskId);
-        
-        if (!taskToMove) {
-          return prevColumns;
+        if (column.id === toColumnId) {
+          return { ...column, tasks: updatedDestTasks };
         }
-        
-        const updatedSourceTasks = sourceColumn.tasks.filter(task => task.id !== taskId);
-                
-        const updatedDestTasks = [...destColumn.tasks];
-        updatedDestTasks.splice(destination.index, 0, taskToMove);
-        
-        return newColumns.map(column => {
-          if (column.id === fromColumnId) {
-            return { ...column, tasks: updatedSourceTasks };
-          }
-          if (column.id === toColumnId) {
-            return { ...column, tasks: updatedDestTasks };
-          }
-          return column;
-        });
+        return column;
       });
-      
-      await moveTask(taskId, toColumnId);
-      console.log("Task moved on server successfully");
+    });
+
+    try {
+      // Если перемещение внутри одной колонки
+      if (fromColumnId === toColumnId) {
+        await reorderTask(taskId, newTaskPosition);
+        console.log("Task reordered successfully");
+      }
+      // Если перемещение между колонками
+      else {
+        await moveTask(taskId, toColumnId); // Нужно обновить moveTask чтобы принимать позицию
+        console.log("Task moved to another column successfully");
+      }
     } catch (error) {
-      console.error("Failed to move task: ", error);      
+      console.error("Failed to move task: ", error);
       loadBoardData();
     }
   };
@@ -206,11 +226,11 @@ export default function BoardPage() {
               {(provided, snapshot) => (
                 <Column
                   ref={provided.innerRef}
-                  {...provided.droppableProps}                  
+                  {...provided.droppableProps}
                   column={column}
                   isDraggingOver={snapshot.isDraggingOver}
                   onColumnDeleted={handleDeletedColumn}
-                  onColumnUpdated={handleUpdatedColumn}                  
+                  onColumnUpdated={handleUpdatedColumn}
                 >
                   {column.tasks?.map((task, index) => (
                     <Draggable
@@ -222,13 +242,13 @@ export default function BoardPage() {
                         <Task
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          {...provided.dragHandleProps}                          
+                          {...provided.dragHandleProps}
                           task={task}
                           isDragging={snapshot.isDragging}
                           style={provided.draggableProps.style}
                           onTaskDeleted={handleDeleteTask}
                           onTaskUpdated={handleUpdatedTask}
-                          columnId={column.id}                          
+                          columnId={column.id}
                         />
                       )}
                     </Draggable>

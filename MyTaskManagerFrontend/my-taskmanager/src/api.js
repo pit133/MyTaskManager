@@ -187,3 +187,22 @@ export async function moveTask(taskId, newColumnId) {
     throw new Error("Error");
   }
 }
+
+export async function reorderTask(taskId, newPosition){
+  const token = getToken();
+  const response = await fetch(`${API_URL}/TaskItem/${taskId}/reorder/${newPosition}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      //"Content-Type": "application/json",
+    },
+    //body: JSON.stringify({taskId, newColumnId})
+  });
+
+  if (!response.ok) {
+    throw new Error("Error");
+  } else {
+    console.log("task reordered")
+  }
+  
+}
