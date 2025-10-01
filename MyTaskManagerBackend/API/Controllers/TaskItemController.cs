@@ -39,11 +39,11 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpPut("{taskItemId}/move/{newColumnId}")]
-        public async Task<IActionResult> Move(Guid taskItemId, Guid newColumnId)
+        [HttpPut("{taskItemId}/move/{newColumnId}/{newPosition}")]
+        public async Task<IActionResult> Move(Guid taskItemId, Guid newColumnId, int newPosition)
         {
             var userId = ClaimsHelper.GetUserId(User);
-            await _service.MoveTaskItemAsync(taskItemId, newColumnId, userId);
+            await _service.MoveTaskItemAsync(taskItemId, newColumnId, newPosition, userId);
             return NoContent();
         }
 

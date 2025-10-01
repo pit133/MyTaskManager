@@ -12,7 +12,7 @@ namespace Application.Services.TaskItem
         Task<List<TaskItemDto>> GetTaskItemsAsync(Guid columnId, Guid userId);
         Task<TaskItemDto> CreateTaskItemAsync(CreateTaskItemDto dto, Guid userId);
         Task UpdateTaskItemAsync(Guid taskId, UpdateTaskItemDto dto, Guid userId);
-        Task MoveTaskItemAsync(Guid taskId, Guid newColumnId, Guid userId);
+        Task MoveTaskItemAsync(Guid taskId, Guid newColumnId, int newPosition, Guid userId);
         Task DeleteTaskItemAsync(Guid taskId, Guid userId);
         Task ReorderTaskItemAsync(Guid taskItemId, int newPosition, Guid userId);
         Task ArchiveTaskItemAsync(Guid taskItemId, Guid userId);

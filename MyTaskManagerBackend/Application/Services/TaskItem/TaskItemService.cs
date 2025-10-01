@@ -17,8 +17,9 @@ namespace Application.Services.TaskItem
             var column = await _context.Column
                 .Include(c => c.Board)
                 .FirstOrDefaultAsync(c => c.Id == dto.ColumnId && c.Board.UserId == userId);
-            
-            if (column == null) {
+
+            if (column == null)
+            {
                 throw new Exception("Access denied");
             }
 
@@ -35,7 +36,7 @@ namespace Application.Services.TaskItem
                 ColumnId = dto.ColumnId,
                 Position = maxPosition + 1
             };
-            
+
             _context.TaskItem.Add(task);
             await _context.SaveChangesAsync();
 
@@ -48,11 +49,11 @@ namespace Application.Services.TaskItem
                 Position = task.Position,
             };
 
-        }        
+        }
 
         public async Task DeleteTaskItemAsync(Guid taskId, Guid userId)
         {
-            var taskItem = await GetTaskItemAsync(taskId, userId);            
+            var taskItem = await GetTaskItemAsync(taskId, userId);
             _context.TaskItem.Remove(taskItem);
             await _context.SaveChangesAsync();
 
@@ -75,7 +76,7 @@ namespace Application.Services.TaskItem
             var column = await _context.Column
                 .Include(c => c.Board)
                 .FirstOrDefaultAsync(c => c.Id == columnId && c.Board.UserId == userId);
-            
+
             if (column == null)
             {
                 throw new Exception("Access denied");
@@ -83,62 +84,76 @@ namespace Application.Services.TaskItem
 
             return await _context.TaskItem
                 .Where(t => t.ColumnId == columnId && !t.isArchived)
-                .OrderBy(t=> t.Position)
+                .OrderBy(t => t.Position)
                 .Select(t => new TaskItemDto
                 {
                     Id = t.Id,
                     Title = t.Title,
                     Description = t.Description,
                     ColumnId = columnId,
-                    Position = t.Position,                    
+                    Position = t.Position,
                 })
                 .ToListAsync();
         }
 
-        public async Task MoveTaskItemAsync(Guid taskId, Guid newColumnId, Guid userId)
+        public async Task MoveTaskItemAsync(Guid taskId, Guid newColumnId, int newPosition, Guid userId)
         {
-            var taskItem = await GetTaskItemAsync(taskId, userId);
-            var columnId = taskItem.ColumnId;   
+            using var transaction = await _context.Database.BeginTransactionAsync();
 
-            var newColumn = await _context.Column
-                .Include(c => c.Board)
-                .FirstOrDefaultAsync(c => c.Id == newColumnId && c.Board.UserId == userId);
-
-            if(taskItem == null || newColumn == null)
+            try
             {
-                throw new Exception("Access denied");
+                var taskItem = await GetTaskItemAsync(taskId, userId);
+                var columnId = taskItem.ColumnId;
+
+                var newColumn = await _context.Column
+                    .Include(c => c.Board)
+                    .FirstOrDefaultAsync(c => c.Id == newColumnId && c.Board.UserId == userId);
+
+                if (taskItem == null || newColumn == null)
+                {
+                    throw new Exception("Access denied");
+                }
+
+                var tasksCountInNewColumn = await _context.TaskItem
+                    .CountAsync(t => t.ColumnId == newColumnId && t.Id != taskId);
+
+                if (newPosition < 0 || newPosition > tasksCountInNewColumn)
+                {
+                    throw new ArgumentException("Invalid position");
+                }
+
+                var tasksInColumn = await _context.TaskItem
+                    .Where(t => t.ColumnId == columnId && t.Id != taskId)
+                    .OrderBy(t => t.Position)
+                    .ToListAsync();
+
+                for (int i = 0; i < tasksInColumn.Count; i++)
+                {
+                    tasksInColumn[i].Position = i;
+                }
+
+                var tasksInNewColumn = await _context.TaskItem
+                    .Where(t => t.ColumnId == newColumnId)
+                    .OrderBy(t => t.Position)
+                    .ToListAsync();
+
+                taskItem.ColumnId = newColumnId;
+                tasksInNewColumn.Insert(newPosition, taskItem);
+
+                for (int i = 0; i < tasksInNewColumn.Count; i++)
+                {
+                    tasksInNewColumn[i].Position = i;
+                }
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
             }
-
-             taskItem.ColumnId = newColumnId;
-
-             taskItem.Position = await _context.TaskItem
-                .Include(t => t.Column)
-                .Where(t => t.ColumnId == newColumnId)
-                .MaxAsync(t => (int?)t.Position) ?? 0;
-
-            await _context.SaveChangesAsync();
-
-            var tasksInColumn = await _context.TaskItem
-                .Where(t => t.ColumnId == columnId)
-                .OrderBy(t => t.Position)
-                .ToListAsync();
-
-            for (int i = 0; i < tasksInColumn.Count; i++)
+            catch(Exception)
             {
-                tasksInColumn[i].Position = i;
+                await transaction.RollbackAsync();
+                throw;
             }
-
-            var tasksInNewColumn = await _context.TaskItem
-                .Where(t => t.ColumnId == newColumnId)
-                .OrderBy(t => t.Position)
-                .ToListAsync();
-
-            for (int i = 0; i < tasksInNewColumn.Count; i++)
-            {
-                tasksInNewColumn[i].Position = i;
-            }
-
-            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateTaskItemAsync(Guid taskId, UpdateTaskItemDto dto, Guid userId)
@@ -154,7 +169,7 @@ namespace Application.Services.TaskItem
 
         public async Task ReorderTaskItemAsync(Guid taskItemId, int newPosition, Guid userId)
         {
-            var task = await GetTaskItemAsync(taskItemId, userId);            
+            var task = await GetTaskItemAsync(taskItemId, userId);
             var columnId = task.ColumnId;
             var oldPosition = task.Position;
 
@@ -165,7 +180,7 @@ namespace Application.Services.TaskItem
 
             var tasksInColumn = await _context.TaskItem
                 .Where(t => t.ColumnId == columnId)
-                .OrderBy(t => t.Position)                
+                .OrderBy(t => t.Position)
                 .ToListAsync();
 
             tasksInColumn.RemoveAll(t => t.Id == task.Id);
@@ -200,11 +215,11 @@ namespace Application.Services.TaskItem
             var task = await _context.TaskItem
                 .Include(c => c.Column)
                 .ThenInclude(c => c.Board)
-                .FirstOrDefaultAsync(c => c.Id == taskItemId && c.Column.Board.UserId == userId);           
+                .FirstOrDefaultAsync(c => c.Id == taskItemId && c.Column.Board.UserId == userId);
 
             if (task == null) { throw new Exception("Access denied"); }
 
             return task;
-        }      
+        }
     }
 }
