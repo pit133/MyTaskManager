@@ -172,15 +172,13 @@ export async function updateTask(taskItemId, title, description) {
   }
 }
 
-export async function moveTask(taskId, newColumnId) {
+export async function moveTask(taskId, newColumnId, newPosition) {
   const token = getToken();
-  const response = await fetch(`${API_URL}/TaskItem/${taskId}/move/${newColumnId}`, {
+  const response = await fetch(`${API_URL}/TaskItem/${taskId}/move/${newColumnId}/${newPosition}`, {
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${token}`,
-      //"Content-Type": "application/json",
-    },
-    //body: JSON.stringify({taskId, newColumnId})
+      Authorization: `Bearer ${token}`,      
+    },    
   });
 
   if (!response.ok) {

@@ -203,7 +203,7 @@ export default function BoardPage() {
       }
       // Если перемещение между колонками
       else {
-        await moveTask(taskId, toColumnId); // Нужно обновить moveTask чтобы принимать позицию
+        await moveTask(taskId, toColumnId, newTaskPosition); // Нужно обновить moveTask чтобы принимать позицию
         console.log("Task moved to another column successfully");
       }
     } catch (error) {
