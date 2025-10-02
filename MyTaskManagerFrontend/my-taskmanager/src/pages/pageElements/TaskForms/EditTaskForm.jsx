@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { updateTask } from "../../../api";
-import SaveButton from "../Buttons/SaveButton";
+import SaveButton from "../Buttons/SubmitButton";
 import CancelButton from "../Buttons/CancelButton";
 
 export default function EditTaskForm({
@@ -66,7 +66,7 @@ export default function EditTaskForm({
           disabled={loading}
         />
 
-        <SaveButton loading={loading} />
+        <SaveButton text={"Save"} loading={loading} />
         <CancelButton onClick={onClose} />        
       </form>
     </div>

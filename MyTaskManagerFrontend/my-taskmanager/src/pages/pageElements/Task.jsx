@@ -1,9 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import DeleteButton from "./Buttons/DeleteButton.jsx";
-import EditButton from "./Buttons/EditButton.jsx";
 import EditTaskForm from "./TaskForms/EditTaskForm";
 import { deleteTask } from "../../api.js";
+import Button from "./Buttons/Button.jsx";
 
 function Task(props, ref) {
   const {
@@ -16,8 +15,7 @@ function Task(props, ref) {
     ...restProps
   } = props;
 
-  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
-  //const [isDragging, setIsDragging] = useState(false)
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false);  
 
   function handleEditClick() {
     setIsEditFormOpen(true);
@@ -44,29 +42,6 @@ function Task(props, ref) {
     }
   }
 
-  // function handleDragStart(e) {
-  //   console.log("Drag started: ", task.title)
-
-  //   const dragData = {
-  //     taskId: task.id,
-  //     sourceColumnId: columnId
-  //   }
-
-  //   e.dataTransfer.setData('application/json', JSON.stringify(dragData))
-  //   e.dataTransfer.effectAllowed = 'move'
-  //   setIsDragging(true)
-  //   e.currentTarget.style.opacity = '0.6'
-  // }
-
-  // function handleDragEnd(e) {
-  //   setIsDragging(false)
-  //   e.currentTarget.style.opacity = '1'
-  // }
-
-  // function handleDragOver(e) {
-  //   e.preventDefault();
-  // }
-
   return (
     <div
       ref={ref}
@@ -83,15 +58,14 @@ function Task(props, ref) {
         transition: "all 0.2s ease",
         ...style,
       }}
-      // onDragStart={handleDragStart}
-      // onDragEnd = {handleDragEnd}
-      // onDragOver={handleDragOver}
     >
       <strong>{task.title}</strong>
       <p>{task.description}</p>
 
-      <DeleteButton onClick={handleDeleteTask} />
-      <EditButton onClick={handleEditClick} />
+      {/* <DeleteButton onClick={handleDeleteTask} /> */}
+      <Button text={"Delete"} onClick={handleDeleteTask}/>
+      <Button text={"Edit"} onClick={handleEditClick}/>
+      {/* <EditButton onClick={handleEditClick} /> */}
 
       <EditTaskForm
         task={task}

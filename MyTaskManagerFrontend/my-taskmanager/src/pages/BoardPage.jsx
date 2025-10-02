@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getColumns, getTasks, getToken, moveTask, reorderTask } from "../api";
 import AddTaskForm from "./pageElements/TaskForms/AddTaskForm";
 import Task from "./pageElements/Task";
-import AddColumnForm from "./pageElements/AddColumnForm";
+import AddColumnForm from "./pageElements/ColumnForms/AddColumnForm";
 import Column from "./pageElements/Column";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
@@ -195,15 +195,13 @@ export default function BoardPage() {
       });
     });
 
-    try {
-      // Если перемещение внутри одной колонки
+    try {    
       if (fromColumnId === toColumnId) {
         await reorderTask(taskId, newTaskPosition);
         console.log("Task reordered successfully");
-      }
-      // Если перемещение между колонками
+      }      
       else {
-        await moveTask(taskId, toColumnId, newTaskPosition); // Нужно обновить moveTask чтобы принимать позицию
+        await moveTask(taskId, toColumnId, newTaskPosition);
         console.log("Task moved to another column successfully");
       }
     } catch (error) {
@@ -218,7 +216,7 @@ export default function BoardPage() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div style={{ padding: "20px" }}>
-        <AddColumnForm boardId={id} onColumnAdded={handleColumnAdded} />
+        
 
         <div style={{ display: "flex", gap: "20px" }}>
           {columns.map((column) => (
@@ -272,7 +270,9 @@ export default function BoardPage() {
               )}
             </Droppable>
           ))}
+          <AddColumnForm boardId={id} onColumnAdded={handleColumnAdded} />
         </div>
+        
       </div>
     </DragDropContext>
   );

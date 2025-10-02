@@ -1,8 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { deleteColumn } from "../../api";
-import DeleteButton from "./Buttons/DeleteButton";
-import EditButton from "./Buttons/EditButton";
+import Button from "./Buttons/Button";
 import EditColumnForm from "./ColumnForms/EditColumnForm";
 
 function Column(props, ref) {
@@ -58,14 +57,14 @@ function Column(props, ref) {
     >
       <h2>{column.title}</h2>
       {children}
-      <EditButton onClick={handleEditClick} />
+      <Button text ={"Edit"} onClick={handleEditClick} />
       <EditColumnForm
         column={column}
         onColumnUpdated={handleUpdateColumn}
         isOpen={isEditFormOpened}
         onClose={handleCloseForm}
       />
-      <DeleteButton onClick={handleDeleteColumn} />
+      <Button text={"Delete"} onClick={handleDeleteColumn} />
     </div>
   );
 }
