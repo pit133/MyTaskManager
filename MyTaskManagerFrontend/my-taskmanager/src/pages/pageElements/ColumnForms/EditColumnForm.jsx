@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SaveButton from "../Buttons/SubmitButton";
+import SubmitButton from "../Buttons/SubmitButton";
 import Button from "../Buttons/Button";
 import { updateColumn } from "../../../api";
 
@@ -55,7 +55,7 @@ export default function EditColumnForm({
           disabled={loading}
         ></input>
 
-        <SaveButton text={"Save"} loading={loading} />
+        <SubmitButton text={"Save"} loading={loading} />
         <Button text={"X"} onClick={onClose} />
       </form>
     </div>

@@ -67,7 +67,7 @@ export default function EditTaskForm({
         />
 
         <SaveButton text={"Save"} loading={loading} />
-        <CancelButton onClick={onClose} />        
+        <CancelButton text={"X"} onClick={onClose} />        
       </form>
     </div>
   );

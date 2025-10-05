@@ -3,6 +3,7 @@ import { useState } from "react";
 import { deleteColumn } from "../../api";
 import Button from "./Buttons/Button";
 import EditColumnForm from "./ColumnForms/EditColumnForm";
+import AddTaskForm from "./TaskForms/AddTaskForm";
 
 function Column(props, ref) {
   const {
@@ -11,10 +12,12 @@ function Column(props, ref) {
     isDraggingOver,
     onColumnUpdated,
     onColumnDeleted,
+    onTaskAdded,
     ...restProps
   } = props;
 
-  const [isEditFormOpened, setIsEditFormOpened] = useState(false);  
+  const [isEditFormOpened, setIsEditFormOpened] = useState(false);
+  const [isAddTaskFormOpen, setIsAddTaskFormOpen] = useState(false);
 
   async function handleDeleteColumn() {
     if (window.confirm("Are you sure you want to delete this column ?")) {
@@ -25,7 +28,7 @@ function Column(props, ref) {
         console.log("Failed to delete column");
         alert("Failed to delete column");
       }
-    }  
+    }
   }
 
   async function handleUpdateColumn(updatedColumn) {
@@ -39,6 +42,18 @@ function Column(props, ref) {
 
   function handleCloseForm() {
     setIsEditFormOpened(false);
+  }
+
+  function handleAddTaskClick() {
+    setIsAddTaskFormOpen(true);
+  }
+
+  function handleAddCLoseForm() {
+    setIsAddTaskFormOpen(false);
+  }
+
+  async function handleTaskAdded(newTask){
+    onTaskAdded(column.id, newTask)
   }
 
   return (
@@ -57,7 +72,16 @@ function Column(props, ref) {
     >
       <h2>{column.title}</h2>
       {children}
-      <Button text ={"Edit"} onClick={handleEditClick} />
+
+      <AddTaskForm
+        columnId={column.id}
+        onTaskAdded={handleTaskAdded}
+        isOpen={isAddTaskFormOpen}
+        onClose={handleAddCLoseForm}
+      />
+
+      <Button text={"Add task"} onClick={handleAddTaskClick} />
+      <Button text={"Edit"} onClick={handleEditClick} />
       <EditColumnForm
         column={column}
         onColumnUpdated={handleUpdateColumn}

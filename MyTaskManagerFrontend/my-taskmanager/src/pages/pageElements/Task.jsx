@@ -8,14 +8,17 @@ function Task(props, ref) {
   const {
     task,
     isDragging,
-    style,
+    style,    
     onTaskDeleted,
     onTaskUpdated,
     columnId,
     ...restProps
   } = props;
 
-  const [isEditFormOpen, setIsEditFormOpen] = useState(false);  
+  
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+  
+ 
 
   function handleEditClick() {
     setIsEditFormOpen(true);
@@ -26,11 +29,11 @@ function Task(props, ref) {
     setIsEditFormOpen(false);
   }
 
-  function handleCloseForm() {
+  function handleEditCloseForm() {
     setIsEditFormOpen(false);
   }
 
-  async function handleDeleteTask() {
+  async function handleDeleteClick() {
     if (window.confirm("Are you sure you want to delete this task ?")) {
       try {
         await deleteTask(task.id);
@@ -60,18 +63,20 @@ function Task(props, ref) {
       }}
     >
       <strong>{task.title}</strong>
-      <p>{task.description}</p>
+      {/* <p>{task.description}</p> */}
 
       {/* <DeleteButton onClick={handleDeleteTask} /> */}
-      <Button text={"Delete"} onClick={handleDeleteTask}/>
-      <Button text={"Edit"} onClick={handleEditClick}/>
+      
+      <Button text={"Delete"} onClick={handleDeleteClick} />
+      <Button text={"Edit"} onClick={handleEditClick} />      
       {/* <EditButton onClick={handleEditClick} /> */}
+      
 
       <EditTaskForm
         task={task}
         onTaskUpdated={handleTaskUpdated}
         isOpen={isEditFormOpen}
-        onClose={handleCloseForm}
+        onClose={handleEditCloseForm}
         columnId={columnId}
       />
     </div>

@@ -1,34 +1,48 @@
 import { useState } from "react";
 import { addTask } from "../../../api";
+import SubmitButton from "../Buttons/SubmitButton";
+import Button from "../Buttons/Button";
 
-export default function AddTaskForm({ columnId, onTaskAdded }) {
+export default function AddTaskForm({
+  columnId,
+  onTaskAdded,
+  isOpen,
+  onClose,
+}) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleAddTask = async () => {
+  if (!isOpen) {
+    return;
+  }
+
+  const handleSubmit = async () => {
     if (!title.trim()) return;
-
+    setIsLoading(true);
     const result = await addTask(columnId, title, description);
     onTaskAdded(result);
+    setIsLoading(false);
     setTitle("");
     setDescription("");
   };
 
   return (
-    <div style={{ marginTop: "10px" }}>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Task title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-      />
+      ></input>
       <br />
       <textarea
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <button onClick={handleAddTask}>Add task</button>
-    </div>
+      <SubmitButton text={"Save"} loading={isLoading} />
+      <Button text={"X"} onClick={onClose} />
+    </form>
   );
 }

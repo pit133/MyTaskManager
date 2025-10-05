@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getColumns, getTasks, getToken, moveTask, reorderTask } from "../api";
-import AddTaskForm from "./pageElements/TaskForms/AddTaskForm";
 import Task from "./pageElements/Task";
 import AddColumnForm from "./pageElements/ColumnForms/AddColumnForm";
 import Column from "./pageElements/Column";
@@ -131,6 +130,14 @@ export default function BoardPage() {
     );
   };
 
+  function handleAddedTask(columnId, newTask) {
+    setColumns((columns) =>
+      columns.map((column) =>
+        column.id === columnId ?  {...column.tasks, newTask } : column
+      )
+    );
+  }
+
   const onDragEnd = async (result) => {
     const { destination, source, draggableId } = result;
 
@@ -195,12 +202,11 @@ export default function BoardPage() {
       });
     });
 
-    try {    
+    try {
       if (fromColumnId === toColumnId) {
         await reorderTask(taskId, newTaskPosition);
         console.log("Task reordered successfully");
-      }      
-      else {
+      } else {
         await moveTask(taskId, toColumnId, newTaskPosition);
         console.log("Task moved to another column successfully");
       }
@@ -216,8 +222,6 @@ export default function BoardPage() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div style={{ padding: "20px" }}>
-        
-
         <div style={{ display: "flex", gap: "20px" }}>
           {columns.map((column) => (
             <Droppable key={column.id} droppableId={column.id}>
@@ -227,6 +231,7 @@ export default function BoardPage() {
                   {...provided.droppableProps}
                   column={column}
                   isDraggingOver={snapshot.isDraggingOver}
+                  onTaskAdded={handleAddedTask}
                   onColumnDeleted={handleDeletedColumn}
                   onColumnUpdated={handleUpdatedColumn}
                 >
@@ -243,7 +248,7 @@ export default function BoardPage() {
                           {...provided.dragHandleProps}
                           task={task}
                           isDragging={snapshot.isDragging}
-                          style={provided.draggableProps.style}
+                          style={provided.draggableProps.style}                          
                           onTaskDeleted={handleDeleteTask}
                           onTaskUpdated={handleUpdatedTask}
                           columnId={column.id}
@@ -254,7 +259,7 @@ export default function BoardPage() {
 
                   {provided.placeholder}
 
-                  <AddTaskForm
+                  {/* <AddTaskForm
                     columnId={column.id}
                     onTaskAdded={(task) => {
                       setColumns((cols) =>
@@ -265,14 +270,13 @@ export default function BoardPage() {
                         )
                       );
                     }}
-                  />
+                  /> */}
                 </Column>
               )}
             </Droppable>
           ))}
           <AddColumnForm boardId={id} onColumnAdded={handleColumnAdded} />
         </div>
-        
       </div>
     </DragDropContext>
   );

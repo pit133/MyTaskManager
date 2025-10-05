@@ -1,7 +1,7 @@
-export default function CancelButton ({ onClick }) {
+export default function CancelButton ({ text, onClick }) {
   return (
     <button type="button" onClick={onClick}>
-      Cancel
+      {text}
     </button>
   );
 }
