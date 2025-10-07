@@ -5,12 +5,16 @@ import Task from "./pageElements/Task";
 import AddColumnForm from "./pageElements/ColumnForms/AddColumnForm";
 import Column from "./pageElements/Column";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import TaskModal from "./pageElements/TaskModal";
 
 export default function BoardPage() {
   const { id } = useParams();
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [clickedTask, setClickedTask] = useState(null);
+  const [clickedTaskColumn, setClickedTaskColumn] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -133,9 +137,17 @@ export default function BoardPage() {
   function handleAddedTask(columnId, newTask) {
     setColumns((columns) =>
       columns.map((column) =>
-        column.id === columnId ?  {...column.tasks, newTask } : column
+        column.id === columnId
+          ? { ...column, tasks: [...column.tasks, newTask] }
+          : column
       )
     );
+  }
+
+  function handleTaskClick(task, column) {
+    setIsTaskModalOpen(true);
+    setClickedTask(task);
+    setClickedTaskColumn(column);
   }
 
   const onDragEnd = async (result) => {
@@ -248,34 +260,29 @@ export default function BoardPage() {
                           {...provided.dragHandleProps}
                           task={task}
                           isDragging={snapshot.isDragging}
-                          style={provided.draggableProps.style}                          
+                          style={provided.draggableProps.style}
                           onTaskDeleted={handleDeleteTask}
-                          onTaskUpdated={handleUpdatedTask}
+                          //onTaskUpdated={handleUpdatedTask}
                           columnId={column.id}
+                          onClick={() => handleTaskClick(task, column)}
                         />
                       )}
                     </Draggable>
                   ))}
 
                   {provided.placeholder}
-
-                  {/* <AddTaskForm
-                    columnId={column.id}
-                    onTaskAdded={(task) => {
-                      setColumns((cols) =>
-                        cols.map((col) =>
-                          col.id === column.id
-                            ? { ...col, tasks: [...(col.tasks || []), task] }
-                            : col
-                        )
-                      );
-                    }}
-                  /> */}
                 </Column>
               )}
             </Droppable>
           ))}
           <AddColumnForm boardId={id} onColumnAdded={handleColumnAdded} />
+          <TaskModal
+            task={clickedTask}
+            column={clickedTaskColumn}
+            //onTaskUpdated={handleUpdatedTask}
+            isOpen={isTaskModalOpen}
+            onClose={() => setIsTaskModalOpen(false)}
+          ></TaskModal>
         </div>
       </div>
     </DragDropContext>
