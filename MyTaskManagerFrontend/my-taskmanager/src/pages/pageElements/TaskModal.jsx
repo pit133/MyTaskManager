@@ -1,12 +1,13 @@
 import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
 import "../../styles/TaskModal.css";
-import { updateTask, deleteTask } from "../../api";
+import { updateTask, deleteTask, archiveTask } from "../../api";
 
 export default function TaskModal({
   task,
   column,
   onTaskDeleted,
+  onTaskArchived,
   isOpen,
   onClose,
 }) {
@@ -61,11 +62,23 @@ export default function TaskModal({
         await deleteTask(task.id);
         onTaskDeleted(task.id, column.id);
       } catch (error) {
-        console.log("Failed to delete task");
+        console.log("Failed to delete task: ", error);
         alert("Failed to delete task");
       }
     }
-    onClose()    
+    onClose();
+  }
+
+  async function handleArchiveTask() {
+    try{
+      await archiveTask(task.id)
+      onTaskArchived(task.id, column.id)
+      
+    }
+    catch(error){
+      console.log("Failed to delete task: ", error)
+    }
+    onClose()
   }
 
   return ReactDOM.createPortal(
@@ -143,7 +156,7 @@ export default function TaskModal({
               <div className="sidebar-title">Actions</div>
               <button className="sidebar-button">➡️ Move</button>
               <button className="sidebar-button">📋 Copy</button>
-              <button className="sidebar-button">📁 Archive</button>
+              <button className="sidebar-button" onClick={handleArchiveTask}>📁 Archive</button>
               <button
                 className="sidebar-button delete"
                 onClick={handleDeleteTask}

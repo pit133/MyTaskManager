@@ -191,16 +191,29 @@ export async function reorderTask(taskId, newPosition){
   const response = await fetch(`${API_URL}/TaskItem/${taskId}/reorder/${newPosition}`, {
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${token}`,
-      //"Content-Type": "application/json",
-    },
-    //body: JSON.stringify({taskId, newColumnId})
+      Authorization: `Bearer ${token}`,      
+    },    
   });
 
   if (!response.ok) {
     throw new Error("Error");
   } else {
     console.log("task reordered")
+  }  
+}
+
+export async function archiveTask(taskId) {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/TaskItem/${taskId}/archive`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,      
+    },    
+  });
+
+  if (!response.ok) {
+    throw new Error("Error");
+  } else {
+    console.log("task archived")
   }
-  
 }

@@ -100,6 +100,19 @@ export default function BoardPage() {
     );
   };
 
+  const handleArchiveTask = (taskId, columnId) => {
+    setColumns((columns) =>
+      columns.map((column) =>
+        column.id === columnId
+          ? {
+              ...column,
+              tasks: column.tasks.filter((task) => task.id !== taskId),
+            }
+          : column
+      )
+    );
+  };
+
   const handleDeletedColumn = (columnId) => {
     setColumns((prevColumns) =>
       prevColumns.filter((column) => column.id !== columnId)
@@ -280,6 +293,7 @@ export default function BoardPage() {
             task={clickedTask}
             column={clickedTaskColumn}
             onTaskDeleted={handleDeleteTask}
+            onTaskArchived={handleArchiveTask}
             isOpen={isTaskModalOpen}
             onClose={() => setIsTaskModalOpen(false)}
           ></TaskModal>
