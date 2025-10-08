@@ -279,7 +279,7 @@ export default function BoardPage() {
           <TaskModal
             task={clickedTask}
             column={clickedTaskColumn}
-            //onTaskUpdated={handleUpdatedTask}
+            onTaskDeleted={handleDeleteTask}
             isOpen={isTaskModalOpen}
             onClose={() => setIsTaskModalOpen(false)}
           ></TaskModal>

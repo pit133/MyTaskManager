@@ -1,12 +1,15 @@
-import Button from "./Buttons/Button";
-import EditTaskForm from "./TaskForms/EditTaskForm";
 import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
 import "../../styles/TaskModal.css";
-import { updateTask } from "../../api";
+import { updateTask, deleteTask } from "../../api";
 
-export default function TaskModal({ task, column, isOpen, onClose }) {
-  //const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+export default function TaskModal({
+  task,
+  column,
+  onTaskDeleted,
+  isOpen,
+  onClose,
+}) {
   const [description, setDescription] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
@@ -29,42 +32,41 @@ export default function TaskModal({ task, column, isOpen, onClose }) {
     setIsEditing(true);
   }
 
-  async function saveDescription(){
+  async function saveDescription() {
     try {
-      setDescription(description)
-      await updateTask(task.id, task.title, description)
-      setIsEditing(false)
-    }
-    catch(err){
-      console.log("Failed to update descrption: ", err)
+      setDescription(description);
+      await updateTask(task.id, task.title, description);
+      setIsEditing(false);
+    } catch (err) {
+      console.log("Failed to update descrption: ", err);
     }
   }
 
-  function cancelEditing(){
-    setIsEditing(false)
+  function cancelEditing() {
+    setIsEditing(false);
   }
 
-  function handleKeyDown(e){
-    if(e.ctrlKey && e.key === 'Enter'){
-      saveDescription()
+  function handleKeyDown(e) {
+    if (e.ctrlKey && e.key === "Enter") {
+      saveDescription();
     }
-    if(e.key === 'Escape'){
+    if (e.key === "Escape") {
       cancelEditing();
     }
   }
-  // function handleEditClick() {
-  //   setIsEditFormOpen(true);
-  // }
 
-  // function handleTaskUpdated(updatedTask) {
-  //   setDescription(updatedTask.description);
-  //   //onTaskUpdated(updatedTask, taskId, columnId);
-  //   setIsEditFormOpen(false);
-  // }
-
-  // function handleEditCloseForm() {
-  //   setIsEditFormOpen(false);
-  // }
+  async function handleDeleteTask() {
+    if (window.confirm("Are you sure you want to delete this task ?")) {
+      try {
+        await deleteTask(task.id);
+        onTaskDeleted(task.id, column.id);
+      } catch (error) {
+        console.log("Failed to delete task");
+        alert("Failed to delete task");
+      }
+    }
+    onClose()    
+  }
 
   return ReactDOM.createPortal(
     <div className="task-modal">
@@ -142,23 +144,15 @@ export default function TaskModal({ task, column, isOpen, onClose }) {
               <button className="sidebar-button">➡️ Move</button>
               <button className="sidebar-button">📋 Copy</button>
               <button className="sidebar-button">📁 Archive</button>
-              {/* <button
+              <button
                 className="sidebar-button delete"
-                onClick={handleDeleteClick}
+                onClick={handleDeleteTask}
               >
                 🗑️ Delete
-              </button> */}
+              </button>
             </div>
           </div>
         </div>
-
-        {/* <EditTaskForm
-          task={task}
-          onTaskUpdated={handleTaskUpdated}
-          isOpen={isEditFormOpen}
-          onClose={handleEditCloseForm}
-          columnId={column.id}
-        /> */}
       </div>
     </div>,
     document.body
