@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrasructure.Configurations
+namespace Infrastructure.Configurations
 {
     public class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
     {
@@ -14,11 +14,11 @@ namespace Infrasructure.Configurations
                    .IsRequired()
                    .HasMaxLength(150);
 
-            builder.Property(x => x.Description)                   
+            builder.Property(x => x.Description)
                    .HasMaxLength(1000);
 
             builder.Property(x => x.Position)
-                .IsRequired();
+                   .IsRequired();
 
             builder.Property(a => a.isArchived)
                    .HasDefaultValue(false);

@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.TaskItem;
-using Infrasructure;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.TaskItem

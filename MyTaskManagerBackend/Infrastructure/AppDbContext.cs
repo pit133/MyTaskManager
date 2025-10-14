@@ -1,8 +1,8 @@
 ﻿using Domain.Entities;
-using Infrasructure.Configurations;
+using Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrasructure
+namespace Infrastructure
 {
     public class AppDbContext : DbContext
     {
@@ -14,6 +14,8 @@ namespace Infrasructure
         public DbSet<Board> Board { get; set; }
         public DbSet<Column> Column { get; set; }
         public DbSet<TaskItem> TaskItem { get; set; }
+        public DbSet<TaskCheckList> TaskCheckList { get; set; }
+        public DbSet<TaskCheckListItem> TaskCheckListItem { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +24,7 @@ namespace Infrasructure
             modelBuilder.ApplyConfiguration(new BoardConfiguration());
             modelBuilder.ApplyConfiguration(new ColumnConfiguration());
             modelBuilder.ApplyConfiguration(new TaskItemConfiguration());
+            modelBuilder.ApplyConfiguration(new TaskCheckListItemConfiguration());
         }
         
     }
