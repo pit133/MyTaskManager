@@ -15,6 +15,10 @@ namespace Infrastructure.Configurations
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Title)
+                .IsRequired()
+                .HasMaxLength(50);
+
             builder.HasMany(x => x.TaskCheckListItems)
                 .WithOne(x => x.TaskCheckList)
                 .HasForeignKey(x => x.TaskCheckListId);            
