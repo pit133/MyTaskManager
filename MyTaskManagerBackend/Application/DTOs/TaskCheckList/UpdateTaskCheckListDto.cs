@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs.TaskCheckList
 {
-    public class CreateTaskCheckListDto
-    {        
+    public class UpdateTaskCheckListDto
+    {
         public string Title { get; set; }
     }
 }
