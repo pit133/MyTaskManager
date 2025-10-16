@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Application.DTOs.TaskCheckListItem
 {
-    public class TaskCheckList
+    public class TaskCheckListItemDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public Guid TaskItemId { get; set; }
+        public Guid TaskCheckListId { get; set; }
         public int Position { get; set; }
-        public TaskItem TaskItem { get; set; }
-        public ICollection<TaskCheckListItem> TaskCheckListItems { get; set; }        
+        public bool IsComplited { get; set; }
     }
 }

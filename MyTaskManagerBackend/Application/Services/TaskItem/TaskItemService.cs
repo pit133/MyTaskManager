@@ -68,7 +68,6 @@ namespace Application.Services.TaskItem
             }
 
             await _context.SaveChangesAsync();
-
         }
 
         public async Task<List<TaskItemDto>> GetTaskItemsAsync(Guid columnId, Guid userId)

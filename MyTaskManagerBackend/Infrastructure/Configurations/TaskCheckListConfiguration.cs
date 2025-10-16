@@ -19,6 +19,9 @@ namespace Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(50);
 
+            builder.Property(x => x.Position)
+                .IsRequired();
+
             builder.HasMany(x => x.TaskCheckListItems)
                 .WithOne(x => x.TaskCheckList)
                 .HasForeignKey(x => x.TaskCheckListId);            
