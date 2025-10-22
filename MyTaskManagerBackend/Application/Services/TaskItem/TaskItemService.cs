@@ -57,14 +57,14 @@ namespace Application.Services.TaskItem
             _context.TaskItem.Remove(taskItem);
             await _context.SaveChangesAsync();
 
-            var reoderedTasks = await _context.TaskItem
+            var reorderedTasks = await _context.TaskItem
                 .Where(t => t.ColumnId == taskItem.ColumnId)
                 .OrderBy(t => t.Position)
                 .ToListAsync();
 
-            for (int i = 0; i < reoderedTasks.Count(); i++)
+            for (int i = 0; i < reorderedTasks.Count(); i++)
             {
-                reoderedTasks[i].Position = i;
+                reorderedTasks[i].Position = i;
             }
 
             await _context.SaveChangesAsync();

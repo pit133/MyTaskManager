@@ -22,7 +22,7 @@ namespace Infrastructure.Configurations
             builder.Property(x => x.Position)
                 .IsRequired();
 
-            builder.Property(x => x.IsComplited)
+            builder.Property(x => x.IsCompleted)
                 .HasDefaultValue(false);
         }
     }

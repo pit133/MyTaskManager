@@ -1,7 +1,5 @@
 ﻿using Application.DTOs.TaskCheckList;
-using Application.DTOs.TaskItem;
 using Application.Services.TaskCheckList;
-using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

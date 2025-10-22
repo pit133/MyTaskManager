@@ -13,6 +13,6 @@ namespace Domain.Entities
         public Guid TaskCheckListId { get; set; }
         public TaskCheckList TaskCheckList { get; set; }
         public int Position { get; set; }
-        public bool IsComplited { get; set; }
+        public bool IsCompleted { get; set; }
     }
 }

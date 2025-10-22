@@ -12,7 +12,7 @@ namespace Application.Services.TaskCheckList
         }
         public async Task<TaskCheckListDto> CreateTaskCheckList(CreateTaskCheckListDto dto, Guid userId)
         {
-            var taskItem = GetTaskItemAsync(dto.TaskItemId, userId);            
+            var taskItem = await GetTaskItemAsync(dto.TaskItemId, userId);            
 
             var maxPosition = await _context.TaskCheckList                
                 .Where(t => t.TaskItemId == dto.TaskItemId)
@@ -51,14 +51,14 @@ namespace Application.Services.TaskCheckList
             _context.TaskCheckList.Remove(taskCheckList);
             await _context.SaveChangesAsync();
 
-            var reoderedTaskCheckLists = await _context.TaskCheckList
+            var reorderedTaskCheckLists = await _context.TaskCheckList
                 .Where(t => t.TaskItemId == taskCheckList.TaskItemId)
                 .OrderBy(t => t.Position)
                 .ToListAsync();
 
-            for (int i = 0; i < reoderedTaskCheckLists.Count(); i++)
+            for (int i = 0; i < reorderedTaskCheckLists.Count(); i++)
             {
-                reoderedTaskCheckLists[i].Position = i;
+                reorderedTaskCheckLists[i].Position = i;
             }
 
             await _context.SaveChangesAsync();
