@@ -61,6 +61,95 @@
   color: #6b778c;  
 }
 
+/* Добавь в TaskModal.css */
+
+/* Стили для редактирования заголовка */
+.task-title-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.task-title-input {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  background: white;
+  border: 2px solid #0079bf;
+  border-radius: 4px;
+  padding: 8px 12px;
+  width: 90%;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+  box-shadow: 0 0 0 1px #0079bf;
+}
+
+.task-title-edit-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 28px;
+}
+
+.task-title-save-btn {
+  background: #0079bf;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.task-title-save-btn:hover {
+  background: #026aa7;
+}
+
+.task-title-cancel-btn {
+  background: none;
+  border: none;
+  color: #6b778c;
+  cursor: pointer;
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.task-title-cancel-btn:hover {
+  background: rgba(9, 30, 66, 0.08);
+}
+
+.task-title-edit-hint {
+  color: #6b778c;
+  font-size: 12px;
+  margin-left: auto;
+}
+
+/* Стили для отображения заголовка */
+.task-title-display {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 12px;
+  margin: -8px -12px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.task-title-display:hover {
+  background: rgba(9, 30, 66, 0.08);
+}
+
+.task-title-text {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  margin: 0;
+  flex: 1;
+}
+
 .task-title {
   font-size: 30px;
   font-weight: 600;

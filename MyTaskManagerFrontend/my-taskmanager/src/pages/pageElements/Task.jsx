@@ -4,6 +4,7 @@ import EditTaskForm from "./TaskForms/EditTaskForm";
 import { deleteTask } from "../../api.js";
 import Button from "./Buttons/Button.jsx";
 
+
 function Task(props, ref) {
   const {
     task,

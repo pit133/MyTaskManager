@@ -1,58 +1,136 @@
 import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
 import "../../styles/TaskModal.css";
-import { updateTask, deleteTask, archiveTask } from "../../api";
+import {
+  updateTask,
+  deleteTask,
+  archiveTask,
+  getTaskCheckLists,
+  getTaskCheckListItems,
+} from "../../api";
+import TaskCheckList from "./TaskCheckList";
 
 export default function TaskModal({
   task,
   column,
   onTaskDeleted,
   onTaskArchived,
+  onTaskTitleUpdated,
   isOpen,
   onClose,
 }) {
+  const [title, setTitle] = useState("");
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [description, setDescription] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
+  const [checkLists, setCheckLists] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (task) {
-      setDescription(task.description || "");
+    if (!task || !task.id) {
+      return;
     }
+
+    setTitle(task.title || "");
+    setDescription(task.description || "");
+
+    async function loadCheckListsData() {
+      setLoading(true);
+      try {
+        const checkListsData = await getTaskCheckLists(task.id);
+        const checkListWithItems = await Promise.all(
+          checkListsData.map(async (checkList) => {
+            try {
+              const itemsData = await getTaskCheckListItems(checkList.id);
+              return { ...checkList, items: itemsData };
+            } catch (err) {
+              console.error(`Failed to load checklistItems ${checkList.id}:`);
+              return { ...checkList, items: [] };
+            }
+          })
+        );
+        setCheckLists(checkListWithItems);
+      } catch (err) {
+        console.error("Failed to load CheckList data");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadCheckListsData();
   }, [task]);
 
   if (!isOpen) {
     return null;
   }
 
+  function handleTitleKeyDown(e) {
+    if (e.ctrlKey && e.key === "Enter") {
+      saveTitle();
+    }
+    if (e.key === "Escape") {
+      cancelEditingTitle();
+    }
+  }
+
+  async function saveTitle() {
+    try {
+      setTitle(title);
+      await updateTask(task.id, title, description);
+      setIsEditingTitle(false);
+      onTaskTitleUpdated(title, task.id, column.id)
+    } catch (err) {
+      console.log("Failed to update title: ", err);
+    }
+  }
+
+  function cancelEditingTitle(){
+    setIsEditingTitle(false)
+  }
+
+  function startEditingTitle(){
+    setIsEditingTitle(true)
+  }
+
+  function handleCheckListUpadte(checklistId, updatedItems) {
+    setCheckLists((prevChecklists) =>
+      prevChecklists.map((checkList) =>
+        checkList.id === checklistId
+          ? { ...checkList, items: updatedItems }
+          : checkList
+      )
+    );
+  }
+
   function handleClose() {
-    setIsEditing(false);
+    setIsEditingDescription(false);
     onClose();
   }
 
-  function startEditing() {
-    setIsEditing(true);
+  function startDescriptionEditing() {
+    setIsEditingDescription(true);
   }
 
   async function saveDescription() {
     try {
       setDescription(description);
       await updateTask(task.id, task.title, description);
-      setIsEditing(false);
+      setIsEditingDescription(false);
     } catch (err) {
       console.log("Failed to update descrption: ", err);
     }
   }
 
-  function cancelEditing() {
-    setIsEditing(false);
+  function cancelDescriptionEditing() {
+    setIsEditingDescription(false);
   }
 
-  function handleKeyDown(e) {
+  function handleDescriptionDown(e) {
     if (e.ctrlKey && e.key === "Enter") {
       saveDescription();
     }
     if (e.key === "Escape") {
-      cancelEditing();
+      cancelDescriptionEditing();
     }
   }
 
@@ -70,16 +148,16 @@ export default function TaskModal({
   }
 
   async function handleArchiveTask() {
-    try{
-      await archiveTask(task.id)
-      onTaskArchived(task.id, column.id)
-      
+    try {
+      await archiveTask(task.id);
+      onTaskArchived(task.id, column.id);
+    } catch (error) {
+      console.log("Failed to delete task: ", error);
     }
-    catch(error){
-      console.log("Failed to delete task: ", error)
-    }
-    onClose()
+    onClose();
   }
+
+  if (isLoading) return <p>Loading...</p>;
 
   return ReactDOM.createPortal(
     <div className="task-modal">
@@ -91,7 +169,45 @@ export default function TaskModal({
         {/* ЗАГОЛОВОК на всю ширину */}
         <div className="task-title-section">
           <div className="task-title-icon">📋</div>
-          <h1 className="task-title">{task.title}</h1>
+
+          {isEditingTitle ? (
+            <div className="task-title-edit">
+              <textarea
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                onKeyDown={handleTitleKeyDown}
+                className="task-title-input"
+                placeholder="Enter task title..."
+                autoFocus
+                rows="2"
+              />
+              <div className="task-title-edit-actions">
+                <button className="task-title-save-btn" onClick={saveTitle}>
+                  Save
+                </button>
+                <button
+                  className="task-title-cancel-btn"
+                  onClick={cancelEditingTitle}
+                >
+                  Cancel
+                </button>
+                <span className="task-title-edit-hint">Ctrl+Enter to save</span>
+              </div>
+            </div>
+          ) : (
+            <div
+              className="task-title-display"
+              onDoubleClick={startEditingTitle}
+            >
+              <h1 className="task-title-text">{title}</h1>
+              <span
+                style={{ color: "#6b778c", fontSize: "16px", marginTop: "2px" }}
+              >
+                ✏️
+              </span>
+            </div>
+          )}
+
           <div className="task-list-location">
             in list <span className="task-list-link">{column.title}</span>
           </div>
@@ -107,13 +223,13 @@ export default function TaskModal({
                 <h3 className="description-title">Description</h3>
               </div>
 
-              {isEditing ? (
+              {isEditingDescription ? (
                 <div className="description-edit">
                   <textarea
                     type="text"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    onKeyDown={handleKeyDown}
+                    onKeyDown={handleDescriptionDown}
                     className="description-textarea"
                     placeholder="Add a more detailed description..."
                     autoFocus
@@ -122,7 +238,10 @@ export default function TaskModal({
                     <button className="save-btn" onClick={saveDescription}>
                       Save
                     </button>
-                    <button className="cancel-btn" onClick={cancelEditing}>
+                    <button
+                      className="cancel-btn"
+                      onClick={cancelDescriptionEditing}
+                    >
                       Cancel
                     </button>
                     <span className="edit-hint">Ctrl+Enter to save</span>
@@ -133,11 +252,20 @@ export default function TaskModal({
                   className={`description-content ${
                     !description ? "empty" : ""
                   }`}
-                  onDoubleClick={startEditing}
+                  onDoubleClick={startDescriptionEditing}
                 >
                   {description || "Add a more detailed description..."}
                 </button>
               )}
+
+              {checkLists.map((checkList) => (
+                // console.log(checkList)
+                <TaskCheckList
+                  key={checkList.id}
+                  checkList={checkList}
+                  onCheckListUpdated={handleCheckListUpadte}
+                />
+              ))}
             </div>
           </div>
 
@@ -156,7 +284,9 @@ export default function TaskModal({
               <div className="sidebar-title">Actions</div>
               <button className="sidebar-button">➡️ Move</button>
               <button className="sidebar-button">📋 Copy</button>
-              <button className="sidebar-button" onClick={handleArchiveTask}>📁 Archive</button>
+              <button className="sidebar-button" onClick={handleArchiveTask}>
+                📁 Archive
+              </button>
               <button
                 className="sidebar-button delete"
                 onClick={handleDeleteTask}

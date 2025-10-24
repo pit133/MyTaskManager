@@ -108,7 +108,7 @@ export async function updateColumn(columnId, columnTitle) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      title: columnTitle
+      title: columnTitle,
     }),
   });
 
@@ -174,32 +174,38 @@ export async function updateTask(taskItemId, title, description) {
 
 export async function moveTask(taskId, newColumnId, newPosition) {
   const token = getToken();
-  const response = await fetch(`${API_URL}/TaskItem/${taskId}/move/${newColumnId}/${newPosition}`, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${token}`,      
-    },    
-  });
+  const response = await fetch(
+    `${API_URL}/TaskItem/${taskId}/move/${newColumnId}/${newPosition}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   if (!response.ok) {
     throw new Error("Error");
   }
 }
 
-export async function reorderTask(taskId, newPosition){
+export async function reorderTask(taskId, newPosition) {
   const token = getToken();
-  const response = await fetch(`${API_URL}/TaskItem/${taskId}/reorder/${newPosition}`, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${token}`,      
-    },    
-  });
+  const response = await fetch(
+    `${API_URL}/TaskItem/${taskId}/reorder/${newPosition}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   if (!response.ok) {
     throw new Error("Error");
   } else {
-    console.log("task reordered")
-  }  
+    console.log("task reordered");
+  }
 }
 
 export async function archiveTask(taskId) {
@@ -207,13 +213,85 @@ export async function archiveTask(taskId) {
   const response = await fetch(`${API_URL}/TaskItem/${taskId}/archive`, {
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${token}`,      
-    },    
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   if (!response.ok) {
     throw new Error("Error");
   } else {
-    console.log("task archived")
+    console.log("task archived");
+  }
+}
+
+export async function getTaskCheckLists(taskItemId) {
+  const token = getToken();
+  const response = await fetch(
+    `${API_URL}/TaskCheckList/by-task/${taskItemId}`,
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+
+  return await response.json();
+}
+
+export async function getTaskCheckListItems(taskCheckListId) {
+  const token = getToken();
+  const response = await fetch(
+    `${API_URL}/TaskCheckListItem/by-TaskCheckList/${taskCheckListId}`,
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+
+  return await response.json();
+}
+
+export async function UpdateTaskCheckListItem(checkListItemId, title) {
+  const token = getToken();
+  const response = await fetch(
+    `${API_URL}/TaskCheckListItem/Update/${checkListItemId}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: title,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+}
+
+export async function changeCheckListItemIsComplete(taskCheckListItemId) {
+  const token = getToken();
+  const response = await fetch(
+    `${API_URL}/TaskCheckListItem/Completed/${taskCheckListItemId}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,        
+      }
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Error");
   }
 }

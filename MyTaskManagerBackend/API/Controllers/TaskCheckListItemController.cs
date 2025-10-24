@@ -48,7 +48,7 @@ namespace API.Controllers
         }
 
         [HttpPut("Completed/{taskCheckListItemId}")]
-        public async Task<IActionResult> ChangeIsCompleted(Guid taskCheckListItemId, UpdateTaskCheckListItemDto dto)
+        public async Task<IActionResult> ChangeIsCompleted(Guid taskCheckListItemId)
         {
             var userId = ClaimsHelper.GetUserId(User);
             await _service.ChangeIsCompleted(taskCheckListItemId, userId);

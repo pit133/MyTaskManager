@@ -132,14 +132,16 @@ export default function BoardPage() {
     );
   };
 
-  const handleUpdatedTask = (updatedTask, taskId, columnId) => {
+  const handleUpdatedTaskTitle = (title, taskId, columnId) => {
     setColumns((columns) =>
       columns.map((column) =>
         column.id === columnId
           ? {
               ...column,
               tasks: column.tasks.map((task) =>
-                task.id === taskId ? updatedTask : task
+                task.id === taskId
+                  ? { ...task, title: title }
+                  : task
               ),
             }
           : column
@@ -275,7 +277,7 @@ export default function BoardPage() {
                           isDragging={snapshot.isDragging}
                           style={provided.draggableProps.style}
                           onTaskDeleted={handleDeleteTask}
-                          //onTaskUpdated={handleUpdatedTask}
+                          //onTaskTitleUpdated={handleUpdatedTaskTitle}
                           columnId={column.id}
                           onClick={() => handleTaskClick(task, column)}
                         />
@@ -294,6 +296,7 @@ export default function BoardPage() {
             column={clickedTaskColumn}
             onTaskDeleted={handleDeleteTask}
             onTaskArchived={handleArchiveTask}
+            onTaskTitleUpdated={handleUpdatedTaskTitle}
             isOpen={isTaskModalOpen}
             onClose={() => setIsTaskModalOpen(false)}
           ></TaskModal>
