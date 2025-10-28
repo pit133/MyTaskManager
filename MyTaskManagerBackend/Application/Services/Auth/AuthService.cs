@@ -1,6 +1,6 @@
 ﻿using Application.DTOs.Auth;
 using Domain.Entities;
-using Infrasructure;
+using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

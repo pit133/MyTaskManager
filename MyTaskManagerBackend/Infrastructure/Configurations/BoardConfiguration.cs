@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrasructure.Configurations
+namespace Infrastructure.Configurations
 {
     public class BoardConfiguration : IEntityTypeConfiguration<Board>
     {

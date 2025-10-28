@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.Board;
-using Infrasructure;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

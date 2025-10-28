@@ -4,34 +4,35 @@ import EditTaskForm from "./TaskForms/EditTaskForm";
 import { deleteTask } from "../../api.js";
 import Button from "./Buttons/Button.jsx";
 
+
 function Task(props, ref) {
   const {
     task,
     isDragging,
     style,    
     onTaskDeleted,
-    onTaskUpdated,
+    // onTaskUpdated,
     columnId,
     ...restProps
   } = props;
 
   
-  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+  // const [isEditFormOpen, setIsEditFormOpen] = useState(false);
   
  
 
-  function handleEditClick() {
-    setIsEditFormOpen(true);
-  }
+  // function handleEditClick() {
+  //   setIsEditFormOpen(true);
+  // }
 
-  function handleTaskUpdated(updatedTask, taskId, columnId) {
-    onTaskUpdated(updatedTask, taskId, columnId);
-    setIsEditFormOpen(false);
-  }
+  // function handleTaskUpdated(updatedTask, taskId, columnId) {
+  //   onTaskUpdated(updatedTask, taskId, columnId);
+  //   setIsEditFormOpen(false);
+  // }
 
-  function handleEditCloseForm() {
-    setIsEditFormOpen(false);
-  }
+  // function handleEditCloseForm() {
+  //   setIsEditFormOpen(false);
+  // }
 
   async function handleDeleteClick() {
     if (window.confirm("Are you sure you want to delete this task ?")) {
@@ -63,22 +64,22 @@ function Task(props, ref) {
       }}
     >
       <strong>{task.title}</strong>
-      {/* <p>{task.description}</p> */}
+      
 
       {/* <DeleteButton onClick={handleDeleteTask} /> */}
       
       <Button text={"Delete"} onClick={handleDeleteClick} />
-      <Button text={"Edit"} onClick={handleEditClick} />      
+      {/* <Button text={"Edit"} onClick={handleEditClick} />       */}
       {/* <EditButton onClick={handleEditClick} /> */}
       
 
-      <EditTaskForm
+      {/* <EditTaskForm
         task={task}
         onTaskUpdated={handleTaskUpdated}
         isOpen={isEditFormOpen}
         onClose={handleEditCloseForm}
         columnId={columnId}
-      />
+      /> */}
     </div>
   );
 }

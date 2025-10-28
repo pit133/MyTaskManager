@@ -5,12 +5,16 @@ import Task from "./pageElements/Task";
 import AddColumnForm from "./pageElements/ColumnForms/AddColumnForm";
 import Column from "./pageElements/Column";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import TaskModal from "./pageElements/TaskModal/TaskModal";
 
 export default function BoardPage() {
   const { id } = useParams();
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [clickedTask, setClickedTask] = useState(null);
+  const [clickedTaskColumn, setClickedTaskColumn] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -96,6 +100,19 @@ export default function BoardPage() {
     );
   };
 
+  const handleArchiveTask = (taskId, columnId) => {
+    setColumns((columns) =>
+      columns.map((column) =>
+        column.id === columnId
+          ? {
+              ...column,
+              tasks: column.tasks.filter((task) => task.id !== taskId),
+            }
+          : column
+      )
+    );
+  };
+
   const handleDeletedColumn = (columnId) => {
     setColumns((prevColumns) =>
       prevColumns.filter((column) => column.id !== columnId)
@@ -115,27 +132,37 @@ export default function BoardPage() {
     );
   };
 
-  const handleUpdatedTask = (updatedTask, taskId, columnId) => {
+  const handleUpdatedTaskTitle = (title, taskId, columnId) => {
     setColumns((columns) =>
       columns.map((column) =>
         column.id === columnId
           ? {
               ...column,
               tasks: column.tasks.map((task) =>
-                task.id === taskId ? updatedTask : task
+                task.id === taskId
+                  ? { ...task, title: title }
+                  : task
               ),
             }
           : column
       )
     );
-  };
+  };  
 
   function handleAddedTask(columnId, newTask) {
     setColumns((columns) =>
       columns.map((column) =>
-        column.id === columnId ?  {...column.tasks, newTask } : column
+        column.id === columnId
+          ? { ...column, tasks: [...column.tasks, newTask] }
+          : column
       )
     );
+  }
+
+  function handleTaskClick(task, column) {
+    setIsTaskModalOpen(true);
+    setClickedTask(task);
+    setClickedTaskColumn(column);
   }
 
   const onDragEnd = async (result) => {
@@ -248,34 +275,30 @@ export default function BoardPage() {
                           {...provided.dragHandleProps}
                           task={task}
                           isDragging={snapshot.isDragging}
-                          style={provided.draggableProps.style}                          
-                          onTaskDeleted={handleDeleteTask}
-                          onTaskUpdated={handleUpdatedTask}
+                          style={provided.draggableProps.style}
+                          onTaskDeleted={handleDeleteTask}                          
                           columnId={column.id}
+                          onClick={() => handleTaskClick(task, column)}
                         />
                       )}
                     </Draggable>
                   ))}
 
                   {provided.placeholder}
-
-                  {/* <AddTaskForm
-                    columnId={column.id}
-                    onTaskAdded={(task) => {
-                      setColumns((cols) =>
-                        cols.map((col) =>
-                          col.id === column.id
-                            ? { ...col, tasks: [...(col.tasks || []), task] }
-                            : col
-                        )
-                      );
-                    }}
-                  /> */}
                 </Column>
               )}
             </Droppable>
           ))}
           <AddColumnForm boardId={id} onColumnAdded={handleColumnAdded} />
+          <TaskModal
+            task={clickedTask}
+            column={clickedTaskColumn}
+            onTaskDeleted={handleDeleteTask}
+            onTaskArchived={handleArchiveTask}
+            onTaskTitleUpdated={handleUpdatedTaskTitle}
+            isOpen={isTaskModalOpen}
+            onClose={() => setIsTaskModalOpen(false)}
+          ></TaskModal>
         </div>
       </div>
     </DragDropContext>

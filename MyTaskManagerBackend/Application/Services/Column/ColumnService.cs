@@ -1,6 +1,6 @@
 ﻿using Application.DTOs.Column;
 using Domain.Entities;
-using Infrasructure;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
