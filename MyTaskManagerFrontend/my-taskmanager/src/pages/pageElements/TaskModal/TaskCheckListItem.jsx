@@ -1,8 +1,17 @@
 import { useState } from "react";
-import "../../styles/CheckList.css";
-import { changeCheckListItemIsComplete, UpdateTaskCheckListItem } from "../../api";
+import "../../../styles/CheckList.css";
+import {
+  changeCheckListItemIsComplete,
+  deleteTaskCheckListItem,
+  UpdateTaskCheckListItem,
+} from "../../../api";
 
-export default function TaskCheckListItem({ item, onUpdate, onCompleteUpdate }) {
+export default function TaskCheckListItem({
+  item,
+  onUpdate,
+  onCompleteUpdate,
+  onItemDeleted,
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(item.title);
 
@@ -12,7 +21,7 @@ export default function TaskCheckListItem({ item, onUpdate, onCompleteUpdate }) 
     if (editTitle.trim()) {
       try {
         await UpdateTaskCheckListItem(item.id, editTitle.trim());
-        onUpdate(item.id, editTitle.trim()); 
+        onUpdate(item.id, editTitle.trim());
         setIsEditing(false);
       } catch (err) {
         console.error("Failed to update checklist item:", err);
@@ -30,11 +39,20 @@ export default function TaskCheckListItem({ item, onUpdate, onCompleteUpdate }) 
   }
 
   function handleKeyDown(e) {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSave();
-    } else if (e.key === 'Escape') {
+    } else if (e.key === "Escape") {
       setEditTitle(item.title);
       setIsEditing(false);
+    }
+  }
+
+  async function handleDeleteClick() {
+    try {
+      await deleteTaskCheckListItem(item.id);
+      onItemDeleted(item.id);
+    } catch (error) {
+      console.log("Failed to delete CheckList item:", error);
     }
   }
 
@@ -57,7 +75,9 @@ export default function TaskCheckListItem({ item, onUpdate, onCompleteUpdate }) 
         />
       ) : (
         <span
-          className={`checklist-item-text ${item.isCompleted ? "completed" : ""}`}
+          className={`checklist-item-text ${
+            item.isCompleted ? "completed" : ""
+          }`}
           onDoubleClick={() => {
             setEditTitle(item.title);
             setIsEditing(true);
@@ -66,11 +86,8 @@ export default function TaskCheckListItem({ item, onUpdate, onCompleteUpdate }) 
           {item.title}
         </span>
       )}
-      
-      <button
-        className="checklist-item-delete"
-        //onClick={() => onDelete(item.id)}
-      >
+
+      <button className="checklist-item-delete" onClick={handleDeleteClick}>
         ×
       </button>
     </div>

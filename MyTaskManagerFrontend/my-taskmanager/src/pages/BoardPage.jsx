@@ -5,7 +5,7 @@ import Task from "./pageElements/Task";
 import AddColumnForm from "./pageElements/ColumnForms/AddColumnForm";
 import Column from "./pageElements/Column";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import TaskModal from "./pageElements/TaskModal";
+import TaskModal from "./pageElements/TaskModal/TaskModal";
 
 export default function BoardPage() {
   const { id } = useParams();
@@ -147,7 +147,7 @@ export default function BoardPage() {
           : column
       )
     );
-  };
+  };  
 
   function handleAddedTask(columnId, newTask) {
     setColumns((columns) =>
@@ -276,8 +276,7 @@ export default function BoardPage() {
                           task={task}
                           isDragging={snapshot.isDragging}
                           style={provided.draggableProps.style}
-                          onTaskDeleted={handleDeleteTask}
-                          //onTaskTitleUpdated={handleUpdatedTaskTitle}
+                          onTaskDeleted={handleDeleteTask}                          
                           columnId={column.id}
                           onClick={() => handleTaskClick(task, column)}
                         />

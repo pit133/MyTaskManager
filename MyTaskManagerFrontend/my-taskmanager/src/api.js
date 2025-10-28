@@ -286,8 +286,102 @@ export async function changeCheckListItemIsComplete(taskCheckListItemId) {
     {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${token}`,        
-      }
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+}
+
+export async function deleteTaskCheckListItem(taskCheckListItemId) {
+  const token = getToken();
+  const response = await fetch(
+    `${API_URL}/TaskCheckListItem/${taskCheckListItemId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+}
+
+export async function addCheckListItem(taskCheckListId, title) {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/TaskCheckListItem`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      taskCheckListId: taskCheckListId,
+      title: title,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+
+  return await response.json();
+}
+
+export async function createTaskCheckList(taskItemId, title) {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/TaskCheckList`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      taskItemId: taskItemId,
+      title: title,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+
+  return await response.json();
+}
+
+export async function deleteTaskCheckList(taskCheckListId) {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/TaskCheckList/${taskCheckListId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+}
+
+export async function updateTaskCheckList(taskCheckListId, title) {
+  const token = getToken();
+  const response = await fetch(
+    `${API_URL}/TaskCheckList/${taskCheckListId}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: title,
+      }),
     }
   );
 

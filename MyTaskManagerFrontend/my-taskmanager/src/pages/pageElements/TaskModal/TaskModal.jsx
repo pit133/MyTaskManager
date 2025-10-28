@@ -1,14 +1,15 @@
 import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
-import "../../styles/TaskModal.css";
+import "../../../styles/TaskModal.css";
 import {
   updateTask,
   deleteTask,
   archiveTask,
   getTaskCheckLists,
   getTaskCheckListItems,
-} from "../../api";
+} from "../../../api";
 import TaskCheckList from "./TaskCheckList";
+import AddTaskCheckListForm from "./AddTaskCheckListForm";
 
 export default function TaskModal({
   task,
@@ -24,44 +25,64 @@ export default function TaskModal({
   const [description, setDescription] = useState("");
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [checkLists, setCheckLists] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+  const [isAddingCheckList, setIsAddingCheckList] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!task || !task.id) {
-      return;
-    }
+    if (!isOpen || !task?.id) return;
 
     setTitle(task.title || "");
     setDescription(task.description || "");
-
-    async function loadCheckListsData() {
-      setLoading(true);
-      try {
-        const checkListsData = await getTaskCheckLists(task.id);
-        const checkListWithItems = await Promise.all(
-          checkListsData.map(async (checkList) => {
-            try {
-              const itemsData = await getTaskCheckListItems(checkList.id);
-              return { ...checkList, items: itemsData };
-            } catch (err) {
-              console.error(`Failed to load checklistItems ${checkList.id}:`);
-              return { ...checkList, items: [] };
-            }
-          })
-        );
-        setCheckLists(checkListWithItems);
-      } catch (err) {
-        console.error("Failed to load CheckList data");
-      } finally {
-        setLoading(false);
-      }
-    }
+    setCheckLists([]);
 
     loadCheckListsData();
-  }, [task]);
+  }, [isOpen, task?.id]);
 
   if (!isOpen) {
     return null;
+  }
+
+  async function loadCheckListsData() {
+    setIsLoading(true);
+    try {
+      const checkListsData = await getTaskCheckLists(task.id);
+      const checkListWithItems = await Promise.all(
+        checkListsData.map(async (checkList) => {
+          try {
+            const itemsData = await getTaskCheckListItems(checkList.id);
+            return { ...checkList, items: itemsData };
+          } catch (err) {
+            console.error(
+              `Failed to load checklistItems ${checkList.id}:`,
+              err
+            );
+            return { ...checkList, items: [] };
+          }
+        })
+      );
+      setCheckLists(checkListWithItems);
+    } catch (err) {
+      console.error("Failed to load CheckList data:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  function handleCheckListTitleUpdated(checkListId, checkListTitle) {
+    checkLists.map((checkList) =>
+      checkList.id === checkListId
+        ? (checkList.title = checkListTitle)
+        : checkList
+    );
+  }
+
+  function handleCancelAddCheckList() {
+    setIsAddingCheckList(false);
+  }
+
+  function handleCreateCheckList(newCheckList) {
+    setCheckLists([...checkLists, newCheckList]);
+    setIsAddingCheckList(false);
   }
 
   function handleTitleKeyDown(e) {
@@ -78,18 +99,18 @@ export default function TaskModal({
       setTitle(title);
       await updateTask(task.id, title, description);
       setIsEditingTitle(false);
-      onTaskTitleUpdated(title, task.id, column.id)
+      onTaskTitleUpdated(title, task.id, column.id);
     } catch (err) {
       console.log("Failed to update title: ", err);
     }
   }
 
-  function cancelEditingTitle(){
-    setIsEditingTitle(false)
+  function cancelEditingTitle() {
+    setIsEditingTitle(false);
   }
 
-  function startEditingTitle(){
-    setIsEditingTitle(true)
+  function startEditingTitle() {
+    setIsEditingTitle(true);
   }
 
   function handleCheckListUpadte(checklistId, updatedItems) {
@@ -102,8 +123,20 @@ export default function TaskModal({
     );
   }
 
+  function handleDeletedItem(items, checklistId) {
+    setCheckLists((prevChecklists) =>
+      prevChecklists.map((checkList) =>
+        checkList.id === checklistId
+          ? { ...checkList, items: items }
+          : checkList
+      )
+    );
+  }
+
   function handleClose() {
     setIsEditingDescription(false);
+    setIsEditingTitle(false)
+    setIsAddingCheckList(false)
     onClose();
   }
 
@@ -155,6 +188,13 @@ export default function TaskModal({
       console.log("Failed to delete task: ", error);
     }
     onClose();
+  }
+
+  function handleDeletedCheckList(checkListId) {
+    const updatedCheckLists = checkLists.filter(
+      (checkList) => checkList.id !== checkListId
+    );
+    setCheckLists(updatedCheckLists);
   }
 
   if (isLoading) return <p>Loading...</p>;
@@ -257,18 +297,36 @@ export default function TaskModal({
                   {description || "Add a more detailed description..."}
                 </button>
               )}
+            </div>
+            {checkLists.map((checkList) => (
+              // console.log(checkList)
+              <TaskCheckList
+                key={checkList.id}
+                checkList={checkList}
+                onCheckListUpdated={handleCheckListUpadte}
+                onItemDeleted={handleDeletedItem}
+                onCheckListDeleted={handleDeletedCheckList}
+                onCheckListTitleUpdated={handleCheckListTitleUpdated}
+              />
+            ))}
 
-              {checkLists.map((checkList) => (
-                // console.log(checkList)
-                <TaskCheckList
-                  key={checkList.id}
-                  checkList={checkList}
-                  onCheckListUpdated={handleCheckListUpadte}
+            <div className="checklist-add-section">
+              {isAddingCheckList ? (
+                <AddTaskCheckListForm
+                  taskItemId={task.id}
+                  onCanceled={handleCancelAddCheckList}
+                  onCheckListCreated={handleCreateCheckList}
                 />
-              ))}
+              ) : (
+                <button
+                  className="checklist-add-button"
+                  onClick={() => setIsAddingCheckList(true)}
+                >
+                  + Add Checklist
+                </button>
+              )}
             </div>
           </div>
-
           {/* Правая часть - sidebar */}
           <div className="task-modal-sidebar">
             <div className="sidebar-section">
@@ -298,6 +356,7 @@ export default function TaskModal({
         </div>
       </div>
     </div>,
+
     document.body
   );
 }
