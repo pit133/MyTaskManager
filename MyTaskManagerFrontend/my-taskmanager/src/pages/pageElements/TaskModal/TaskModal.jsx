@@ -135,8 +135,8 @@ export default function TaskModal({
 
   function handleClose() {
     setIsEditingDescription(false);
-    setIsEditingTitle(false)
-    setIsAddingCheckList(false)
+    setIsEditingTitle(false);
+    setIsAddingCheckList(false);
     onClose();
   }
 
@@ -318,12 +318,13 @@ export default function TaskModal({
                   onCheckListCreated={handleCreateCheckList}
                 />
               ) : (
-                <button
-                  className="checklist-add-button"
-                  onClick={() => setIsAddingCheckList(true)}
-                >
-                  + Add Checklist
-                </button>
+                // <button
+                //   className="checklist-add-button"
+                //   onClick={() => setIsAddingCheckList(true)}
+                // >
+                //   + Add Checklist
+                // </button>
+                <></>
               )}
             </div>
           </div>
@@ -333,7 +334,12 @@ export default function TaskModal({
               <div className="sidebar-title">Add to card</div>
               <button className="sidebar-button">📍 Members</button>
               <button className="sidebar-button">🏷️ Labels</button>
-              <button className="sidebar-button">✅ Checklist</button>
+              <button
+                className="sidebar-button"
+                onClick={() => setIsAddingCheckList(true)}
+              >
+                ✅ Checklist
+              </button>
               <button className="sidebar-button">📅 Due date</button>
               <button className="sidebar-button">📎 Attachment</button>
             </div>

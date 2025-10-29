@@ -17,9 +17,15 @@ namespace Infrastructure.Configurations
             builder.Property(u => u.PasswordHash)
                    .IsRequired();
 
-            builder.HasMany(u => u.Boards)
+            builder.HasMany(u => u.OwnedBoards)
                    .WithOne(b => b.User)
-                   .HasForeignKey(b => b.UserId);            
+                   .HasForeignKey(b => b.UserId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(b => b.BoardMemberships)
+                .WithOne(b => b.User)
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
