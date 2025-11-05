@@ -13,9 +13,10 @@ namespace Application.Services.Board
     {
         private readonly AppDbContext _context;
 
-        public BoardService(AppDbContext context) {
+        public BoardService(AppDbContext context)
+        {
             _context = context;
-        }        
+        }
 
         public async Task<BoardDto> CreateBoardAsync(Guid userId, CreateBoardDto dto)
         {
@@ -25,37 +26,47 @@ namespace Application.Services.Board
                 Name = dto.Name,
                 UserId = userId,
             };
+            _context.Boards.Add(board);
 
-            _context.Board.Add(board);
+            var boardMember = new Domain.Entities.BoardMember
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                BoardId = board.Id,
+                Role = Domain.Entities.BoardMemberRole.Owner,
+                JoinedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow
+            };
+            _context.BoardMembers.Add(boardMember);
+
             await _context.SaveChangesAsync();
-
             return new BoardDto { Id = board.Id, Name = board.Name, };
         }
 
         public async Task DeleteBoardAsync(Guid boardId, Guid userId)
         {
-            var board = await _context.Board.FirstOrDefaultAsync(x => x.Id == boardId && x.UserId == userId);
-            if(board == null) { throw new Exception("Not found"); }
-            _context.Board.Remove(board);  
+            var board = await _context.Boards.FirstOrDefaultAsync(x => x.Id == boardId && x.UserId == userId);
+            if (board == null) { throw new Exception("Not found"); }
+            _context.Boards.Remove(board);
             await _context.SaveChangesAsync();
 
         }
 
         public async Task ArchiveBoardAsync(Guid boardId, Guid userId)
         {
-            var board = await _context.Board.FirstOrDefaultAsync(x => x.Id == boardId && x.UserId == userId);
+            var board = await _context.Boards.FirstOrDefaultAsync(x => x.Id == boardId && x.UserId == userId);
             if (board == null) { throw new Exception("Not found"); }
             board.isArchived = true;
 
-            var columnsInBoardList = await _context.Column
+            var columnsInBoardList = await _context.Columns
                 .Where(c => c.BoardId == board.Id)
                 .ToListAsync();
 
             foreach (var column in columnsInBoardList)
             {
-                column.isArchived = true;                
+                column.isArchived = true;
 
-                var tasksItemsInColumnList = await _context.TaskItem
+                var tasksItemsInColumnList = await _context.TaskItems
                     .Where(t => t.ColumnId == column.Id)
                     .ToListAsync();
 
@@ -70,11 +81,11 @@ namespace Application.Services.Board
 
         public async Task UnarchiveBoardAsync(Guid boardId, Guid userId)
         {
-            var board = await _context.Board.FirstOrDefaultAsync(x => x.Id == boardId && x.UserId == userId);
+            var board = await _context.Boards.FirstOrDefaultAsync(x => x.Id == boardId && x.UserId == userId);
             if (board == null) { throw new Exception("Not found"); }
             board.isArchived = false;
 
-            var columnsInBoardList = await _context.Column
+            var columnsInBoardList = await _context.Columns
                 .Where(c => c.BoardId == board.Id)
                 .ToListAsync();
 
@@ -82,7 +93,7 @@ namespace Application.Services.Board
             {
                 column.isArchived = false;
 
-                var tasksItemsInColumnList = await _context.TaskItem
+                var tasksItemsInColumnList = await _context.TaskItems
                     .Where(t => t.ColumnId == column.Id)
                     .ToListAsync();
 
@@ -95,12 +106,34 @@ namespace Application.Services.Board
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<BoardDto>> GetBoardAsync(Guid userId)
+        public async Task<List<BoardDto>> GetOwnedBoardsAsync(Guid userId)
         {
-            return await _context.Board
+            var ownedBoards = await _context.Boards
                 .Where(b => b.UserId == userId && !b.isArchived)
-                .Select(b => new BoardDto { Id = b.Id, Name = b.Name })
+                .Select(b => new BoardDto
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    OwnerName = b.User.Name,
+                })
+            .ToListAsync();
+
+            return ownedBoards;
+        }
+
+        public async Task<List<BoardDto>> GetMemberedBoardsAsync(Guid userId)
+        {
+            return await _context.BoardMembers
+                .Where(m => m.UserId == userId)
+                .Where(m => m.Board.UserId != userId)
+                .Where(m => !m.Board.isArchived)
+                .Select(m => new BoardDto
+                {
+                    Id = m.BoardId,
+                    Name = m.Board.Name,
+                    OwnerName = m.Board.User.Name
+                })
                 .ToListAsync();
-        }        
+        }
     }
 }

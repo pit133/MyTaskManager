@@ -14,7 +14,7 @@ namespace Application.Services.TaskCheckList
         {
             var taskItem = await GetTaskItemAsync(dto.TaskItemId, userId);            
 
-            var maxPosition = await _context.TaskCheckList                
+            var maxPosition = await _context.TaskCheckLists                
                 .Where(t => t.TaskItemId == dto.TaskItemId)
                 .MaxAsync(t => (int?)t.Position) ?? 0;
 
@@ -26,7 +26,7 @@ namespace Application.Services.TaskCheckList
                 Position = maxPosition + 1
             };
 
-            _context.TaskCheckList.Add(taskCheckList);
+            _context.TaskCheckLists.Add(taskCheckList);
             await _context.SaveChangesAsync();
 
             return new TaskCheckListDto
@@ -41,17 +41,17 @@ namespace Application.Services.TaskCheckList
 
         public async Task DeleteTaskCheckList(Guid taskCheckListId, Guid userId)
         {
-            var taskCheckList = await _context.TaskCheckList
+            var taskCheckList = await _context.TaskCheckLists
                 .Include(t => t.TaskItem)
                 .ThenInclude(t => t.Column)
                 .ThenInclude(t => t.Board)
                 .FirstOrDefaultAsync(t => t.Id == taskCheckListId && t.TaskItem.Column.Board.UserId == userId);
             if (taskCheckList == null) { throw new Exception("Access denied"); }
 
-            _context.TaskCheckList.Remove(taskCheckList);
+            _context.TaskCheckLists.Remove(taskCheckList);
             await _context.SaveChangesAsync();
 
-            var reorderedTaskCheckLists = await _context.TaskCheckList
+            var reorderedTaskCheckLists = await _context.TaskCheckLists
                 .Where(t => t.TaskItemId == taskCheckList.TaskItemId)
                 .OrderBy(t => t.Position)
                 .ToListAsync();
@@ -68,7 +68,7 @@ namespace Application.Services.TaskCheckList
         {
             var taskItem = GetTaskItemAsync(taskItemId, userId);
 
-            return await _context.TaskCheckList
+            return await _context.TaskCheckLists
                 .Where(t => t.TaskItemId == taskItemId)
                 .OrderBy(t => t.Position)
                 .Select(t => new TaskCheckListDto
@@ -83,7 +83,7 @@ namespace Application.Services.TaskCheckList
 
         public async Task UpdateTaskCheckList(Guid taskCheckListId, UpdateTaskCheckListDto dto, Guid userId)
         {
-            var taskCheckList = await _context.TaskCheckList
+            var taskCheckList = await _context.TaskCheckLists
                 .Include(t => t.TaskItem)
                 .ThenInclude(t => t.Column)
                 .ThenInclude(t => t.Board)
@@ -96,7 +96,7 @@ namespace Application.Services.TaskCheckList
 
         private async Task<Domain.Entities.TaskItem> GetTaskItemAsync(Guid taskItemId, Guid userId)
         {
-            var task = await _context.TaskItem
+            var task = await _context.TaskItems
                 .Include(c => c.Column)
                 .ThenInclude(c => c.Board)
                 .FirstOrDefaultAsync(c => c.Id == taskItemId && c.Column.Board.UserId == userId);

@@ -20,12 +20,7 @@ namespace Infrastructure.Configurations
             builder.HasMany(u => u.OwnedBoards)
                    .WithOne(b => b.User)
                    .HasForeignKey(b => b.UserId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasMany(b => b.BoardMemberships)
-                .WithOne(b => b.User)
-                .HasForeignKey(b => b.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                   .OnDelete(DeleteBehavior.Restrict);         
         }
     }
 }

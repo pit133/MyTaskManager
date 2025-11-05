@@ -17,11 +17,20 @@ namespace API.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetBoards()
+
+        [HttpGet("ownedBoards")]
+        public async Task<IActionResult> GetOwnedBoards()
         {
             var userId = ClaimsHelper.GetUserId(User);
-            var boards = await _service.GetBoardAsync(userId);
+            var boards = await _service.GetOwnedBoardsAsync(userId);
+            return Ok(boards);
+        }
+
+        [HttpGet("memberships")]
+        public async Task<IActionResult> GetMemberedBoards()
+        {
+            var userId = ClaimsHelper.GetUserId(User);
+            var boards = await _service.GetMemberedBoardsAsync(userId);
             return Ok(boards);
         }
 

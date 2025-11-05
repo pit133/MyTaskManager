@@ -26,7 +26,7 @@ namespace Application.Services.Auth
         public async Task<string> LoginAsync(LoginDto dto)
         {
             Console.WriteLine($"Login attempt: {dto.Name}");
-            var user = _context.User.FirstOrDefault(x => x.Name == dto.Name);
+            var user = _context.Users.FirstOrDefault(x => x.Name == dto.Name);
 
             if (user == null) { throw new Exception("User not found"); }
 
@@ -42,7 +42,7 @@ namespace Application.Services.Auth
 
         public async Task<string> RegisterAsync(RegisterDto dto)
         {
-            if (_context.User.Any(x => x.Name == dto.Name))
+            if (_context.Users.Any(x => x.Name == dto.Name))
             {
                 throw new Exception("User already exist");
             }
@@ -55,7 +55,7 @@ namespace Application.Services.Auth
 
             user.PasswordHash = _hasher.HashPassword(user, dto.Password);
 
-            _context.User.Add(user);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             return GenerateJwt(user);

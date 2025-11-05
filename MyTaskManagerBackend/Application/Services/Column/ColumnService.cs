@@ -18,14 +18,14 @@ namespace Application.Services.Column
 
         public async Task<ColumnDto> CreateColumnAsync(CreateColumnDto dto, Guid userId)
         {
-            var board = await _context.Board.FirstOrDefaultAsync(b => b.Id == dto.BoardId && b.UserId == userId);
+            var board = await _context.Boards.FirstOrDefaultAsync(b => b.Id == dto.BoardId && b.UserId == userId);
 
             if (board == null)
             {
                 throw new Exception("Access denied or board not found");
             }
 
-            var maxPosition = await _context.Column
+            var maxPosition = await _context.Columns
                 .Where(t => t.BoardId == dto.BoardId)
                 .MaxAsync(t => (int?)t.Position) ?? 0;
 
@@ -37,7 +37,7 @@ namespace Application.Services.Column
                 Position = maxPosition + 1
             };
 
-            _context.Column.Add(column);
+            _context.Columns.Add(column);
             await _context.SaveChangesAsync();
 
             return new ColumnDto
@@ -58,10 +58,10 @@ namespace Application.Services.Column
                 throw new Exception("Access denied or column not found");
             }
 
-            _context.Column.Remove(column);
+            _context.Columns.Remove(column);
             await _context.SaveChangesAsync();
 
-            var reorderedColumns = await _context.Column
+            var reorderedColumns = await _context.Columns
                 .Where(c => c.BoardId == column.BoardId)
                 .OrderBy(c => c.Position)
                 .ToListAsync();
@@ -76,11 +76,11 @@ namespace Application.Services.Column
 
         public async Task<List<ColumnDto>> GetColumnsAsync(Guid boardId, Guid userId)
         {
-            var board = _context.Board.FirstOrDefaultAsync(b => b.Id == boardId && b.UserId == userId);
+            var board = _context.Boards.FirstOrDefaultAsync(b => b.Id == boardId && b.UserId == userId);
 
             if (board == null) { throw new Exception("Access denied or board not found"); }
 
-            return await _context.Column
+            return await _context.Columns
                 .Where(b => b.BoardId == boardId && !b.isArchived)
                 .OrderBy(b => b.Position)
                 .Select(b => new ColumnDto
@@ -97,7 +97,7 @@ namespace Application.Services.Column
         {
             var column = await GetColumnFromDbAsync(columnId, userId);
 
-            var board = await _context.Board
+            var board = await _context.Boards
                 .FirstOrDefaultAsync(b => b.Id == newBoardId && b.UserId == userId);
 
             if (board == null || column == null) {
@@ -122,15 +122,15 @@ namespace Application.Services.Column
         public async Task ReorderColumnAsync(Guid columnId, int newPosition, Guid userId)
         {
             var reorderedColumn = await GetColumnFromDbAsync(columnId, userId);
-            var reorderedcolumnId = columnId;
-            var oldPostion = reorderedColumn.Position;
+            var reorderedColumnId = columnId;
+            var oldPosition = reorderedColumn.Position;
 
-            if (oldPostion == newPosition)
+            if (oldPosition == newPosition)
             {
                 return;
             }
 
-            var columnsInBoard = await _context.Column                
+            var columnsInBoard = await _context.Columns                
                 .Where(c => c.BoardId == reorderedColumn.BoardId)
                 .OrderBy(c => c.Position)
                 .ToListAsync();
@@ -152,12 +152,12 @@ namespace Application.Services.Column
             var column = await GetColumnFromDbAsync(columnId, userId);
             column.isArchived = true;
 
-            var taskItemnsInColumnList = await _context.TaskItem
+            var taskItemsInColumnList = await _context.TaskItems
                 .Include(c => c.Column)
                 .Where(c => c.ColumnId == column.Id)
                 .ToListAsync();
 
-            foreach (var taskItem in taskItemnsInColumnList)
+            foreach (var taskItem in taskItemsInColumnList)
             {
                 taskItem.isArchived = true;
             }
@@ -170,12 +170,12 @@ namespace Application.Services.Column
             var column = await GetColumnFromDbAsync (columnId, userId);
             column.isArchived = false;
 
-            var taskItemnsInColumnList = await _context.TaskItem
+            var taskItemsInColumnList = await _context.TaskItems
                 .Include(c => c.Column)
                 .Where(c => c.ColumnId == column.Id)
                 .ToListAsync();
 
-            foreach (var taskItem in taskItemnsInColumnList)
+            foreach (var taskItem in taskItemsInColumnList)
             {
                 taskItem.isArchived = false;
             }
@@ -186,7 +186,7 @@ namespace Application.Services.Column
 
         private async Task<Domain.Entities.Column> GetColumnFromDbAsync(Guid columnId, Guid userId)
         {
-            var column = await _context.Column
+            var column = await _context.Columns
                 .Include(c => c.Board)
                 .FirstOrDefaultAsync(c => c.Id == columnId && c.Board.UserId == userId);
 

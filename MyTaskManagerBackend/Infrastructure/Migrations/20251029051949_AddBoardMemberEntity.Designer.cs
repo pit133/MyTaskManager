@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251029051949_AddBoardMemberEntity")]
+    partial class AddBoardMemberEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
@@ -40,7 +43,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Boards");
+                    b.ToTable("Board");
                 });
 
             modelBuilder.Entity("Domain.Entities.BoardMember", b =>
@@ -76,7 +79,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("BoardId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("BoardMembers");
+                    b.ToTable("BoardMember");
                 });
 
             modelBuilder.Entity("Domain.Entities.Column", b =>
@@ -105,7 +108,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("BoardId");
 
-                    b.ToTable("Columns");
+                    b.ToTable("Column");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskCheckList", b =>
@@ -128,7 +131,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TaskItemId");
 
-                    b.ToTable("TaskCheckLists");
+                    b.ToTable("TaskCheckList");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskCheckListItem", b =>
@@ -157,7 +160,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TaskCheckListId");
 
-                    b.ToTable("TaskCheckListItems");
+                    b.ToTable("TaskCheckListItem");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskItem", b =>
@@ -191,7 +194,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ColumnId");
 
-                    b.ToTable("TaskItems");
+                    b.ToTable("TaskItem");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -211,7 +214,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Board", b =>

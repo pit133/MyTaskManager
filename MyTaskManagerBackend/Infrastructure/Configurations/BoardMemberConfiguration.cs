@@ -21,14 +21,14 @@ namespace Infrastructure.Configurations
                  .IsRequired();
 
             builder.HasOne(x => x.User)
-                 .WithMany()
+                 .WithMany(u => u.BoardMemberships)
                  .HasForeignKey(x => x.UserId)
-                 .OnDelete(DeleteBehavior.Cascade);
+                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.Board)
                  .WithMany(x => x.Members)
                  .HasForeignKey(x => x.BoardId)
-                 .OnDelete(DeleteBehavior.Cascade);
+                 .OnDelete(DeleteBehavior.Restrict);
             
             builder.Property(x => x.JoinedAt)
                    .HasDefaultValueSql("GETUTCDATE()");

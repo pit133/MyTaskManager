@@ -10,13 +10,13 @@ namespace Infrastructure
         {
         }
 
-        public DbSet<User> User { get; set; }
-        public DbSet<Board> Board { get; set; }
-        public DbSet<Column> Column { get; set; }
-        public DbSet<TaskItem> TaskItem { get; set; }
-        public DbSet<TaskCheckList> TaskCheckList { get; set; }
-        public DbSet<TaskCheckListItem> TaskCheckListItem { get; set; }
-        public DbSet<BoardMember> BoardMember { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Board> Boards { get; set; }
+        public DbSet<Column> Columns { get; set; }
+        public DbSet<TaskItem> TaskItems { get; set; }
+        public DbSet<TaskCheckList> TaskCheckLists { get; set; }
+        public DbSet<TaskCheckListItem> TaskCheckListItems { get; set; }
+        public DbSet<BoardMember> BoardMembers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

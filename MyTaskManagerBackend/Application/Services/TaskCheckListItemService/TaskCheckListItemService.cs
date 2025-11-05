@@ -33,7 +33,7 @@ namespace Application.Services.TaskCheckListItemService
         {
             var taskCheckList = await GetTaskCheckListAsync(dto.TaskCheckListId, userId);
 
-            var maxPosition = await _context.TaskCheckListItem
+            var maxPosition = await _context.TaskCheckListItems
                 .Include(t => t.TaskCheckList)
                 .Where(t => t.TaskCheckListId == dto.TaskCheckListId)
                 .MaxAsync(t => (int?)t.Position) ?? 0;
@@ -47,7 +47,7 @@ namespace Application.Services.TaskCheckListItemService
                 IsCompleted = false
             };
 
-            _context.TaskCheckListItem.Add(taskCheckListItem);
+            _context.TaskCheckListItems.Add(taskCheckListItem);
             await _context.SaveChangesAsync();
 
             return new TaskCheckListItemDto
@@ -65,10 +65,10 @@ namespace Application.Services.TaskCheckListItemService
         {
             var taskCheckListItem = await GetTaskCheckListItemAsync(taskCheckListItemId, userId);
 
-            _context.TaskCheckListItem.Remove(taskCheckListItem);
+            _context.TaskCheckListItems.Remove(taskCheckListItem);
             await _context.SaveChangesAsync();
 
-            var reorderedTaskCheckListItems = await _context.TaskCheckListItem
+            var reorderedTaskCheckListItems = await _context.TaskCheckListItems
                 .Where(t => t.TaskCheckListId == taskCheckListItem.TaskCheckListId)
                 .OrderBy(t => t.Position)
                 .ToListAsync();
@@ -85,7 +85,7 @@ namespace Application.Services.TaskCheckListItemService
         {
             var taskCheckList = await GetTaskCheckListAsync(taskCheckListId, userId);
 
-            return await _context.TaskCheckListItem
+            return await _context.TaskCheckListItems
                 .Where(t => t.TaskCheckListId == taskCheckListId)
                 .OrderBy(t => t.Position)
                 .Select(t => new TaskCheckListItemDto
@@ -110,7 +110,7 @@ namespace Application.Services.TaskCheckListItemService
 
         private async Task<Domain.Entities.TaskCheckList> GetTaskCheckListAsync(Guid taskCheckListId, Guid userId)
         {
-            var taskCheckList = await _context.TaskCheckList
+            var taskCheckList = await _context.TaskCheckLists
                 .Include(t => t.TaskItem)
                 .ThenInclude(t => t.Column)
                 .ThenInclude(t => t.Board)
@@ -126,7 +126,7 @@ namespace Application.Services.TaskCheckListItemService
 
         private async Task<TaskCheckListItem> GetTaskCheckListItemAsync(Guid taskCheckListItemId, Guid userId)
         {
-            var taskCheckListItem = await _context.TaskCheckListItem
+            var taskCheckListItem = await _context.TaskCheckListItems
                 .Include(t => t.TaskCheckList)
                 .ThenInclude(t => t.TaskItem)
                 .ThenInclude(t => t.Column)
