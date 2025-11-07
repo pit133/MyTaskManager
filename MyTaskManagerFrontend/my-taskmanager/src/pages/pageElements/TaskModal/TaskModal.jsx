@@ -317,13 +317,7 @@ export default function TaskModal({
                   onCanceled={handleCancelAddCheckList}
                   onCheckListCreated={handleCreateCheckList}
                 />
-              ) : (
-                // <button
-                //   className="checklist-add-button"
-                //   onClick={() => setIsAddingCheckList(true)}
-                // >
-                //   + Add Checklist
-                // </button>
+              ) : (                
                 <></>
               )}
             </div>

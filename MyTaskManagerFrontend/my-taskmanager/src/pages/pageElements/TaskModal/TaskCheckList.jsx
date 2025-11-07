@@ -72,11 +72,7 @@ export default function TaskCheckList({
   function handleTitleDoubleClick() {
     setIsEditingTitle(true);
   }
-
-  function handleEditButtonClick(e) {
-    e.stopPropagation();
-    setIsEditingTitle(true);
-  }
+  
 
   return (
     <div className="checklist">

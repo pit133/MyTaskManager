@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import BoardsPage from "./pages/BoardsPage"
+import BoardsPage from "./pages/BoardsPage/BoardsPage"
 import BoardPage from "./pages/BoardPage";
 import { getToken } from "./api";
 
