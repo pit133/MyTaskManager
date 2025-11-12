@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
 import BoardsPage from "./pages/BoardsPage/BoardsPage"
-import BoardPage from "./pages/BoardPage";
+import BoardPage from "./pages/BoardPage/BoardPage";
 import { getToken } from "./api";
 
 function App() {

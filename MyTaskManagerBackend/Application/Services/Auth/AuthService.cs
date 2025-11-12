@@ -13,10 +13,10 @@ namespace Application.Services.Auth
     public class AuthService : IAuthService
     {
         private readonly AppDbContext _context;
-        private readonly IPasswordHasher<User> _hasher;
+        private readonly IPasswordHasher<Domain.Entities.User> _hasher;
         private readonly IConfiguration _config;
 
-        public AuthService(AppDbContext context, IPasswordHasher<User> hasher, IConfiguration config)
+        public AuthService(AppDbContext context, IPasswordHasher<Domain.Entities.User> hasher, IConfiguration config)
         {
             _context = context;
             _hasher = hasher;
@@ -47,7 +47,7 @@ namespace Application.Services.Auth
                 throw new Exception("User already exist");
             }
 
-            var user = new User
+            var user = new Domain.Entities.User
             {
                 Id = Guid.NewGuid(),
                 Name = dto.Name
@@ -61,7 +61,7 @@ namespace Application.Services.Auth
             return GenerateJwt(user);
         }
 
-        private string GenerateJwt(User user)
+        private string GenerateJwt(Domain.Entities.User user)
         {
 
             var claims = new[]

@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.TaskItem;
+using Domain.Entities;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +17,17 @@ namespace Application.Services.TaskItem
         {
             var column = await _context.Columns
                 .Include(c => c.Board)
-                .FirstOrDefaultAsync(c => c.Id == dto.ColumnId && c.Board.UserId == userId);
+                .FirstOrDefaultAsync(c => c.Id == dto.ColumnId);
 
             if (column == null)
+            {
+                throw new Exception("Access denied");
+            }
+
+            var isBoardMember = await _context.BoardMembers
+                .AnyAsync(bm => bm.BoardId == column.BoardId && bm.UserId == userId);
+
+            if (!isBoardMember)
             {
                 throw new Exception("Access denied");
             }
@@ -73,10 +82,17 @@ namespace Application.Services.TaskItem
         public async Task<List<TaskItemDto>> GetTaskItemsAsync(Guid columnId, Guid userId)
         {
             var column = await _context.Columns
-                .Include(c => c.Board)
-                .FirstOrDefaultAsync(c => c.Id == columnId && c.Board.UserId == userId);
+                .FirstOrDefaultAsync(c => c.Id == columnId);
 
             if (column == null)
+            {
+                throw new Exception("Column not found");
+            }
+
+            var isBoardMember = await _context.BoardMembers
+                .AnyAsync(bm => bm.BoardId == column.BoardId && bm.UserId == userId);
+
+            if (!isBoardMember)
             {
                 throw new Exception("Access denied");
             }
@@ -105,10 +121,17 @@ namespace Application.Services.TaskItem
                 var columnId = taskItem.ColumnId;
 
                 var newColumn = await _context.Columns
-                    .Include(c => c.Board)
-                    .FirstOrDefaultAsync(c => c.Id == newColumnId && c.Board.UserId == userId);
+                .FirstOrDefaultAsync(c => c.Id == columnId);
 
-                if (taskItem == null || newColumn == null)
+                if (newColumn == null)
+                {
+                    throw new Exception("Column not found");
+                }
+
+                var isBoardMember = await _context.BoardMembers
+                    .AnyAsync(bm => bm.BoardId == newColumn.BoardId && bm.UserId == userId);
+
+                if (!isBoardMember)
                 {
                     throw new Exception("Access denied");
                 }
@@ -214,9 +237,20 @@ namespace Application.Services.TaskItem
             var task = await _context.TaskItems
                 .Include(c => c.Column)
                 .ThenInclude(c => c.Board)
-                .FirstOrDefaultAsync(c => c.Id == taskItemId && c.Column.Board.UserId == userId);
+                .FirstOrDefaultAsync(c => c.Id == taskItemId);
 
-            if (task == null) { throw new Exception("Access denied"); }
+            if (task == null)
+            {
+                throw new Exception("Task not found");
+            }
+
+            var isBoardMember = await _context.BoardMembers
+                .AnyAsync(bm => bm.BoardId == task.Column.BoardId && bm.UserId == userId);
+
+            if (!isBoardMember)
+            {
+                throw new Exception("Access denied");
+            }
 
             return task;
         }

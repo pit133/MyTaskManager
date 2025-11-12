@@ -33,7 +33,7 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpGet]
+        [HttpGet("{boardId}")]
         public async Task<IActionResult> Get(Guid boardId)
         {
             var boardMembers = await _service.GetBoardMembersAsync(boardId);

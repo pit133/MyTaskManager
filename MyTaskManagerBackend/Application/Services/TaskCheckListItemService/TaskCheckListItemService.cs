@@ -106,17 +106,25 @@ namespace Application.Services.TaskCheckListItemService
             await _context.SaveChangesAsync();
         }
 
-        
+
 
         private async Task<Domain.Entities.TaskCheckList> GetTaskCheckListAsync(Guid taskCheckListId, Guid userId)
         {
             var taskCheckList = await _context.TaskCheckLists
                 .Include(t => t.TaskItem)
                 .ThenInclude(t => t.Column)
-                .ThenInclude(t => t.Board)
-                .FirstOrDefaultAsync(t => t.Id == taskCheckListId && t.TaskItem.Column.Board.UserId == userId);
+                .ThenInclude(c => c.Board)
+                .FirstOrDefaultAsync(t => t.Id == taskCheckListId);
 
             if (taskCheckList == null)
+            {
+                throw new Exception("TaskCheckList not found");
+            }
+            
+            var isBoardMember = await _context.BoardMembers
+                .AnyAsync(bm => bm.BoardId == taskCheckList.TaskItem.Column.BoardId && bm.UserId == userId);
+
+            if (!isBoardMember)
             {
                 throw new Exception("Access denied");
             }
@@ -131,9 +139,18 @@ namespace Application.Services.TaskCheckListItemService
                 .ThenInclude(t => t.TaskItem)
                 .ThenInclude(t => t.Column)
                 .ThenInclude(t => t.Board)
-                .FirstOrDefaultAsync(t => t.Id == taskCheckListItemId && t.TaskCheckList.TaskItem.Column.Board.UserId == userId);
+                .FirstOrDefaultAsync(t => t.Id == taskCheckListItemId);
 
             if (taskCheckListItem == null)
+            {
+                throw new Exception("Access denied");
+            }
+
+            var isBoardMember = await _context.BoardMembers
+                .AnyAsync(bm => bm.BoardId == taskCheckListItem.TaskCheckList.TaskItem.Column.BoardId
+                && bm.UserId == userId);
+
+            if (!isBoardMember)
             {
                 throw new Exception("Access denied");
             }

@@ -1,0 +1,76 @@
+.checklist-delete-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.checklist-delete-modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 400px;
+  max-width: 90vw;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.checklist-delete-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #172b4d;
+  margin: 0 0 12px 0;
+}
+
+.checklist-delete-modal-text {
+  color: #6b778c;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.checklist-delete-modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.checklist-delete-cancel {
+  background: rgba(9, 30, 66, 0.04);
+  color: #172b4d;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.checklist-delete-cancel:hover {
+  background: rgba(9, 30, 66, 0.08);
+}
+
+.checklist-delete-confirm {
+  background: #c9372c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.checklist-delete-confirm:hover:not(:disabled) {
+  background: #ae2a24;
+}
+
+.checklist-delete-confirm:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

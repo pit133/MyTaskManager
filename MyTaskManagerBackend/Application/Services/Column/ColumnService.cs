@@ -18,9 +18,10 @@ namespace Application.Services.Column
 
         public async Task<ColumnDto> CreateColumnAsync(CreateColumnDto dto, Guid userId)
         {
-            var board = await _context.Boards.FirstOrDefaultAsync(b => b.Id == dto.BoardId && b.UserId == userId);
+            var boardMember = await _context.BoardMembers
+               .FirstOrDefaultAsync(bm => bm.BoardId == dto.BoardId && bm.UserId == userId);
 
-            if (board == null)
+            if (boardMember == null)
             {
                 throw new Exception("Access denied or board not found");
             }
@@ -76,9 +77,13 @@ namespace Application.Services.Column
 
         public async Task<List<ColumnDto>> GetColumnsAsync(Guid boardId, Guid userId)
         {
-            var board = _context.Boards.FirstOrDefaultAsync(b => b.Id == boardId && b.UserId == userId);
+            var boardMember = await _context.BoardMembers
+                 .FirstOrDefaultAsync(bm => bm.BoardId == boardId && bm.UserId == userId);
 
-            if (board == null) { throw new Exception("Access denied or board not found"); }
+            if (boardMember == null)
+            {
+                throw new Exception("Access denied or board not found");
+            }
 
             return await _context.Columns
                 .Where(b => b.BoardId == boardId && !b.isArchived)
@@ -188,9 +193,20 @@ namespace Application.Services.Column
         {
             var column = await _context.Columns
                 .Include(c => c.Board)
-                .FirstOrDefaultAsync(c => c.Id == columnId && c.Board.UserId == userId);
+                .ThenInclude(b => b.Members)
+                .FirstOrDefaultAsync(c => c.Id == columnId);
 
-            if (column == null) { throw new Exception("Access denied or column not found"); }
+            if (column == null)
+            {
+                throw new Exception("Column not found");
+            }
+            
+            var isBoardMember = column.Board.Members.Any(m => m.UserId == userId);
+
+            if (!isBoardMember)
+            {
+                throw new Exception("Access denied");
+            }
 
             return column;
         }

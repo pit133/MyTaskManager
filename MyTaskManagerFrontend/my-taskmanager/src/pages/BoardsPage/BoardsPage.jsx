@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getBoardsNames, getMembershipBoards, getToken } from "../../api";
-import BoardCard from "./BoardCard";
-import CreateBoardForm from "./CreateBoardForm";
+import BoardCard from "./BoardCard/BoardCard";
+import CreateBoardForm from "./CreateBoardForm/CreateBoardForm";
 import "./BoardsPage.css";
 
 export default function BoardsPage() {
@@ -60,6 +60,9 @@ export default function BoardsPage() {
         <p className="boards-subtitle">
           Manage your workspaces and collaborate with your team
         </p>
+
+        
+
       </div>
 
       {error && <div className="error-message">{error}</div>}
@@ -138,6 +141,10 @@ export default function BoardsPage() {
           )}
         </div>
       </div>
+      
+      
     </div>
+
+    
   );
 }
