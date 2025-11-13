@@ -1,8 +1,6 @@
 import { useState } from "react";
-import {
-  findUninvitedUsersByName,
-  inviteUserToBoard,
-} from "../../../api";
+import { findUninvitedUsersByName } from "../../../API/userApi";
+import { inviteUserToBoard } from "../../../API/boardMembersApi";
 import "./InviteModal.css";
 
 export default function InviteModal({ boardId, onClosed, onUserInvited }) {
@@ -11,7 +9,7 @@ export default function InviteModal({ boardId, onClosed, onUserInvited }) {
   const [searching, setSearching] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [error, setError] = useState("");
-  const [userAdded, setUserAdded] = useState(false)
+  const [userAdded, setUserAdded] = useState(false);
   const [inviting, setInviting] = useState(false);
 
   function closeInviteModal() {
@@ -29,7 +27,7 @@ export default function InviteModal({ boardId, onClosed, onUserInvited }) {
       setError("Failed to search users");
       setSearchResults([]);
     } finally {
-      setSearching(false);      
+      setSearching(false);
     }
   }
 
@@ -37,14 +35,13 @@ export default function InviteModal({ boardId, onClosed, onUserInvited }) {
     try {
       setInviting(true);
       await inviteUserToBoard(boardId, userId, selectedRole);
-      onUserInvited()
+      onUserInvited();
     } catch (error) {
       console.error("Failed to invite user to board: " + error);
       setError("Failed to invite user");
     } finally {
       setInviting(false);
-      setUserAdded(true)
-
+      setUserAdded(true);
     }
   }
 
@@ -70,8 +67,8 @@ export default function InviteModal({ boardId, onClosed, onUserInvited }) {
                 placeholder="Search users by name or email..."
                 value={searchTerm}
                 onChange={(e) => {
-                  setSearchTerm(e.target.value)
-                  setUserAdded(false)
+                  setSearchTerm(e.target.value);
+                  setUserAdded(false);
                 }}
                 onKeyDown={(e) => e.key === "Enter" && handleSearchUsers()}
               />
@@ -132,8 +129,10 @@ export default function InviteModal({ boardId, onClosed, onUserInvited }) {
             {userAdded ? (
               <div className="user-added-message" style={{ margin: 0 }}>
                 user added
-              </div>              
-            ) : <></>}
+              </div>
+            ) : (
+              <></>
+            )}
 
             <div className="invite-actions">
               <button

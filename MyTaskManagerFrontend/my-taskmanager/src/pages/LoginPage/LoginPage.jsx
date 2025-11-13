@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { login, saveToken } from "../../api";
+import { login, saveToken } from "../../API/authApi";
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {

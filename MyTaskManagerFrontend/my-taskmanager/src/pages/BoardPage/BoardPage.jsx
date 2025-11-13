@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  getBoardMembers,  
-  getColumns,
-  getTasks,
-  getToken,
-  moveTask,
-  reorderTask,
-} from "../../api";
+import {getToken} from "../../API/authApi"
+import {getColumns} from "../../API/columnApi"
+import {getTasks, moveTask, reorderTask} from "../../API/taskApi"
+import {getBoardMembers} from "../../API/boardMembersApi"
 import Task from "./Task/Task";
 import AddColumnForm from "./Column/AddColumnForm";
 import Column from "./Column/Column";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { updateTask } from "../../../api";
+import { updateTask } from "../../../API/taskApi";
 import SaveButton from "../../pageElements/Buttons/SubmitButton";
 import CancelButton from "../../pageElements/Buttons/CancelButton";
 

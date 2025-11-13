@@ -1,13 +1,10 @@
 import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
 import "./TaskModal.css";
-import {
-  updateTask,
-  deleteTask,
-  archiveTask,
-  getTaskCheckLists,
-  getTaskCheckListItems,
-} from "../../../api";
+import { getTaskCheckLists } from "../../../API/taskCheckListApi";
+import { getTaskCheckListItems } from "../../../API/taskCheckListItemApi";
+import { updateTask, deleteTask, archiveTask } from "../../../API/taskApi";
+
 import TaskCheckList from "./TaskCheckList/TaskCheckList";
 import AddTaskCheckListForm from "./TaskCheckList/AddTaskCheckListForm/AddTaskCheckListForm";
 
@@ -317,7 +314,7 @@ export default function TaskModal({
                   onCanceled={handleCancelAddCheckList}
                   onCheckListCreated={handleCreateCheckList}
                 />
-              ) : (                
+              ) : (
                 <></>
               )}
             </div>

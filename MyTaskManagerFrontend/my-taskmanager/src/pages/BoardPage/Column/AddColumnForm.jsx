@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addColumn } from "../../../api";
+import { addColumn } from "../../../API/columnApi";
 
 export default function AddColumnForm({ boardId, onColumnAdded }) {
   const [newColumnName, setNewColumnName] = useState("");

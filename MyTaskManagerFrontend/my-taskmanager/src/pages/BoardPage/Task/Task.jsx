@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import EditTaskForm from "./EditTaskForm.jsx";
-import { deleteTask } from "../../../api.js";
+import { deleteTask } from "../../../API/taskApi";
 import Button from "../../pageElements/Buttons/Button.jsx";
 
 

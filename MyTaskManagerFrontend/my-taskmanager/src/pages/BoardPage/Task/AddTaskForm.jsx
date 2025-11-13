@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addTask } from "../../../api";
+import { addTask } from "../../../API/taskApi";
 import SubmitButton from "../../pageElements/Buttons/SubmitButton";
 import Button from "../../pageElements/Buttons/Button";
 

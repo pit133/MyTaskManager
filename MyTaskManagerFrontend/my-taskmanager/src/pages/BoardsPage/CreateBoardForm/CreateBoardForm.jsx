@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createBoard } from "../../../api";
+import { createBoard } from "../../../API/boardApi";
 import "./CreateBoardForm.css";
 
 export default function CreateBoardForm({ onBoardCreated, onClosed }) {

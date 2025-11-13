@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { deleteColumn } from "../../../api";
+import { deleteColumn } from "../../../API/columnApi";
 import Button from "../../pageElements/Buttons/Button";
 import EditColumnForm from "./EditColumnForm";
 import AddTaskForm from "../Task/AddTaskForm";

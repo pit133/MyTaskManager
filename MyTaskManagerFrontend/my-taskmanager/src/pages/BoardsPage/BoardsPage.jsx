@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getBoardsNames, getMembershipBoards, getToken } from "../../api";
+import { getBoardsNames, getMembershipBoards} from "../../API/boardApi";
+import {getToken } from "../../API/authApi"
 import BoardCard from "./BoardCard/BoardCard";
 import CreateBoardForm from "./CreateBoardForm/CreateBoardForm";
 import "./BoardsPage.css";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteTaskCheckList } from "../../../../../api";
+import { deleteTaskCheckList } from "../../../../../API/taskCheckListApi";
 import "./DeleteTaskCheckListForm.css";
 
 export default function DeleteTaskCheckListForm({

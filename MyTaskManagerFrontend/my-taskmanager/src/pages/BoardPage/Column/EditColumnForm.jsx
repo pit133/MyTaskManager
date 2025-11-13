@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SubmitButton from "../../pageElements/Buttons/SubmitButton";
 import Button from "../../pageElements/Buttons/Button";
-import { updateColumn } from "../../../api";
+import { updateColumn } from "../../../API/columnApi";
 
 export default function EditColumnForm({
   column,

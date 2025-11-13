@@ -3,8 +3,8 @@ import "./TaskCheckListItem.css";
 import {
   changeCheckListItemIsComplete,
   deleteTaskCheckListItem,
-  UpdateTaskCheckListItem,
-} from "../../../../api";
+  updateTaskCheckListItem,
+} from "../../../../API/taskCheckListItemApi";
 
 export default function TaskCheckListItem({
   item,
@@ -20,7 +20,7 @@ export default function TaskCheckListItem({
   async function handleSave() {
     if (editTitle.trim()) {
       try {
-        await UpdateTaskCheckListItem(item.id, editTitle.trim());
+        await updateTaskCheckListItem(item.id, editTitle.trim());
         onUpdate(item.id, editTitle.trim());
         setIsEditing(false);
       } catch (err) {
