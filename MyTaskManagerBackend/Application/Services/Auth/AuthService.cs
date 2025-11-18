@@ -13,20 +13,20 @@ namespace Application.Services.Auth
     public class AuthService : IAuthService
     {
         private readonly AppDbContext _context;
-        private readonly IPasswordHasher<User> _hasher;
+        private readonly IPasswordHasher<Domain.Entities.User> _hasher;
         private readonly IConfiguration _config;
 
-        public AuthService(AppDbContext context, IPasswordHasher<User> hasher, IConfiguration config)
+        public AuthService(AppDbContext context, IPasswordHasher<Domain.Entities.User> hasher, IConfiguration config)
         {
             _context = context;
             _hasher = hasher;
             _config = config;
         }
 
-        public async Task<string> LoginAsync(LoginDto dto)
+        public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
         {
             Console.WriteLine($"Login attempt: {dto.Name}");
-            var user = _context.User.FirstOrDefault(x => x.Name == dto.Name);
+            var user = _context.Users.FirstOrDefault(x => x.Name == dto.Name);
 
             if (user == null) { throw new Exception("User not found"); }
 
@@ -37,17 +37,24 @@ namespace Application.Services.Auth
                 throw new Exception("Invalid password");
             }
 
-            return GenerateJwt(user);
+            var token = GenerateJwt(user);
+
+            return new AuthResponseDto
+            {
+                Token = token,
+                UserId = user.Id,
+                UserName = user.Name
+            };
         }
 
-        public async Task<string> RegisterAsync(RegisterDto dto)
+        public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
         {
-            if (_context.User.Any(x => x.Name == dto.Name))
+            if (_context.Users.Any(x => x.Name == dto.Name))
             {
                 throw new Exception("User already exist");
             }
 
-            var user = new User
+            var user = new Domain.Entities.User
             {
                 Id = Guid.NewGuid(),
                 Name = dto.Name
@@ -55,13 +62,20 @@ namespace Application.Services.Auth
 
             user.PasswordHash = _hasher.HashPassword(user, dto.Password);
 
-            _context.User.Add(user);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return GenerateJwt(user);
+            var token = GenerateJwt(user);
+
+            return new AuthResponseDto
+            {
+                Token = token,
+                UserId = user.Id,
+                UserName = user.Name
+            };
         }
 
-        private string GenerateJwt(User user)
+        private string GenerateJwt(Domain.Entities.User user)
         {
 
             var claims = new[]
@@ -78,7 +92,7 @@ namespace Application.Services.Auth
                 audience: _config["Jwt:Audience"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddHours(3),
-                signingCredentials: creds);
+                signingCredentials: creds);            
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

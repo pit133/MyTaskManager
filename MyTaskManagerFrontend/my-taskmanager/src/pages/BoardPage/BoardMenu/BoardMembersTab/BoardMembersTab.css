@@ -1,0 +1,155 @@
+.menu-tab-content h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #172b4d;
+}
+
+.menu-description {
+  color: #6b778c;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.member-item:hover {
+  background: #f8f9fa;
+}
+
+.member-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.member-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #0079bf;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.member-details {
+  flex: 1;
+}
+
+.member-name {
+  font-weight: 600;
+  color: #172b4d;
+  font-size: 14px;
+}
+
+.member-email {
+  color: #6b778c;
+  font-size: 12px;
+}
+
+.member-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.member-role {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.member-role.owner {
+  background: #e3fcef;
+  color: #00875a;
+}
+
+.member-role.admin {
+  background: #e4f0f6;
+  color: #0079bf;
+}
+
+.member-role.member {
+  background: #f4f5f7;
+  color: #6b778c;
+}
+
+.member-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.edit-role-btn,
+.remove-member-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.edit-role-btn:hover {
+  background: rgba(0, 121, 191, 0.1);
+}
+
+.remove-member-btn:hover {
+  background: rgba(201, 55, 44, 0.1);
+}
+
+.role-editor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.role-select {
+  padding: 6px 8px;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  font-size: 12px;
+  background: white;
+}
+
+.cancel-edit {
+  background: none;
+  border: none;
+  color: #6b778c;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.cancel-edit:hover {
+  background: rgba(9, 30, 66, 0.08);
+}
+
+.permission-notice {
+  background: #fffae6;
+  color: #b7791f;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  border: 1px solid #ffeeba;
+}

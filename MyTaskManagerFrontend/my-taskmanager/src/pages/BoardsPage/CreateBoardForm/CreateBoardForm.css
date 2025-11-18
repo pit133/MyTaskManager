@@ -1,0 +1,136 @@
+/* Inline форма создания доски */
+.create-board-inline {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  border: 2px dashed #e1e4e8;
+  transition: all 0.2s ease;
+}
+
+.create-board-inline:hover {
+  border-color: #0079bf;
+  background: #f8f9fa;
+}
+
+.create-board-form-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.form-input-inline {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid #dfe1e6;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+  background: #fafbfc;
+}
+
+.form-input-inline:focus {
+  outline: none;
+  border-color: #0079bf;
+  background: white;
+}
+
+.form-actions-inline {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.create-btn-inline {
+  background: #0079bf;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.create-btn-inline:hover:not(:disabled) {
+  background: #026aa7;
+}
+
+.create-btn-inline:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.cancel-btn-inline {
+  background: none;
+  border: none;
+  color: #6b778c;
+  cursor: pointer;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.cancel-btn-inline:hover {
+  background: rgba(9, 30, 66, 0.08);
+}
+
+/* Стили когда форма открыта */
+.empty-state-create {
+  text-align: left;
+  padding: 20px;
+  color: #6b778c;
+  background: white;
+  border-radius: 8px;
+  border: 2px dashed #e1e4e8;
+}
+
+.empty-state-create:hover {
+  border-color: #0079bf;
+}
+
+.create-prompt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.create-prompt:hover {
+  background: rgba(9, 30, 66, 0.04);
+}
+
+.create-prompt-icon {
+  font-size: 24px;
+  opacity: 0.7;
+}
+
+.create-prompt-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.create-board-btn {
+  background: #0079bf;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.create-board-btn:hover {
+  background: #026aa7;
+}

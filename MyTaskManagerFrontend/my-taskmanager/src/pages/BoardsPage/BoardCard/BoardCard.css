@@ -1,0 +1,111 @@
+.board-card {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #e1e4e8;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.board-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-color: #0079bf;
+}
+
+.board-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.board-name {
+  font-weight: 600;
+  color: #172b4d;
+  font-size: 14px;
+  line-height: 1.4;
+  flex: 1;
+  word-break: break-word;
+}
+
+.board-role {
+  background: #e4f0f6;
+  color: #0079bf;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin-left: 8px;
+}
+
+.board-role.owner {
+  background: #e3fcef;
+  color: #00875a;
+}
+
+.board-role.admin {
+  background: #e4f0f6;
+  color: #0079bf;
+}
+
+.board-role.member {
+  background: #f4f5f7;
+  color: #6b778c;
+}
+
+.board-meta {
+  margin-top: auto;
+  font-size: 12px;
+  color: #6b778c;
+}
+
+.board-owner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Кнопка создания новой доски когда уже есть доски */
+.create-new-card {
+  background: transparent !important;
+  border: 2px dashed #e1e4e8 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 80px;
+}
+
+.create-new-card:hover {
+  border-color: #0079bf !important;
+  background: rgba(9, 30, 66, 0.04) !important;
+  transform: translateY(-2px);
+}
+
+.create-new-card-content {
+  text-align: center;
+  color: #6b778c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.create-new-card-icon {
+  font-size: 24px;
+  opacity: 0.7;
+}
+
+.create-new-card-text {
+  font-size: 14px;
+  font-weight: 500;
+}

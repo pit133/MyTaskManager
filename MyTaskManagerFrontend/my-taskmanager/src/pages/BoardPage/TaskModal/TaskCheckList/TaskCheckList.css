@@ -1,0 +1,116 @@
+.checklist {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  margin-top: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.checklist-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 4px 0;
+  gap: 8px;
+}
+
+.checklist-header-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.checklist-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #172b4d;
+  flex: 1;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  border: 2px solid transparent;
+}
+
+.checklist-title:hover {
+  background: rgba(9, 30, 66, 0.04);
+}
+
+.checklist-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.checklist-edit-button {
+  background: none;
+  border: none;
+  color: #6b778c;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.checklist-edit-button:hover {
+  background: rgba(9, 30, 66, 0.08);
+  color: #0079bf;
+  opacity: 1;
+}
+
+.checklist-delete-button {
+  background: none;
+  border: none;
+  color: #6b778c;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.checklist-delete-button:hover {
+  background: rgba(9, 30, 66, 0.08);
+  color: #c9372c;
+  opacity: 1;
+}
+
+.checklist-items {
+  margin-bottom: 12px;
+}
+
+.checklist-add-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.checklist-add-button {
+  width: 100%;
+  background: none;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: #6b778c;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.checklist-add-button:hover {
+  background: rgba(9, 30, 66, 0.04);
+  border-color: #ccc;
+}

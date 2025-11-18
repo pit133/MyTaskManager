@@ -1,9 +1,11 @@
 using Application.Services.Auth;
 using Application.Services.Board;
+using Application.Services.BoardMember;
 using Application.Services.Column;
 using Application.Services.TaskCheckList;
 using Application.Services.TaskCheckListItemService;
 using Application.Services.TaskItem;
+using Application.Services.User;
 using Domain.Entities;
 using Infrastructure;
 using Microsoft.AspNetCore.Identity;
@@ -49,6 +51,8 @@ namespace API
             builder.Services.AddScoped<ITaskItemService, TaskItemService>();
             builder.Services.AddScoped<ITaskCheckListService, TaskCheckListService>();
             builder.Services.AddScoped<ITaskCheckListItemService, TaskCheckListItemService>();
+            builder.Services.AddScoped<IBoardMemberService, BoardMemberService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
             {

@@ -1,0 +1,11 @@
+/* Board Content */
+.board-content {
+  padding: 20px;
+  background: #f8f9fa;
+  min-height: calc(100vh - 80px);
+}
+
+.board-page {
+  min-height: 100vh;
+  background: #f8f9fa;
+}

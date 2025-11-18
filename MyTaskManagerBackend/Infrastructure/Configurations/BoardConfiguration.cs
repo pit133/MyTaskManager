@@ -19,13 +19,21 @@ namespace Infrastructure.Configurations
                    .IsRequired()
                    .HasMaxLength(100);
 
+            builder.HasOne(b => b.User)
+                .WithMany(b => b.OwnedBoards)
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(b => b.Members)
+                .WithOne(b => b.Board)
+                .HasForeignKey(b => b.BoardId);
+
             builder.HasMany(b => b.Columns)
                    .WithOne(c => c.Board)
                    .HasForeignKey(c => c.BoardId);
 
             builder.Property(a => a.isArchived)
                    .HasDefaultValue(false);
-
         }
     }
 }

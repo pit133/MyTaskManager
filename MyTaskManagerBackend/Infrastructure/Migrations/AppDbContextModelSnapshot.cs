@@ -40,7 +40,47 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Board");
+                    b.ToTable("Boards");
+                });
+
+            modelBuilder.Entity("Domain.Entities.BoardMember", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("BoardId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<DateTime>("JoinedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("BoardId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("BoardMembers");
                 });
 
             modelBuilder.Entity("Domain.Entities.Column", b =>
@@ -69,7 +109,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("BoardId");
 
-                    b.ToTable("Column");
+                    b.ToTable("Columns");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskCheckList", b =>
@@ -92,7 +132,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TaskItemId");
 
-                    b.ToTable("TaskCheckList");
+                    b.ToTable("TaskCheckLists");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskCheckListItem", b =>
@@ -121,7 +161,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TaskCheckListId");
 
-                    b.ToTable("TaskCheckListItem");
+                    b.ToTable("TaskCheckListItems");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskItem", b =>
@@ -155,7 +195,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ColumnId");
 
-                    b.ToTable("TaskItem");
+                    b.ToTable("TaskItems");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -175,16 +215,35 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Domain.Entities.Board", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("Boards")
+                        .WithMany("OwnedBoards")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.BoardMember", b =>
+                {
+                    b.HasOne("Domain.Entities.Board", "Board")
+                        .WithMany("Members")
+                        .HasForeignKey("BoardId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("BoardMemberships")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Board");
 
                     b.Navigation("User");
                 });
@@ -236,6 +295,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Board", b =>
                 {
                     b.Navigation("Columns");
+
+                    b.Navigation("Members");
                 });
 
             modelBuilder.Entity("Domain.Entities.Column", b =>
@@ -250,7 +311,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.Navigation("Boards");
+                    b.Navigation("BoardMemberships");
+
+                    b.Navigation("OwnedBoards");
                 });
 #pragma warning restore 612, 618
         }

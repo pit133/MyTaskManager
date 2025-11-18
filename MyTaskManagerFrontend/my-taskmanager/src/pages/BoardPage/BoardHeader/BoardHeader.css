@@ -1,0 +1,160 @@
+/* Board Header */
+.board-header {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e1e4e8;
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.board-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.board-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Board Info */
+.board-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.board-icon {
+  font-size: 20px;
+  opacity: 0.8;
+}
+
+.board-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #172b4d;
+  margin: 0;
+}
+
+.board-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.board-visibility {
+  background: rgba(9, 30, 66, 0.04);
+  color: #6b778c;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Members Section */
+.members-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.members-label {
+  font-size: 14px;
+  color: #6b778c;
+  margin-right: 8px;
+}
+
+.members-avatars {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.member-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #0079bf;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  border: 2px solid white;
+}
+
+.member-avatar.more {
+  background: #f4f5f7;
+  color: #6b778c;
+  font-size: 10px;
+}
+
+/* Invite Button */
+.invite-button {
+  background: #0079bf;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.invite-button:hover {
+  background: #026aa7;
+  transform: translateY(-1px);
+}
+
+/* Header Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-button {
+  background: rgba(9, 30, 66, 0.04);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #172b4d;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-button:hover {
+  background: rgba(9, 30, 66, 0.08);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .board-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .board-header-left,
+  .board-header-right {
+    justify-content: space-between;
+  }
+}
