@@ -16,6 +16,19 @@ export async function getBoardsNames() {
   return await response.json();
 }
 
+export async function getBoardById(boardId) {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/Board/getById/${boardId}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+
+  return await response.json();
+}
 
 
 export async function createBoard(name) {

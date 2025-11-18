@@ -23,7 +23,7 @@ namespace Application.Services.Auth
             _config = config;
         }
 
-        public async Task<string> LoginAsync(LoginDto dto)
+        public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
         {
             Console.WriteLine($"Login attempt: {dto.Name}");
             var user = _context.Users.FirstOrDefault(x => x.Name == dto.Name);
@@ -37,10 +37,17 @@ namespace Application.Services.Auth
                 throw new Exception("Invalid password");
             }
 
-            return GenerateJwt(user);
+            var token = GenerateJwt(user);
+
+            return new AuthResponseDto
+            {
+                Token = token,
+                UserId = user.Id,
+                UserName = user.Name
+            };
         }
 
-        public async Task<string> RegisterAsync(RegisterDto dto)
+        public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
         {
             if (_context.Users.Any(x => x.Name == dto.Name))
             {
@@ -58,7 +65,14 @@ namespace Application.Services.Auth
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return GenerateJwt(user);
+            var token = GenerateJwt(user);
+
+            return new AuthResponseDto
+            {
+                Token = token,
+                UserId = user.Id,
+                UserName = user.Name
+            };
         }
 
         private string GenerateJwt(Domain.Entities.User user)
@@ -78,7 +92,7 @@ namespace Application.Services.Auth
                 audience: _config["Jwt:Audience"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddHours(3),
-                signingCredentials: creds);
+                signingCredentials: creds);            
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

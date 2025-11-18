@@ -70,6 +70,7 @@ namespace Application.Services.BoardMember
             var member = new Domain.Entities.BoardMember()
             {
                 Id = Guid.NewGuid(),
+                Name = dto.Name,
                 UserId = dto.InvitedUserId,
                 BoardId = dto.BoardId,
                 Role = role,
@@ -83,12 +84,12 @@ namespace Application.Services.BoardMember
             return new BoardMemberDto
             {
                 Id = member.Id,
+                Name = member.Name,
                 UserId = member.UserId,
                 BoardId = member.BoardId,
                 Role = member.Role,
                 JoinedAt = member.JoinedAt,
-                CreatedAt = member.CreatedAt,
-                UserName = userToAdd.Name
+                CreatedAt = member.CreatedAt,                
             };
 
         }
@@ -135,8 +136,9 @@ namespace Application.Services.BoardMember
                 .Select(m => new BoardMemberDto
                 {
                     Id = m.Id,
+                    Name = m.Name,
                     UserId = m.UserId,
-                    BoardId = boardId,
+                    BoardId = boardId,                    
                     Role = m.Role,
                     JoinedAt = m.JoinedAt,
                     CreatedAt = m.CreatedAt,

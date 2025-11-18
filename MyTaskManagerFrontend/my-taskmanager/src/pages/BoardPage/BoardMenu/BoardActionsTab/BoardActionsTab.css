@@ -1,0 +1,47 @@
+.menu-tab-content h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #172b4d;
+}
+
+.actions-list {
+  margin-top: 16px;
+}
+
+.danger-actions {
+  border: 1px solid #ffd2cc;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffebe6;
+}
+
+.danger-actions h5 {
+  margin: 0 0 12px 0;
+  color: #c9372c;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.danger-btn {
+  background: #c9372c;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.danger-btn:hover {
+  background: #ae2a24;
+}
+
+.action-description {
+  color: #6b778c;
+  font-size: 12px;
+  margin-top: 8px;
+  margin-bottom: 0;
+}

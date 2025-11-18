@@ -1,11 +1,14 @@
 import "./BoardHeader.css";
 
-export default function BoardHeader({boardName, members, onOpened}){
+export default function BoardHeader({boardName, members, onInviteModalOpened, onMenuOpened}){
     
-    function openInviteModal(){
-        onOpened()
-    }
+    // function openInviteModal(){
+    //     onInviteModalOpened()
+    // }
 
+    function handleOpenMenu(){
+      onMenuOpened()
+    }
     return(
         <div className="board-header">
       <div className="board-header-left">
@@ -19,8 +22,8 @@ export default function BoardHeader({boardName, members, onOpened}){
           <span className="members-label">Team:</span>
           <div className="members-avatars">
             {members.slice(0, 5).map((member, index) => (
-              <div key={member.id} className="member-avatar" title={member.user?.name}>
-                {member.user?.name?.[0]?.toUpperCase() || 'Петя Гейминг'}
+              <div key={member.id} className="member-avatar" title={member.name}>
+                {member.name?.[0]?.toUpperCase() || 'Петя Гейминг'}
               </div>
             ))}
             {members.length > 5 && (
@@ -38,13 +41,13 @@ export default function BoardHeader({boardName, members, onOpened}){
             <span>⭐</span>
             Favorite
           </button>
-          <button className="header-button">
+          <button className="header-button" onClick={handleOpenMenu}>
             <span>⚙️</span>
             Menu
           </button>
         </div>
         
-        <button className="invite-button" onClick={openInviteModal}>
+        <button className="invite-button" onClick={() => onInviteModalOpened()}>
           <span>👥</span>
           Invite
         </button>

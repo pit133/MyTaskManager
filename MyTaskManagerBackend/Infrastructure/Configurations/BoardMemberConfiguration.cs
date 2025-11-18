@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Infrastructure.Configurations
 {
@@ -9,6 +10,9 @@ namespace Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<BoardMember> builder)
         {
             builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Name)
+                .IsRequired();
 
             builder.Property(x => x.Role)
                 .HasConversion<string>()

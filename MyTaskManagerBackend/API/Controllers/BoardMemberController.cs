@@ -25,7 +25,7 @@ namespace API.Controllers
             return Ok(boardMember);
         }
 
-        [HttpDelete]
+        [HttpDelete("{memberId}")]
         public async Task<IActionResult> Delete(Guid memberId)
         {
             var userId = ClaimsHelper.GetUserId(User);
@@ -40,7 +40,7 @@ namespace API.Controllers
             return Ok(boardMembers);
         }
 
-        [HttpPut]
+        [HttpPut("{boardMemberId}/{userId}")]
         public async Task<IActionResult> Put(Guid boardMemberId,UpdateBoardMemberDto dto, Guid userId)
         {
             await _service.UpdateBoardMemberAsync(boardMemberId, dto, userId);

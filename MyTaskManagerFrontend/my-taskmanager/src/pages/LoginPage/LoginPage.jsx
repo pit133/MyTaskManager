@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { login, saveToken } from "../../API/authApi";
+import { login } from "../../API/authApi";
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
@@ -12,8 +12,7 @@ function LoginPage() {
     e.preventDefault();
 
     try {
-      const data = await login(name, password);
-      saveToken(data.token);
+      await login(name, password);            
       navigate("/boards");
     } catch (err) {
       setError("Login failed");

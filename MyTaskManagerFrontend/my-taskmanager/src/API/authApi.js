@@ -11,13 +11,27 @@ export async function login(name, password) {
     throw new Error("Invalid credentials");
   }
 
-  return await response.json();
+  const data = await response.json();
+  console.log("Login API response:", data);
+  console.log("Response structure:", Object.keys(data));
+  saveCurrentUserData(data)
+  return data
 }
 
-export function saveToken(token) {
-  localStorage.setItem("token", token);
+export function saveCurrentUserData(currentUserData) {
+  localStorage.setItem("token", currentUserData.token.token);
+  localStorage.setItem("userId", currentUserData.token.userId)
+  localStorage.setItem("userName", currentUserData.token.userName)
 }
 
 export function getToken() {
   return localStorage.getItem("token");
+}
+
+export function getCurrentUserId(){
+  return localStorage.getItem("userId")
+}
+
+export function getCurrentUserName(){
+  return localStorage.getItem("userName")
 }

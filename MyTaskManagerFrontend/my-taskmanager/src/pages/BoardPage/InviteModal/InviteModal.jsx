@@ -31,11 +31,23 @@ export default function InviteModal({ boardId, onClosed, onUserInvited }) {
     }
   }
 
-  async function handleInviteUser(userId) {
+  async function handleInviteUser(user) {
     try {
-      setInviting(true);
-      await inviteUserToBoard(boardId, userId, selectedRole);
-      onUserInvited();
+      setInviting(true);      
+      const invitedUser = await inviteUserToBoard(user.name, boardId, user.id, selectedRole);              
+      if (invitedUser.role === 0) {
+          invitedUser.role = "Owner";
+        }
+
+        if (invitedUser.role === 1) {
+          invitedUser.role = "Admin";
+        }
+
+        if (invitedUser.role === 2) {
+          invitedUser.role = "Member";
+        }
+      onUserInvited(invitedUser);      
+      
     } catch (error) {
       console.error("Failed to invite user to board: " + error);
       setError("Failed to invite user");
@@ -100,7 +112,7 @@ export default function InviteModal({ boardId, onClosed, onUserInvited }) {
                   <div
                     key={user.id}
                     className="user-result"
-                    onClick={() => handleInviteUser(user.id)} // Исправлен вызов
+                    onClick={() => handleInviteUser(user)}
                   >
                     <div className="user-avatar">
                       {user.name?.[0]?.toUpperCase() || "U"}

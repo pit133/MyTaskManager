@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import {getToken} from "../../API/authApi"
-import {getColumns} from "../../API/columnApi"
-import {getTasks, moveTask, reorderTask} from "../../API/taskApi"
-import {getBoardMembers} from "../../API/boardMembersApi"
+import { data, useNavigate, useParams } from "react-router-dom";
+import {
+  getCurrentUserId,
+  getToken,
+  getCurrentUserName,
+} from "../../API/authApi";
+import { getColumns } from "../../API/columnApi";
+import { getTasks, moveTask, reorderTask } from "../../API/taskApi";
+import { getBoardMembers } from "../../API/boardMembersApi";
 import Task from "./Task/Task";
 import AddColumnForm from "./Column/AddColumnForm";
 import Column from "./Column/Column";
@@ -11,11 +15,14 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import TaskModal from "./TaskModal/TaskModal";
 import BoardHeader from "./BoardHeader/BoardHeader";
 import InviteModal from "./InviteModal/InviteModal";
-import "./BoardPage.css"
+import "./BoardPage.css";
+import BoardMenu from "./BoardMenu/BoardMenu";
+import { getBoardById } from "../../API/boardApi";
 
 export default function BoardPage() {
   const { id } = useParams();
-  const {name} = useParams()
+  const [currentBoard, setCurrentBoard] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -24,13 +31,23 @@ export default function BoardPage() {
   const [clickedTaskColumn, setClickedTaskColumn] = useState(null);
   const navigate = useNavigate();
   const [members, setMembers] = useState([]);
-  const [showInviteModal, setShowInviteModal] = useState(false)
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [isMenuOpened, setIsMenuOpened] = useState(false);
 
- const loadBoardData = async () => {
+  const loadBoardData = async () => {
     setLoading(true);
     setError("");
 
-    try {        
+    try {
+      const currentBoardData = await getBoardById(id);
+      setCurrentBoard(currentBoardData);
+    } catch (err) {
+      const errorMessage = "Failed to load board data. Please try again later.";
+      setError(errorMessage);
+      console.error("Error loading board:", err);
+    }
+
+    try {
       const columnsData = await getColumns(id);
       const columnsWithTasks = await Promise.all(
         columnsData.map(async (column) => {
@@ -56,11 +73,46 @@ export default function BoardPage() {
 
     try {
       const membersData = await getBoardMembers(id);
+      membersData.map((member) => {
+        if (member.role === 0) {
+          member.role = "Owner";
+        }
+
+        if (member.role === 1) {
+          member.role = "Admin";
+        }
+
+        if (member.role === 2) {
+          member.role = "Member";
+        }
+
+        return member;
+      });
       setMembers(membersData);
+
+      if (membersData.length > 0) {
+        setCurrentUser(() => {
+          const id = getCurrentUserId();
+          const name = getCurrentUserName();
+          const getRole = () => {
+            const user = membersData.find((member) => member.userId === id);
+            return user.role;
+          };
+          const role = getRole();
+          return { id, name, role };
+        });
+      }
     } catch (err) {
       console.error(`Failed to load board members ${id}: `, err);
     }
-    
+
+    try {
+      const token = await getToken();
+      console.log(token);
+    } catch (err) {
+      console.error(`Failed to load token: `, err);
+    }
+
     setLoading(false);
   };
 
@@ -74,6 +126,19 @@ export default function BoardPage() {
     loadBoardData();
   }, [id, navigate]);
 
+  function handleDeleteMember(memberId) {
+    setMembers((prevMembers) =>
+      prevMembers.filter((member) => member.id !== memberId)
+    );
+  }
+
+  function handleUpdatedMemberRole(boardMemberId, role) {
+    setMembers(
+      members.map((member) =>
+        member.id === boardMemberId ? { ...member, role: role } : member
+      )
+    );
+  }
 
   const handleColumnAdded = (newColumn) => {
     setColumns((prevColumns) => [...prevColumns, newColumn]);
@@ -155,13 +220,8 @@ export default function BoardPage() {
     setClickedTaskColumn(column);
   }
 
-  async function handleInvitedUser(){
-     try {
-      const membersData = await getBoardMembers(id);
-      setMembers(membersData);
-    } catch (err) {
-      console.error(`Failed to load board members ${id}: `, err);
-    }
+  function handleInvitedUser(invitedUser) {
+    setMembers([...members, invitedUser]);
   }
 
   const onDragEnd = async (result) => {
@@ -247,8 +307,15 @@ export default function BoardPage() {
 
   return (
     <div className="board-page">
-      <BoardHeader boardName={name} members={members} onOpened={()=>{setShowInviteModal(true)}} />
-      <DragDropContext onDragEnd={onDragEnd}>        
+      <BoardHeader
+        boardName={currentBoard.name}
+        members={members}
+        onInviteModalOpened={() => {
+          setShowInviteModal(true);
+        }}
+        onMenuOpened={() => setIsMenuOpened(true)}
+      />
+      <DragDropContext onDragEnd={onDragEnd}>
         <div style={{ padding: "20px" }}>
           <div style={{ display: "flex", gap: "20px" }}>
             {columns.map((column) => (
@@ -304,7 +371,23 @@ export default function BoardPage() {
         </div>
       </DragDropContext>
 
-      {showInviteModal && <InviteModal boardId = {id} onClosed={() => setShowInviteModal(false)} onUserInvited = {handleInvitedUser}/>}
+      {showInviteModal && (
+        <InviteModal
+          boardId={id}
+          onClosed={() => setShowInviteModal(false)}
+          onUserInvited={handleInvitedUser}
+        />
+      )}
+      {isMenuOpened && (
+        <BoardMenu
+          board={currentBoard}
+          members={members}
+          currentUser={currentUser}
+          onClose={() => setIsMenuOpened(false)}
+          onUpdateMemberRole={handleUpdatedMemberRole}
+          onDeleteBoardMember={handleDeleteMember}
+        />
+      )}
     </div>
   );
 }

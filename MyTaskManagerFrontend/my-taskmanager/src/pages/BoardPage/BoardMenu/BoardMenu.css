@@ -1,0 +1,359 @@
+/* Оверлей меню */
+.board-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.board-menu {
+  background: white;
+  border-radius: 12px;
+  width: 800px;
+  max-width: 90vw;
+  height: 600px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: modalSlideIn 0.2s ease-out;
+}
+
+.board-menu-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e1e4e8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.board-menu-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #172b4d;
+}
+
+.board-menu-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6b778c;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.board-menu-close:hover {
+  background: rgba(9, 30, 66, 0.08);
+}
+
+/* Контент меню */
+.board-menu-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.board-menu-sidebar {
+  width: 200px;
+  border-right: 1px solid #e1e4e8;
+  padding: 16px 0;
+  background: #f8f9fa;
+}
+
+.menu-tab {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: #6b778c;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.menu-tab:hover {
+  background: rgba(9, 30, 66, 0.04);
+  color: #172b4d;
+}
+
+.menu-tab.active {
+  background: white;
+  color: #0079bf;
+  border-left-color: #0079bf;
+  font-weight: 500;
+}
+
+.board-menu-main {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Содержимое вкладок */
+.menu-tab-content h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #172b4d;
+}
+
+.menu-description {
+  color: #6b778c;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Список участников */
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.member-item:hover {
+  background: #f8f9fa;
+}
+
+.member-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.member-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #0079bf;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.member-details {
+  flex: 1;
+}
+
+.member-name {
+  font-weight: 600;
+  color: #172b4d;
+  font-size: 14px;
+}
+
+.member-email {
+  color: #6b778c;
+  font-size: 12px;
+}
+
+.member-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.member-role {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.member-role.owner {
+  background: #e3fcef;
+  color: #00875a;
+}
+
+.member-role.admin {
+  background: #e4f0f6;
+  color: #0079bf;
+}
+
+.member-role.member {
+  background: #f4f5f7;
+  color: #6b778c;
+}
+
+.member-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.edit-role-btn,
+.remove-member-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.edit-role-btn:hover {
+  background: rgba(0, 121, 191, 0.1);
+}
+
+.remove-member-btn:hover {
+  background: rgba(201, 55, 44, 0.1);
+}
+
+/* Редактор ролей */
+.role-editor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.role-select {
+  padding: 6px 8px;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  font-size: 12px;
+  background: white;
+}
+
+.cancel-edit {
+  background: none;
+  border: none;
+  color: #6b778c;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.cancel-edit:hover {
+  background: rgba(9, 30, 66, 0.08);
+}
+
+/* Настройки */
+.setting-group {
+  margin-bottom: 20px;
+}
+
+.setting-label {
+  display: block;
+  font-weight: 600;
+  color: #172b4d;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.setting-value {
+  color: #6b778c;
+  font-size: 14px;
+}
+
+.visibility-badge.private {
+  background: #f4f5f7;
+  color: #6b778c;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.role-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.role-badge.owner {
+  background: #e3fcef;
+  color: #00875a;
+}
+
+.role-badge.admin {
+  background: #e4f0f6;
+  color: #0079bf;
+}
+
+.role-badge.member {
+  background: #f4f5f7;
+  color: #6b778c;
+}
+
+/* Опасные действия */
+.danger-actions {
+  border: 1px solid #ffd2cc;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffebe6;
+}
+
+.danger-actions h5 {
+  margin: 0 0 12px 0;
+  color: #c9372c;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.danger-btn {
+  background: #c9372c;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.danger-btn:hover {
+  background: #ae2a24;
+}
+
+.action-description {
+  color: #6b778c;
+  font-size: 12px;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.permission-notice {
+  background: #fffae6;
+  color: #b7791f;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  border: 1px solid #ffeeba;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

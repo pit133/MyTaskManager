@@ -6,6 +6,7 @@ namespace Application.Services.Board
     {        
         Task<List<BoardDto>> GetOwnedBoardsAsync(Guid userId);
         Task<List<BoardDto>> GetMemberedBoardsAsync(Guid userId);
+        Task<BoardDto> GetBoardByIdAsync(Guid boardId);
         Task<BoardDto> CreateBoardAsync(Guid userId, CreateBoardDto dto);
         Task DeleteBoardAsync(Guid boardId, Guid userId);
         Task ArchiveBoardAsync(Guid boardId, Guid userId);

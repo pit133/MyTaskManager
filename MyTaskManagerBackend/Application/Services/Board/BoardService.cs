@@ -28,9 +28,18 @@ namespace Application.Services.Board
             };
             _context.Boards.Add(board);
 
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                throw new Exception("User not founded");
+            }
+
             var boardMember = new Domain.Entities.BoardMember
             {
                 Id = Guid.NewGuid(),
+                Name = user.Name,
                 UserId = userId,
                 BoardId = board.Id,
                 Role = Domain.Entities.BoardMemberRole.Owner,
@@ -134,6 +143,23 @@ namespace Application.Services.Board
                     OwnerName = m.Board.User.Name
                 })
                 .ToListAsync();
+        }
+
+        public async Task<BoardDto> GetBoardByIdAsync(Guid boardId)
+        {
+            var board = await _context.Boards
+                .FirstOrDefaultAsync(b => b.Id == boardId);
+
+            if (board == null)
+            {
+                throw new Exception("Board not found");
+            }
+
+            return new BoardDto
+            {
+                Id = board.Id,
+                Name = board.Name,
+            };
         }
     }
 }

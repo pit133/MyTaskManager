@@ -34,6 +34,13 @@ namespace API.Controllers
             return Ok(boards);
         }
 
+        [HttpGet("getById/{boardId}")]
+        public async Task<IActionResult> GetBoardById(Guid boardId)
+        {
+            var board = await _service.GetBoardByIdAsync(boardId);
+            return Ok(board);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateBoard(CreateBoardDto dto)
         {
