@@ -24,6 +24,22 @@ export default function TaskModal({
   const [checkLists, setCheckLists] = useState([]);
   const [isAddingCheckList, setIsAddingCheckList] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  //const [labels,]  
+
+  const labelColor = [
+    "#4bce97",
+    "#e2b203",
+    "#f87168",
+    "#9f8fef",
+    "#579dff",
+    "#faa53d",
+    "#94c748",
+    "#dcdfe4",
+    "#fea362",
+    "#e774bb",
+    "#ff9c9c",
+    "#6cc3e0",
+  ];
 
   useEffect(() => {
     if (!isOpen || !task?.id) return;
@@ -254,7 +270,8 @@ export default function TaskModal({
         <div className="task-modal-body">
           {/* Левая часть - описание и контент */}
           <div className="task-modal-main">
-            <div className="task-description-section">
+            <div className="task-description-section">              
+
               <div className="description-header">
                 <div className="description-icon">📝</div>
                 <h3 className="description-title">Description</h3>
@@ -306,7 +323,6 @@ export default function TaskModal({
                 onCheckListTitleUpdated={handleCheckListTitleUpdated}
               />
             ))}
-
             <div className="checklist-add-section">
               {isAddingCheckList ? (
                 <AddTaskCheckListForm

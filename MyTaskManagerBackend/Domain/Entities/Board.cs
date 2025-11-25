@@ -8,6 +8,7 @@
         public User User { get; set; }
         public ICollection<BoardMember> Members { get; set; }
         public ICollection<Column> Columns { get; set; }
+        public ICollection<Label> Labels { get; set; }
         public bool isArchived { get; set; }
     }
 }

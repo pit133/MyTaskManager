@@ -64,3 +64,17 @@ export async function getMembershipBoards() {
 
   return await response.json();
 }
+
+export async function archiveBoard(boardId){
+  const token = getToken();
+      const response = await fetch(`${API_URL}/Board/${boardId}/archive`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,          
+        },        
+      });
+    
+      if (!response.ok) {
+        throw new Error("Error");
+      }
+}

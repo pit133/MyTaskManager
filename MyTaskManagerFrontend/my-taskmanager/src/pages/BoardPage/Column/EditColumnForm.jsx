@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SubmitButton from "../../pageElements/Buttons/SubmitButton";
 import Button from "../../pageElements/Buttons/Button";
 import { updateColumn } from "../../../API/columnApi";
+import "./EditColumnForm.css";
 
 export default function EditColumnForm({
   column,
@@ -18,7 +19,7 @@ export default function EditColumnForm({
   }, [column]);
 
   if (!isOpen) {
-    return;
+    return null;
   }
 
   async function handleSubmit(e) {
@@ -29,8 +30,8 @@ export default function EditColumnForm({
     }
 
     try {
-      await updateColumn(column.id, title.trim());
       setLoading(true);
+      await updateColumn(column.id, title.trim());
       const updatedColumn = {
         ...column,
         title: title.trim(),
@@ -42,21 +43,46 @@ export default function EditColumnForm({
     } catch (err) {
       setError("Unable to update column");
       console.log(err);
+      setLoading(false);
+    }
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === 'Escape') {
+      onClose();
     }
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          disabled={loading}
-        ></input>
+    <div className="inline-edit-form-container">
+      <form onSubmit={handleSubmit} className="inline-edit-form">
+        <div className="form-input-group">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onKeyDown={handleKeyDown}
+            disabled={loading}
+            className="inline-title-input"
+            placeholder="Enter column title..."
+            autoFocus
+          />
+          
+          {error && <div className="error-message">{error}</div>}
+        </div>
 
-        <SubmitButton text={"Save"} loading={loading} />
-        <Button text={"X"} onClick={onClose} />
+        <div className="form-buttons">
+          <SubmitButton 
+            text={"✓"} 
+            loading={loading}
+            className="inline-save-button"
+          />
+          <Button 
+            text={"✕"} 
+            onClick={onClose}
+            className="inline-cancel-button"
+          />
+        </div>
       </form>
     </div>
   );

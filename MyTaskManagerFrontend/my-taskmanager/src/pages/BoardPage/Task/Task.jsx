@@ -3,6 +3,7 @@ import { useState } from "react";
 import EditTaskForm from "./EditTaskForm.jsx";
 import { deleteTask } from "../../../API/taskApi";
 import Button from "../../pageElements/Buttons/Button.jsx";
+import "./Task.css" 
 
 
 function Task(props, ref) {
@@ -67,8 +68,14 @@ function Task(props, ref) {
       
 
       {/* <DeleteButton onClick={handleDeleteTask} /> */}
-      
-      <Button text={"Delete"} onClick={handleDeleteClick} />
+      <button 
+          className="task-delete-btn"
+          onClick={handleDeleteClick}
+          title="Delete task"
+        >
+          ×
+        </button>
+      {/* <Button className="task-delete-btn" text={"X"} onClick={handleDeleteClick} /> */}
       {/* <Button text={"Edit"} onClick={handleEditClick} />       */}
       {/* <EditButton onClick={handleEditClick} /> */}
       

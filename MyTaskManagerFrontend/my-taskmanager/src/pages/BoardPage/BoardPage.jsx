@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { data, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   getCurrentUserId,
   getToken,
@@ -18,6 +18,7 @@ import InviteModal from "./InviteModal/InviteModal";
 import "./BoardPage.css";
 import BoardMenu from "./BoardMenu/BoardMenu";
 import { getBoardById } from "../../API/boardApi";
+import { getBoardLabels } from "../../API/LabelApi";
 
 export default function BoardPage() {
   const { id } = useParams();
@@ -33,88 +34,62 @@ export default function BoardPage() {
   const [members, setMembers] = useState([]);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [isMenuOpened, setIsMenuOpened] = useState(false);
+  const [labels, setLabels] = useState([])
 
   const loadBoardData = async () => {
-    setLoading(true);
-    setError("");
+  setLoading(true);
+  setError("");
 
-    try {
-      const currentBoardData = await getBoardById(id);
-      setCurrentBoard(currentBoardData);
-    } catch (err) {
-      const errorMessage = "Failed to load board data. Please try again later.";
-      setError(errorMessage);
-      console.error("Error loading board:", err);
-    }
-
-    try {
-      const columnsData = await getColumns(id);
-      const columnsWithTasks = await Promise.all(
-        columnsData.map(async (column) => {
-          try {
-            const tasksData = await getTasks(column.id);
-            return { ...column, tasks: tasksData };
-          } catch (err) {
-            console.error(
-              `Ошибка загрузки задач для колонки ${column.id}:`,
-              err
-            );
-            return { ...column, tasks: [] };
-          }
-        })
-      );
-
-      setColumns(columnsWithTasks);
-    } catch (err) {
-      const errorMessage = "Failed to load board data. Please try again later.";
-      setError(errorMessage);
-      console.error("Error loading columns:", err);
-    }
-
-    try {
-      const membersData = await getBoardMembers(id);
-      membersData.map((member) => {
-        if (member.role === 0) {
-          member.role = "Owner";
+  try {    
+    const [boardData, columnsData, membersData, labelsData] = await Promise.all([
+      getBoardById(id),
+      getColumns(id),
+      getBoardMembers(id),
+      getBoardLabels(id)
+    ]);
+    
+    setCurrentBoard(boardData);
+    
+    const columnsWithTasks = await Promise.all(
+      columnsData.map(async (column) => {
+        try {
+          const tasksData = await getTasks(column.id);
+          return { ...column, tasks: tasksData };
+        } catch (err) {
+          console.error(`Ошибка загрузки задач для колонки ${column.id}:`, err);
+          return { ...column, tasks: [] };
         }
+      })
+    );
+    setColumns(columnsWithTasks);
 
-        if (member.role === 1) {
-          member.role = "Admin";
-        }
+    
+    const processedMembers = membersData.map((member) => {
+      if (member.role === 0) member.role = "Owner";
+      if (member.role === 1) member.role = "Admin";
+      if (member.role === 2) member.role = "Member";
+      return member;
+    });
+    setMembers(processedMembers);
 
-        if (member.role === 2) {
-          member.role = "Member";
-        }
-
-        return member;
-      });
-      setMembers(membersData);
-
-      if (membersData.length > 0) {
-        setCurrentUser(() => {
-          const id = getCurrentUserId();
-          const name = getCurrentUserName();
-          const getRole = () => {
-            const user = membersData.find((member) => member.userId === id);
-            return user.role;
-          };
-          const role = getRole();
-          return { id, name, role };
-        });
-      }
-    } catch (err) {
-      console.error(`Failed to load board members ${id}: `, err);
+    if (processedMembers.length > 0) {
+      const userId = getCurrentUserId();
+      const userName = getCurrentUserName();
+      const userRole = processedMembers.find(member => member.userId === userId)?.role || "Member";
+      setCurrentUser({ id: userId, name: userName, role: userRole });
     }
+    
+    console.log("Labels from API:", labelsData);
+    setLabels(labelsData || []);
 
-    try {
-      const token = await getToken();
-      console.log(token);
-    } catch (err) {
-      console.error(`Failed to load token: `, err);
-    }
-
+  } catch (err) {
+    const errorMessage = "Failed to load board data. Please try again later.";
+    setError(errorMessage);
+    console.error("Error loading board:", err);
+  } finally {
     setLoading(false);
-  };
+  }
+};
 
   useEffect(() => {
     const token = getToken();
@@ -125,6 +100,7 @@ export default function BoardPage() {
 
     loadBoardData();
   }, [id, navigate]);
+  
 
   function handleDeleteMember(memberId) {
     setMembers((prevMembers) =>
@@ -383,7 +359,7 @@ export default function BoardPage() {
           board={currentBoard}
           members={members}
           currentUser={currentUser}
-          onClose={() => setIsMenuOpened(false)}
+          onClose={() => setIsMenuOpened(false)}          
           onUpdateMemberRole={handleUpdatedMemberRole}
           onDeleteBoardMember={handleDeleteMember}
         />

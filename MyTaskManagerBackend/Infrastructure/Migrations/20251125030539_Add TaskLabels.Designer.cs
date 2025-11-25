@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251125030539_Add TaskLabels")]
+    partial class AddTaskLabels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
@@ -112,31 +115,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Columns");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Label", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("BoardId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BoardId");
-
-                    b.ToTable("Labels");
-                });
-
             modelBuilder.Entity("Domain.Entities.TaskCheckList", b =>
                 {
                     b.Property<Guid>("Id")
@@ -225,15 +203,25 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.TaskLabel", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("TaskItemId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("LabelId")
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("TaskItemId", "LabelId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("LabelId");
+                    b.HasIndex("TaskItemId");
 
                     b.ToTable("TaskLabels");
                 });
@@ -299,17 +287,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Board");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Label", b =>
-                {
-                    b.HasOne("Domain.Entities.Board", "Board")
-                        .WithMany("Labels")
-                        .HasForeignKey("BoardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Board");
-                });
-
             modelBuilder.Entity("Domain.Entities.TaskCheckList", b =>
                 {
                     b.HasOne("Domain.Entities.TaskItem", "TaskItem")
@@ -345,19 +322,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.TaskLabel", b =>
                 {
-                    b.HasOne("Domain.Entities.Label", "Label")
-                        .WithMany("TaskLabels")
-                        .HasForeignKey("LabelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.TaskItem", "TaskItem")
                         .WithMany("TaskLabels")
                         .HasForeignKey("TaskItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Label");
 
                     b.Navigation("TaskItem");
                 });
@@ -366,19 +335,12 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("Columns");
 
-                    b.Navigation("Labels");
-
                     b.Navigation("Members");
                 });
 
             modelBuilder.Entity("Domain.Entities.Column", b =>
                 {
                     b.Navigation("TaskItems");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Label", b =>
-                {
-                    b.Navigation("TaskLabels");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskCheckList", b =>

@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { addColumn } from "../../../API/columnApi";
+import "./AddColumnForm.css";
 
 export default function AddColumnForm({ boardId, onColumnAdded }) {
   const [newColumnName, setNewColumnName] = useState("");
   const [error, setError] = useState("");
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   async function handleSubmitColumn(e) {
     e.preventDefault();
 
     if (!newColumnName.trim()) {
-      setError("Column name can not be empty");
+      setError("Column name cannot be empty");
       return;
     }
 
@@ -18,24 +20,68 @@ export default function AddColumnForm({ boardId, onColumnAdded }) {
       onColumnAdded(result);
       setNewColumnName("");
       setError("");
+      setIsFormOpen(false);
     } catch (err) {
-      setError("Failed to add new Column");
+      setError("Failed to add new column");
       console.error(err);
     }
   }
 
+  function handleCancel() {
+    setNewColumnName("");
+    setError("");
+    setIsFormOpen(false);
+  }
+
+  function handlePromptClick() {
+    setIsFormOpen(true);
+  }
+
+  if (!isFormOpen) {
+    return (
+      <div className="add-column-form">
+        <button className="add-column-prompt" onClick={handlePromptClick}>
+          <span className="add-column-icon">+</span>
+          <span className="add-column-text">Add another column</span>
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ border: "1px dashed gray", padding: "10px" }}>
-      <form onSubmit={handleSubmitColumn}>
+    <div className="add-column-form open">
+      <form onSubmit={handleSubmitColumn} className="add-column-form-content">
         <input
           type="text"
-          placeholder="New column name"
+          className="column-input"
+          placeholder="Enter column title..."
           value={newColumnName}
-          onChange={(e) => setNewColumnName(e.target.value)}
+          onChange={(e) => {
+            setNewColumnName(e.target.value);
+            setError("");
+          }}
+          autoFocus
+          maxLength={100}
         />
-        <br />
-        <button type="submit">Add new column</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        
+        {error && <p className="error-message">{error}</p>}
+
+        <div className="form-actions">
+          <button
+            type="submit"
+            className="add-column-btn"
+            disabled={!newColumnName.trim()}
+          >
+            Add column
+          </button>
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={handleCancel}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

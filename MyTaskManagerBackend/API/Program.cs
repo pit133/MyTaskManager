@@ -5,6 +5,7 @@ using Application.Services.Column;
 using Application.Services.TaskCheckList;
 using Application.Services.TaskCheckListItemService;
 using Application.Services.TaskItem;
+using Application.Services.TaskLabel;
 using Application.Services.User;
 using Domain.Entities;
 using Infrastructure;
@@ -53,6 +54,7 @@ namespace API
             builder.Services.AddScoped<ITaskCheckListItemService, TaskCheckListItemService>();
             builder.Services.AddScoped<IBoardMemberService, BoardMemberService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ILabelService, LabelService>();
 
             builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
             {

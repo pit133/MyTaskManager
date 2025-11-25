@@ -74,3 +74,17 @@ export async function deleteMember(memberId){
       throw new Error("Error");
     }
 }
+
+export async function leaveBoard(boardId) {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/BoardMember/leave/${boardId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Error");
+  }
+}

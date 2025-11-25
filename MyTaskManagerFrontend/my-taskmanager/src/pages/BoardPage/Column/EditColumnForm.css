@@ -1,0 +1,130 @@
+.inline-edit-form-container {
+  display: flex;
+  width: 100%;
+}
+
+.inline-edit-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: white;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.form-input-group {
+  flex: 1;
+  position: relative;
+}
+
+.inline-title-input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 2px solid #4dabf7;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  background: white;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.inline-title-input:focus {
+  border-color: #339af0;
+  box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
+}
+
+.inline-title-input:disabled {
+  background-color: #f8f9fa;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-buttons {
+   padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.inline-save-button {
+  padding: 6px 8px;
+  background: #51cf66;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inline-save-button:hover:not(:disabled) {
+  background: #40c057;
+  transform: scale(1.05);
+}
+
+.inline-save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.inline-cancel-button {
+  padding: 6px 8px;
+  background: #fa5252;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inline-cancel-button:hover {
+  background: #e03131;
+  transform: scale(1.05);
+}
+
+.error-message {
+  color: #fa5252;
+  font-size: 11px;
+  margin-top: 2px;
+  font-weight: 500;
+  position: absolute;
+  bottom: -18px;
+  left: 0;
+  background: white;
+  padding: 2px 6px;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Анимация появления */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.inline-edit-form-container {
+  animation: slideIn 0.15s ease-out;
+}

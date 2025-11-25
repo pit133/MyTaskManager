@@ -1,0 +1,134 @@
+.column {
+  background: #f9f9f9;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  width: 280px;
+  min-height: 500px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.column.dragging-over {
+  border-color: #007bff;
+  background: #f0f8ff;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.column-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #172b4d;
+  margin: 0;
+  line-height: 1.4;
+  flex: 1;
+  word-break: break-word;
+}
+
+.column-actions {
+  display: flex;
+  gap: 4px;
+  margin-left: 8px;
+}
+
+.column-action-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #6b778c;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.column-action-btn:hover {
+  background: rgba(9, 30, 66, 0.08);
+  color: #172b4d;
+}
+
+.column-action-btn.edit:hover {
+  color: #007bff;
+}
+
+.column-action-btn.delete:hover {
+  color: #c9372c;
+}
+
+.tasks-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 200px;
+}
+
+.add-task-btn {
+  background: rgba(9, 30, 66, 0.04);
+  border: 2px dashed #dfe1e6;
+  border-radius: 8px;
+  padding: 12px;
+  color: #6b778c;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.add-task-btn:hover {
+  background: rgba(9, 30, 66, 0.08);
+  border-color: #ccc;
+  color: #172b4d;
+}
+
+.column-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #e1e4e8;
+}
+
+/* Анимации */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.column {
+  animation: slideIn 0.2s ease-out;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .column {
+    width: 250px;
+    padding: 12px;
+  }
+  
+  .column-actions {
+    flex-direction: column;
+  }
+}
+

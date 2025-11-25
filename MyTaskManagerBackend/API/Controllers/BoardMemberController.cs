@@ -33,6 +33,15 @@ namespace API.Controllers
             return NoContent();
         }
 
+        [HttpDelete("leave/{boardId}")]
+        public async Task<IActionResult> LeaveBoard(Guid boardId)
+        {
+            var userId = ClaimsHelper.GetUserId(User);
+            await _service.LeaveBoardAsync(boardId, userId);
+            return NoContent();
+        }
+
+
         [HttpGet("{boardId}")]
         public async Task<IActionResult> Get(Guid boardId)
         {

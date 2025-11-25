@@ -17,6 +17,8 @@ namespace Infrastructure
         public DbSet<TaskCheckList> TaskCheckLists { get; set; }
         public DbSet<TaskCheckListItem> TaskCheckListItems { get; set; }
         public DbSet<BoardMember> BoardMembers { get; set; }
+        public DbSet<Label> Labels { get; set; }
+        public DbSet<TaskLabel> TaskLabels { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +29,8 @@ namespace Infrastructure
             modelBuilder.ApplyConfiguration(new TaskItemConfiguration());
             modelBuilder.ApplyConfiguration(new TaskCheckListItemConfiguration());
             modelBuilder.ApplyConfiguration(new BoardMemberConfiguration());
+            modelBuilder.ApplyConfiguration(new LabelConfiguration());
+            modelBuilder.ApplyConfiguration(new TaskLabelConfiguration());
         }
         
     }

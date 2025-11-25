@@ -94,6 +94,25 @@ namespace Application.Services.BoardMember
 
         }
 
+        public async Task LeaveBoardAsync(Guid boardId, Guid currentUserId)
+        {
+            var memberToDelete = await _context.BoardMembers
+                .FirstOrDefaultAsync(m => m.BoardId == boardId && m.UserId == currentUserId);
+
+            if (memberToDelete == null)
+            {
+                throw new Exception("Member not found");
+            }
+
+            if (memberToDelete.Role == BoardMemberRole.Owner)
+            {
+                throw new Exception("Owner cannot leave the board. Transfer ownership first.");
+            }
+
+            _context.BoardMembers.Remove(memberToDelete);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteBoardMemberAsync(Guid memberId, Guid currentUserId)
         {
             var memberToDelete = await _context.BoardMembers

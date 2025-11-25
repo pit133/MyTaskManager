@@ -22,6 +22,10 @@ namespace Infrastructure.Configurations
 
             builder.Property(a => a.isArchived)
                    .HasDefaultValue(false);
+
+            builder.HasMany(x => x.TaskLabels)
+                .WithOne(x => x.TaskItem)
+                .HasForeignKey(x => x.TaskItemId);
         }
     }
 }

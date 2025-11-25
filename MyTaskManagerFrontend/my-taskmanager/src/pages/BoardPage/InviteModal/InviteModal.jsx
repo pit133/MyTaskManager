@@ -80,9 +80,10 @@ export default function InviteModal({ boardId, onClosed, onUserInvited }) {
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
+                  handleSearchUsers()
                   setUserAdded(false);
                 }}
-                onKeyDown={(e) => e.key === "Enter" && handleSearchUsers()}
+                // onKeyDown={(e) => e.key === "Enter" && handleSearchUsers()}            
               />
               <select
                 className="role-select"
@@ -94,13 +95,13 @@ export default function InviteModal({ boardId, onClosed, onUserInvited }) {
               </select>
             </div>
 
-            <button
+            {/* <button
               className="search-btn"
               onClick={handleSearchUsers}
               disabled={searching || !searchTerm.trim()}
             >
               {searching ? "Searching..." : "Search"}
-            </button>
+            </button> */}
 
             {searching && (
               <div className="loading-search">Searching users...</div>

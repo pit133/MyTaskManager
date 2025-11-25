@@ -14,6 +14,10 @@ export default function BoardMenu({
 }) {
   const [activeTab, setActiveTab] = useState("members");
 
+  // function handleArchiveBoard(boardId){
+  //   onArchiveBoard(boardId)
+  // }
+
   function handleUpdateMemberRole(memberId, role){
     onUpdateMemberRole(memberId, role)    
   }
@@ -72,9 +76,8 @@ export default function BoardMenu({
             {activeTab === "actions" && (
               <BoardActionsTab 
                 board={board}
-                currentUser={currentUser}
-                onArchiveBoard={onArchiveBoard}
-                onLeaveBoard={onLeaveBoard}
+                currentUser={currentUser}                
+                //onLeaveBoard={onLeaveBoard}
               />
             )}
           </div>

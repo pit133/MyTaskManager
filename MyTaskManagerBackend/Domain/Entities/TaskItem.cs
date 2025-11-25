@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class TaskItem
     {
@@ -15,5 +9,6 @@ namespace Domain.Entities
         public Column Column { get; set; }
         public int Position { get; set; }
         public bool isArchived { get; set; }
+        public ICollection<TaskLabel> TaskLabels { get; set; }             
     }
 }
