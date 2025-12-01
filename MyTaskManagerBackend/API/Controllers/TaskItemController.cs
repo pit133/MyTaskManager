@@ -70,6 +70,20 @@ namespace API.Controllers
             await _service.UnarchiveTaskItemAsync(taskItemId, userId);
             return NoContent();
         }
+        
+        [HttpPut("{taskId}/due-date")]
+        public async Task<IActionResult> UpdateDueDate(Guid taskId, UpdateDueDateDto dto)
+        {
+            await _service.UpdateTaskDueDateAsync(taskId, dto.DueDate);
+            return Ok();
+        }
+
+        [HttpPut("{taskId}/toggle-completion")]
+        public async Task<IActionResult> ToggleCompletion(Guid taskId)
+        {
+            await _service.ToggleTaskCompletionAsync(taskId);
+            return Ok();
+        }        
 
         [HttpDelete("{taskItemId}")]
         public async Task<IActionResult> Delete(Guid taskItemId)

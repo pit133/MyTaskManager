@@ -7,7 +7,8 @@ namespace Application.Services.TaskLabel
         Task<LabelDto> CreateBoardLabelAsync(Guid boardId, CreateLabelDto dto);
         public Task AddLabelToTaskAsync(Guid taskId, Guid labelId);
         public Task RemoveLabelFromTaskAsync(Guid taskId, Guid labelId);
+        public Task DeleteBoardLabelAsync(Guid labelId);
         public Task<List<LabelDto>> GetBoardLabelsAsync(Guid boardId);
-        public Task<List<LabelDto>> GetTaskLabelsAsync(Guid taskId);
+        public Task<List<LabelDto>> GetTaskLabelsAsync(Guid taskId);        
     }
 }

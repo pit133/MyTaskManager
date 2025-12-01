@@ -25,18 +25,24 @@ namespace API.Controllers
             return Ok(boardLabel);
         }
 
-        [HttpPost("task-label/{taskId}")]
+        [HttpPost("task-label/{taskId}/{labelId}")]
         public async Task<IActionResult> AddLabelToTask(Guid taskId, Guid labelId)
         {
             await _service.AddLabelToTaskAsync(taskId, labelId);
-
             return NoContent();
         }
 
-        [HttpDelete("delete-label-from-task{taskLabelId, labelId}")]
-        public async Task<IActionResult> Delete(Guid taskLabelId, Guid labelId)
+        [HttpDelete("delete-label-from-task/{taskId}/{labelId}")]
+        public async Task<IActionResult> Delete(Guid taskId, Guid labelId)
         {
-            await _service.RemoveLabelFromTaskAsync(taskLabelId, labelId);
+            await _service.RemoveLabelFromTaskAsync(taskId, labelId);
+            return NoContent();
+        }
+
+        [HttpDelete("delete-board-label/{labelId}")]
+        public async Task<IActionResult> Delete(Guid labelId)
+        {
+            await _service.DeleteBoardLabelAsync(labelId);
             return NoContent();
         }
 
@@ -50,7 +56,7 @@ namespace API.Controllers
         [HttpGet("task-labels/{taskId}")]
         public async Task<IActionResult> GetTaskLabels(Guid taskId)
         {
-            var taskLabels = await _service.GetBoardLabelsAsync(taskId);
+            var taskLabels = await _service.GetTaskLabelsAsync(taskId);
             return Ok(taskLabels);
         }
 

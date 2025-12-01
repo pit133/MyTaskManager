@@ -18,7 +18,14 @@ import InviteModal from "./InviteModal/InviteModal";
 import "./BoardPage.css";
 import BoardMenu from "./BoardMenu/BoardMenu";
 import { getBoardById } from "../../API/boardApi";
-import { getBoardLabels } from "../../API/LabelApi";
+import {
+  addBoardLabel,
+  addTaskLabel,
+  deleteBoardLabel,
+  deleteTaskLabel,
+  getBoardLabels,
+  getTaskLabels,
+} from "../../API/LabelApi";
 
 export default function BoardPage() {
   const { id } = useParams();
@@ -34,62 +41,74 @@ export default function BoardPage() {
   const [members, setMembers] = useState([]);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [isMenuOpened, setIsMenuOpened] = useState(false);
-  const [labels, setLabels] = useState([])
+  const [boardLabels, setBoardLabels] = useState([]);
+  //const [taskLabels, setTaskLabels] = useState([])
 
   const loadBoardData = async () => {
-  setLoading(true);
-  setError("");
+    setLoading(true);
+    setError("");
 
-  try {    
-    const [boardData, columnsData, membersData, labelsData] = await Promise.all([
-      getBoardById(id),
-      getColumns(id),
-      getBoardMembers(id),
-      getBoardLabels(id)
-    ]);
-    
-    setCurrentBoard(boardData);
-    
-    const columnsWithTasks = await Promise.all(
-      columnsData.map(async (column) => {
-        try {
-          const tasksData = await getTasks(column.id);
-          return { ...column, tasks: tasksData };
-        } catch (err) {
-          console.error(`Ошибка загрузки задач для колонки ${column.id}:`, err);
-          return { ...column, tasks: [] };
-        }
-      })
-    );
-    setColumns(columnsWithTasks);
+    try {
+      const [boardData, columnsData, membersData, boardLabelsData] =
+        await Promise.all([
+          getBoardById(id),
+          getColumns(id),
+          getBoardMembers(id),
+          getBoardLabels(id),
+        ]);
 
-    
-    const processedMembers = membersData.map((member) => {
-      if (member.role === 0) member.role = "Owner";
-      if (member.role === 1) member.role = "Admin";
-      if (member.role === 2) member.role = "Member";
-      return member;
-    });
-    setMembers(processedMembers);
+      setCurrentBoard(boardData);
 
-    if (processedMembers.length > 0) {
-      const userId = getCurrentUserId();
-      const userName = getCurrentUserName();
-      const userRole = processedMembers.find(member => member.userId === userId)?.role || "Member";
-      setCurrentUser({ id: userId, name: userName, role: userRole });
+      const columnsWithTasks = await Promise.all(
+        columnsData.map(async (column) => {
+          try {
+            const tasksData = await getTasks(column.id);
+            const tasksWithLabels = await Promise.all(
+              tasksData.map(async (taskData) => {
+                const taskLabelsData = await getTaskLabels(taskData.id);
+                return { ...taskData, labels: taskLabelsData };
+              })
+            );
+            return { ...column, tasks: tasksWithLabels };
+          } catch (err) {
+            console.error(
+              `Ошибка загрузки задач для колонки ${column.id}:`,
+              err
+            );
+            return { ...column, tasks: [] };
+          }
+        })
+      );
+      console.log("Columns: ", columnsWithTasks);
+      setColumns(columnsWithTasks);
+
+      const processedMembers = membersData.map((member) => {
+        if (member.role === 0) member.role = "Owner";
+        if (member.role === 1) member.role = "Admin";
+        if (member.role === 2) member.role = "Member";
+        return member;
+      });
+      setMembers(processedMembers);
+
+      if (processedMembers.length > 0) {
+        const userId = getCurrentUserId();
+        const userName = getCurrentUserName();
+        const userRole =
+          processedMembers.find((member) => member.userId === userId)?.role ||
+          "Member";
+        setCurrentUser({ id: userId, name: userName, role: userRole });
+      }
+
+      console.log("Labels from API:", boardLabelsData);
+      setBoardLabels(boardLabelsData || []);
+    } catch (err) {
+      const errorMessage = "Failed to load board data. Please try again later.";
+      setError(errorMessage);
+      console.error("Error loading board:", err);
+    } finally {
+      setLoading(false);
     }
-    
-    console.log("Labels from API:", labelsData);
-    setLabels(labelsData || []);
-
-  } catch (err) {
-    const errorMessage = "Failed to load board data. Please try again later.";
-    setError(errorMessage);
-    console.error("Error loading board:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   useEffect(() => {
     const token = getToken();
@@ -100,7 +119,95 @@ export default function BoardPage() {
 
     loadBoardData();
   }, [id, navigate]);
-  
+
+  useEffect(() => {
+    if (clickedTask && columns) {
+      const updatedTask = columns
+        .flatMap((column) => column.tasks)
+        .find((task) => task.id === clickedTask.id);
+
+      if (
+        updatedTask &&
+        JSON.stringify(updatedTask) !== JSON.stringify(clickedTask)
+      ) {
+        console.log("🔄 Syncing clickedTask:", updatedTask);
+        setClickedTask(updatedTask);
+      }
+    }
+  }, [columns, clickedTask]);
+
+  async function handleRemovedBoardLabel(labelId) {
+    try {
+      await deleteBoardLabel(labelId);
+
+      setBoardLabels((prevLabels) =>
+        prevLabels.filter((label) => label.id !== labelId)
+      );
+
+      setColumns((columns) =>
+        columns.map((column) => ({
+          ...column,
+          tasks: column.tasks.map((task) => ({
+            ...task,
+            labels: task.labels.filter((label) => label.id !== labelId),
+          })),
+        }))
+      );
+    } catch (error) {
+      console.log("Failed to remove board label:", error);
+    }
+  }
+
+  async function handleRemovedTaskLabel(taskId, labelId) {
+    try {
+      await deleteTaskLabel(taskId, labelId);
+      setColumns((columns) =>
+        columns.map((column) => ({
+          ...column,
+          tasks: column.tasks.map((task) =>
+            task.id === taskId
+              ? {
+                  ...task,
+                  labels: task.labels.filter((label) => label.id !== labelId),
+                }
+              : task
+          ),
+        }))
+      );
+    } catch (error) {
+      console.error("Failed to delete label from task: ", error);
+    }
+  }
+
+  async function handleAddedTaskLabel(taskId, label) {
+    try {
+      await addTaskLabel(taskId, label.id);
+      setColumns((columns) =>
+        columns.map((column) => ({
+          ...column,
+          tasks: column.tasks.map((task) =>
+            task.id === taskId
+              ? {
+                  ...task,
+                  labels: [...(task.labels || []), label],
+                }
+              : task
+          ),
+        }))
+      );
+    } catch (error) {
+      console.error("Failed to add label to task: ", error);
+    }
+  }
+
+  async function handleAddedBoardLabel(label) {
+    try {
+      const boardLabelData = await addBoardLabel(id, label);
+      setBoardLabels([...boardLabels, boardLabelData]);
+    } catch (error) {
+      console.error("Failed to add board label");
+    }
+  }
 
   function handleDeleteMember(memberId) {
     setMembers((prevMembers) =>
@@ -335,8 +442,13 @@ export default function BoardPage() {
             ))}
             <AddColumnForm boardId={id} onColumnAdded={handleColumnAdded} />
             <TaskModal
+              boardLabels={boardLabels}
               task={clickedTask}
               column={clickedTaskColumn}
+              onAddedBoardLabel={handleAddedBoardLabel}
+              onAddedTaskLabel={handleAddedTaskLabel}
+              onRemovedTaskLabel={handleRemovedTaskLabel}
+              onRemovedBoardLabel={handleRemovedBoardLabel}
               onTaskDeleted={handleDeleteTask}
               onTaskArchived={handleArchiveTask}
               onTaskTitleUpdated={handleUpdatedTaskTitle}
@@ -359,7 +471,7 @@ export default function BoardPage() {
           board={currentBoard}
           members={members}
           currentUser={currentUser}
-          onClose={() => setIsMenuOpened(false)}          
+          onClose={() => setIsMenuOpened(false)}
           onUpdateMemberRole={handleUpdatedMemberRole}
           onDeleteBoardMember={handleDeleteMember}
         />

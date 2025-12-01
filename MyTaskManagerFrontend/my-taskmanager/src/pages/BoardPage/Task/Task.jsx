@@ -1,26 +1,21 @@
 import React from "react";
-import { useState } from "react";
-import EditTaskForm from "./EditTaskForm.jsx";
-import { deleteTask } from "../../../API/taskApi";
-import Button from "../../pageElements/Buttons/Button.jsx";
-import "./Task.css" 
 
+import { deleteTask } from "../../../API/taskApi";
+import "./Task.css";
 
 function Task(props, ref) {
   const {
-    task,
+    task,        
     isDragging,
-    style,    
+    style,
     onTaskDeleted,
     // onTaskUpdated,
     columnId,
     ...restProps
   } = props;
+  
 
-  
   // const [isEditFormOpen, setIsEditFormOpen] = useState(false);
-  
- 
 
   // function handleEditClick() {
   //   setIsEditFormOpen(true);
@@ -64,21 +59,34 @@ function Task(props, ref) {
         ...style,
       }}
     >
+      {task.labels?.length > 0 ? (
+        task.labels.map(label =>
+        <div key={label.id}
+          style={{
+            height: "20px",
+            width: "auto",
+            background: label.color,
+          }}
+        >
+          {label.title}
+        </div>
+        )
+      ) : (
+        <></>
+      )}
       <strong>{task.title}</strong>
-      
 
       {/* <DeleteButton onClick={handleDeleteTask} /> */}
-      <button 
-          className="task-delete-btn"
-          onClick={handleDeleteClick}
-          title="Delete task"
-        >
-          ×
-        </button>
+      <button
+        className="task-delete-btn"
+        onClick={handleDeleteClick}
+        title="Delete task"
+      >
+        ×
+      </button>
       {/* <Button className="task-delete-btn" text={"X"} onClick={handleDeleteClick} /> */}
       {/* <Button text={"Edit"} onClick={handleEditClick} />       */}
       {/* <EditButton onClick={handleEditClick} /> */}
-      
 
       {/* <EditTaskForm
         task={task}

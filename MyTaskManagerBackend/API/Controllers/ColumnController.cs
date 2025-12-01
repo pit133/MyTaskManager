@@ -1,7 +1,6 @@
 ﻿using Application.DTOs.Column;
 using Application.Services.Column;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace API.Controllers
 {

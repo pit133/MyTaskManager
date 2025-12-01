@@ -17,5 +17,7 @@ namespace Application.Services.TaskItem
         Task ReorderTaskItemAsync(Guid taskItemId, int newPosition, Guid userId);
         Task ArchiveTaskItemAsync(Guid taskItemId, Guid userId);
         Task UnarchiveTaskItemAsync(Guid taskItemId, Guid userId);
+        Task UpdateTaskDueDateAsync(Guid taskId, DateTime? dueDate);
+        Task ToggleTaskCompletionAsync(Guid taskId);
     }
 }

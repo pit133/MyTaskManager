@@ -7,13 +7,20 @@ import { updateTask, deleteTask, archiveTask } from "../../../API/taskApi";
 
 import TaskCheckList from "./TaskCheckList/TaskCheckList";
 import AddTaskCheckListForm from "./TaskCheckList/AddTaskCheckListForm/AddTaskCheckListForm";
+import LabelsMenu from "./LabelsMenu/LabelsMenu";
+import CreateLabelForm from "./CreateLabelForm/CreateLabelForm";
 
 export default function TaskModal({
+  boardLabels,
   task,
   column,
   onTaskDeleted,
   onTaskArchived,
   onTaskTitleUpdated,
+  onAddedTaskLabel,
+  onAddedBoardLabel,
+  onRemovedTaskLabel,
+  onRemovedBoardLabel,
   isOpen,
   onClose,
 }) {
@@ -24,30 +31,15 @@ export default function TaskModal({
   const [checkLists, setCheckLists] = useState([]);
   const [isAddingCheckList, setIsAddingCheckList] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  //const [labels,]  
-
-  const labelColor = [
-    "#4bce97",
-    "#e2b203",
-    "#f87168",
-    "#9f8fef",
-    "#579dff",
-    "#faa53d",
-    "#94c748",
-    "#dcdfe4",
-    "#fea362",
-    "#e774bb",
-    "#ff9c9c",
-    "#6cc3e0",
-  ];
+  const [isLabelMenuOpened, setIsLabelMenuOpened] = useState(false);
+  const [isLabelCreateFormOpened, setIsLabelCreateFormOpened] = useState(false);  
 
   useEffect(() => {
     if (!isOpen || !task?.id) return;
 
     setTitle(task.title || "");
     setDescription(task.description || "");
-    setCheckLists([]);
-
+    setCheckLists([]);    
     loadCheckListsData();
   }, [isOpen, task?.id]);
 
@@ -79,6 +71,29 @@ export default function TaskModal({
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function handleRemovedBoardLabel(labelId){
+    onRemovedBoardLabel(labelId)    
+  }
+
+  function handleAddedBoardLabel(label){
+    onAddedBoardLabel(label)
+    setIsLabelCreateFormOpened(false)
+    setIsLabelMenuOpened(true)
+  }
+
+  function handleRemovedTaskLabel(labelId){
+    onRemovedTaskLabel(task.id, labelId)    
+  }
+
+  function handleAddedTaskLabel(label) {
+    onAddedTaskLabel(task.id, label);    
+  }
+
+  function handleLabelButtonClick() {
+    setIsLabelMenuOpened(!isLabelMenuOpened);
+    setIsLabelCreateFormOpened(false)
   }
 
   function handleCheckListTitleUpdated(checkListId, checkListTitle) {
@@ -150,6 +165,8 @@ export default function TaskModal({
     setIsEditingDescription(false);
     setIsEditingTitle(false);
     setIsAddingCheckList(false);
+    setIsLabelMenuOpened(false);
+    setIsLabelCreateFormOpened(false);
     onClose();
   }
 
@@ -270,8 +287,25 @@ export default function TaskModal({
         <div className="task-modal-body">
           {/* Левая часть - описание и контент */}
           <div className="task-modal-main">
-            <div className="task-description-section">              
-
+            <div>
+              {task.labels.length > 0 ? (
+                task.labels.map((label) => (
+                  <div
+                    key={label.id}
+                    style={{
+                      height: "20px",
+                      width: "auto",
+                      background: label.color,
+                    }}
+                  >
+                    {label.title}
+                  </div>
+                ))
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="task-description-section">
               <div className="description-header">
                 <div className="description-icon">📝</div>
                 <h3 className="description-title">Description</h3>
@@ -340,7 +374,33 @@ export default function TaskModal({
             <div className="sidebar-section">
               <div className="sidebar-title">Add to card</div>
               <button className="sidebar-button">📍 Members</button>
-              <button className="sidebar-button">🏷️ Labels</button>
+              <button
+                className="sidebar-button"
+                onClick={handleLabelButtonClick}
+              >
+                🏷️ Labels
+              </button>
+
+              <LabelsMenu                
+                boardLabels={boardLabels}
+                taskLabels={task.labels}
+                isOpened={isLabelMenuOpened}
+                onAddedTaskLabel={handleAddedTaskLabel}
+                onRemovedTaskLabel={handleRemovedTaskLabel}
+                onRemovedBoardLabel={handleRemovedBoardLabel}
+                onClosed={() => setIsLabelMenuOpened(false)}
+                onCreateLabelFormOpened={() => {
+                  setIsLabelCreateFormOpened(true);
+                  setIsLabelMenuOpened(false);
+                }}
+              />
+
+              <CreateLabelForm
+                isOpened={isLabelCreateFormOpened}
+                onAddedBoardLabel={handleAddedBoardLabel}
+                onClosed={() => setIsLabelCreateFormOpened(false)}
+              />
+
               <button
                 className="sidebar-button"
                 onClick={() => setIsAddingCheckList(true)}

@@ -72,6 +72,25 @@ public class LabelService : ILabelService
         }
     }
 
+    public async Task DeleteBoardLabelAsync(Guid labelId)
+    {
+        var label = await _context.Labels
+            .FirstOrDefaultAsync(l => l.Id == labelId);
+
+        if (label == null)
+        {
+            throw new ArgumentException($"Label with ID {labelId} not found");
+        }
+        
+        var taskLabels = await _context.TaskLabels
+            .Where(tl => tl.LabelId == labelId)
+            .ToListAsync();
+
+        _context.TaskLabels.RemoveRange(taskLabels);        
+        _context.Labels.Remove(label);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<List<LabelDto>> GetBoardLabelsAsync(Guid boardId)
     {
         return await _context.Labels

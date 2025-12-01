@@ -232,6 +232,30 @@ namespace Application.Services.TaskItem
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateTaskDueDateAsync(Guid taskId, DateTime? dueDate)
+        {
+            var task = await _context.TaskItems
+                .FirstOrDefaultAsync(t => t.Id == taskId);
+
+            if (task == null)
+                throw new ArgumentException($"Task with ID {taskId} not found");
+
+            task.DueDate = dueDate;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ToggleTaskCompletionAsync(Guid taskId)
+        {
+            var task = await _context.TaskItems
+                .FirstOrDefaultAsync(t => t.Id == taskId);
+
+            if (task == null)
+                throw new ArgumentException($"Task with ID {taskId} not found");
+
+            task.IsCompleted = !task.IsCompleted;
+            await _context.SaveChangesAsync();
+        }
+
         private async Task<Domain.Entities.TaskItem> GetTaskItemAsync(Guid taskItemId, Guid userId)
         {
             var task = await _context.TaskItems
